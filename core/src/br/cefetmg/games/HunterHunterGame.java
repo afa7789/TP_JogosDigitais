@@ -67,6 +67,7 @@ public class HunterHunterGame extends ApplicationAdapter {
     private MovementAlgorithm algoritmoCorrente;
     private Array<MovementAlgorithm> algoritmos;
     
+    private int colidiu =0;
     
     
     
@@ -246,7 +247,8 @@ public class HunterHunterGame extends ApplicationAdapter {
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
         towerRenderer.renderAll(torres);
-        agentRenderer.render(agent); 
+        if(colidiu<5)
+            agentRenderer.render(agent); 
         if (showingMetrics) {
             metricsRenderer.render(agent.getPathFindingMetrics(),
                     LevelManager.graph.getNodeCount());
@@ -289,9 +291,9 @@ public class HunterHunterGame extends ApplicationAdapter {
                                 new Vector3(objetivo.getObjetivo().x, objetivo.getObjetivo().y,0));
                         if(definiuObjetivo==true){
                             bullets.removeValue(atual, debugMode);
+                            colidiu++;
                                     
                         }
-                        System.out.println(definiuObjetivo);
                     }
                     
                     
