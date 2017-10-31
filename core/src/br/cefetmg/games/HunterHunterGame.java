@@ -3,8 +3,13 @@ package br.cefetmg.games;
 import static br.cefetmg.games.LevelManager.graph;
 import br.cefetmg.games.graphics.GraphRenderer;
 import br.cefetmg.games.graphics.AgentRenderer;
+import br.cefetmg.games.graphics.BulletRenderer;
 import br.cefetmg.games.graphics.MetricsRenderer;
 import br.cefetmg.games.graphics.TowerRenderer;
+import br.cefetmg.games.movement.Bullet;
+import br.cefetmg.games.movement.BulletTarget;
+import br.cefetmg.games.movement.MovementAlgorithm;
+import br.cefetmg.games.movement.behavior.Follow;
 import br.cefetmg.games.pathfinding.GraphGenerator;
 import br.cefetmg.games.pathfinding.TileNode;
 import com.badlogic.gdx.ApplicationAdapter;
@@ -21,10 +26,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class HunterHunterGame extends ApplicationAdapter {
 
@@ -47,7 +56,20 @@ public class HunterHunterGame extends ApplicationAdapter {
     private boolean constructionMode = false;
     private MetricsRenderer metricsRenderer;
     private boolean showingMetrics;
+    
+    int counter=0;
 
+    
+    private Array<Bullet> bullets;
+    private BulletRenderer bulletRender;
+    private BulletTarget objetivo;
+    private Follow buscar;
+    private MovementAlgorithm algoritmoCorrente;
+    private Array<MovementAlgorithm> algoritmos;
+    
+    
+    
+    
     public HunterHunterGame() {
         this.windowTitle = "Hunter x Hunter (%d)";
         showingMetrics = true;
@@ -56,6 +78,17 @@ public class HunterHunterGame extends ApplicationAdapter {
     public GraphRenderer getGraphRenderer() {
         return graphRenderer;
     }
+    
+    
+    public Bullet novoAgente(Vector3 posicao) {
+		Bullet agente = new Bullet(posicao,
+				new Color(0, 0, 1, 1));
+		agente.pose.orientacao = (float) (Math.random() * Math.PI * 2);
+		agente.defineComportamento(algoritmoCorrente);
+
+		bullets.add(agente);
+		return agente;
+	}
     
     @Override
     public void create() {
@@ -86,6 +119,22 @@ public class HunterHunterGame extends ApplicationAdapter {
 
         metricsRenderer = new MetricsRenderer(batch, shapeRenderer,
                 new BitmapFont());
+        
+        
+		batch = new SpriteBatch();
+		bulletRender = new BulletRenderer(camera, batch);
+
+		// define o objetivo (perseguição, fuga) inicialmente no centro do mundo
+		objetivo = new BulletTarget(new Vector3(0, 0, 0));
+
+		// configura e registra os comportamentos disponíveis
+		algoritmos = new Array<>();
+		buscar = new Follow(80);
+		buscar.alvo = objetivo;
+		algoritmos.add(buscar);
+		algoritmoCorrente = buscar;
+
+		bullets = new Array<>();
 
         //agent.setGoal(LevelManager.totalPixelWidth-1, LevelManager.totalPixelHeight/2);
 		
@@ -142,8 +191,10 @@ public class HunterHunterGame extends ApplicationAdapter {
                         Tower Aux = new Tower();
                         Aux.setTorre((int) clique.x, (int) clique.y);
                         torres.add(Aux);
-                        System.out.println("Era para ter ficado como Obstaculo");
                         atualizaGrafo();
+                        novoAgente(new Vector3((int) clique.x, (int) clique.y,0));
+                        objetivo.setObjetivo(new Vector3(agent.position.coords.x,agent.position.coords.y,0));
+                        
                         constructionMode=!constructionMode;
                     }
                     else
@@ -211,9 +262,74 @@ public class HunterHunterGame extends ApplicationAdapter {
             shapeRenderer.end();
             batch.end();
         }
+        
+        
+        counter++;
+        //varios tiros para uma mesma torre
+        if(counter%100==0){
+            for(int i=0; i<torres.size();i++){
+                objetivo.setObjetivo(new Vector3(agent.position.coords.x, agent.position.coords.y, 0));
+                novoAgente(new Vector3(torres.get(i).position.coords.x,torres.get(i).position.coords.y,0)).defineComportamento(buscar);
+                
+            }
+        }
+        
+        //verifica colisao com o alvo
+        boolean definiuObjetivo = false;
+        Iterator<Bullet> it = bullets.iterator();
+                    Bullet atual = null;
+                    while (it.hasNext() && !definiuObjetivo) {
+                        atual = it.next();
+                        definiuObjetivo = colideCom(
+                                new Circle(
+                                        new Vector2(
+                                                atual.pose.posicao.x,
+                                                atual.pose.posicao.y),
+                                        BulletRenderer.RAIO),
+                                new Vector3(objetivo.getObjetivo().x, objetivo.getObjetivo().y,0));
+                        if(definiuObjetivo==true){
+                            bullets.removeValue(atual, debugMode);
+                                    
+                        }
+                        System.out.println(definiuObjetivo);
+                    }
+                    
+                    
+        batch.setProjectionMatrix(camera.combined);
+		for (Bullet bullet : bullets) {
+			bulletRender.desenha(bullet);
+		}
+		float delta = Gdx.graphics.getDeltaTime();
+		// atualiza a lógica de movimento dos agentes
+		atualizaAgentes(delta);
+
+		//renderizadorObjetivo.update(Gdx.graphics.getDeltaTime());
+
+		batch.begin();
+		//fonte.draw(batch, stringAlgoritmoCorrente, -viewport.getWorldWidth() / 2, -viewport.getWorldHeight() / 2 + 15);
+		batch.end();
+                
+                
+                
 
         Gdx.graphics.setTitle(
                 String.format(windowTitle, Gdx.graphics.getFramesPerSecond()));
     }
+    
+    private void atualizaAgentes(float delta) {
+
+       for (Bullet bullet : bullets) {
+			// atualiza lógica
+			bullet.atualiza(delta);
+			// contém os agentes dentro do mundo
+			//revolveCoordenadas(agente);
+		}
+        
+    }
+    
+    public static final boolean colideCom(Circle circulo, Vector3 ponto) {
+        return circulo.contains(new Vector2(ponto.x, ponto.y));
+    }
+    
 
 }
