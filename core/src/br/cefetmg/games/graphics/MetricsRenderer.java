@@ -33,14 +33,14 @@ public class MetricsRenderer {
         float initialX = 10;
 
         // desenha o fundo semi-transparente
-        Gdx.gl.glEnable(GL20.GL_BLEND);
+        /*Gdx.gl.glEnable(GL20.GL_BLEND);
         shapes.setColor(0, 0, 0, 0.25f);
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         shapes.rect(0, 0,
                 Gdx.graphics.getWidth(),
                 initialY + fontHeight + verticalSpacing);
         shapes.end();
-        Gdx.gl.glDisable(GL20.GL_BLEND);
+        Gdx.gl.glDisable(GL20.GL_BLEND);*/
 
         // desenha o texto com as métricas
         batch.begin();
