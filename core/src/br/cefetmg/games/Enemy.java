@@ -36,6 +36,7 @@ public class Enemy {
 
     public Color color;
     public boolean shouldMove;
+    double life;
 
     public Enemy(Vector2 position, Color color) {
         this.position = new Position(position);
@@ -48,6 +49,7 @@ public class Enemy {
         this.pathIterator = this.path.iterator();
         this.facing = Facing.EAST;
         this.shouldMove = false;
+        this.life=100;
     }
     
     public void updatePathFinder (IndexedGraph g) {
@@ -196,5 +198,17 @@ public class Enemy {
      */
     public Metrics getPathFindingMetrics() {
         return pathFinder.metrics;
+    }
+    
+    public void setLife(double life){
+        this.life=life;
+    }
+    
+    public void looseLife(double percentage){
+        this.life = this.life - 100*percentage;
+    }
+    
+    public double getLife(){
+        return this.life;
     }
 }
