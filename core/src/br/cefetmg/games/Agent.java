@@ -36,6 +36,7 @@ public class Agent {
 
     public Color color;
     private boolean shouldMove;
+    double life;
 
     public Agent(Vector2 position, Color color) {
         this.position = new Position(position);
@@ -196,5 +197,17 @@ public class Agent {
      */
     public Metrics getPathFindingMetrics() {
         return pathFinder.metrics;
+    }
+    
+    public void setLife(double life){
+        this.life=life;
+    }
+    
+    public void looseLife(double percentage){
+        this.life = this.life - 100*percentage;
+    }
+    
+    public double getLife(){
+        return this.life;
     }
 }
