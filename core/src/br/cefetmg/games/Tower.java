@@ -22,7 +22,7 @@ public class Tower {
     
     public Position position;
     public TowerType type;
-    public int towerLevel;
+    public Strength towerLevel;
     public final float ActionZone;
     //public final TextureRegion texture;
     public static Texture texture_teste = new Texture("torre_temporaria.png");
@@ -32,7 +32,7 @@ public class Tower {
     }
     
     public void setTorre(int x, int y) {
-        this.towerLevel = 1;
+        this.towerLevel = Strength.VERMELHO;
         this.type = TowerType.LINE;
         TileNode towerNode = LevelManager.graph.getNodeAtCoordinates(x, y);
         System.out.println(" "+towerNode.getPosition().x +" "+towerNode.getPosition().y);
@@ -40,8 +40,52 @@ public class Tower {
         towerNode.setIsObstacle(true);
     }
     
+    // Ao acionar o upgrade da Torre a forca dela altera
+    // Para alterações na torre desviculadas a tipo dela
+    // implementar nessa função de upgrade
     public void upgradeTower() {
-        this.towerLevel++;
+        switch (towerLevel) {
+            case VERMELHO:
+                towerLevel = Strength.LARANJA;
+                break;
+            case LARANJA:
+                towerLevel = Strength.AMARELO;
+                break;
+            case AMARELO:
+                towerLevel = Strength.VERDE;
+                break;
+            case VERDE:
+                towerLevel = Strength.CIANO;
+                break;
+            case CIANO:
+                towerLevel = Strength.AZUL;
+                break;
+            case AZUL:
+                towerLevel = Strength.VIOLETA;
+                break;
+            default:
+                break;
+        }
+    }
+    // Associa a cor da torre a um poder bruto
+    // A classe Attack, associara' esse poder 'a um dano
+    public int getPower() {
+        switch (towerLevel){
+            case VIOLETA:
+                return 7;
+            case LARANJA:
+                return 2;
+            case AMARELO:
+                return 3;
+            case VERDE:
+                return 4;
+            case CIANO:
+                return 5;
+            case AZUL:
+                return 6;
+            default:
+                return 1;
+        }
     }
 
     public void changeTowerType() {//era para ir para o próximo tipo do Enum.

@@ -290,7 +290,26 @@ public class HunterHunterGame extends ApplicationAdapter {
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
+        
+        
+        
+        if (debugMode) {
+            batch.begin();
+            graphRenderer.renderOffScreenedGraph();
+            batch.end();
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            batch.begin();
+            for (Tower t : torres) {
+                t.render(shapeRenderer);
+            }
+            batch.end();
+            shapeRenderer.end();
+            
+        }
         agent.update(Gdx.graphics.getDeltaTime());
+        tiledMapRenderer.setView(camera);
+        tiledMapRenderer.render();
+        towerRenderer.renderAll(torres);
         for(int i=0;i<enemys.size();i++) 
         enemys.get(i).update(Gdx.graphics.getDeltaTime());
 
@@ -307,9 +326,7 @@ public class HunterHunterGame extends ApplicationAdapter {
                  
         }
         
-        tiledMapRenderer.setView(camera);
-        tiledMapRenderer.render();
-        towerRenderer.renderAll(torres);
+        
         if(colidiu<5){
             agentRenderer.render(agent); 
           //  enemyRender.render(enemy);
@@ -323,23 +340,7 @@ public class HunterHunterGame extends ApplicationAdapter {
           } 
         }
         //Remove o inimigo
-        
 
-        if (showingMetrics) {
-            metricsRenderer.render(agent.getPathFindingMetrics(),
-                    LevelManager.graph.getNodeCount());
-        }
-
-        if (debugMode) {
-            batch.begin();
-            graphRenderer.renderOffScreenedGraph();
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            for (Tower t : torres) {
-                t.render(shapeRenderer);
-            }
-            shapeRenderer.end();
-            batch.end();
-        }
         
         
         counter++;
@@ -389,7 +390,7 @@ public class HunterHunterGame extends ApplicationAdapter {
 		batch.begin();
               //  enemy.render(batch);
 		batch.end();
-                
+        
                 
 
         Gdx.graphics.setTitle(
