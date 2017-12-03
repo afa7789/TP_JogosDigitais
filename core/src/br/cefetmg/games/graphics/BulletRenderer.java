@@ -5,6 +5,8 @@
  */
 package br.cefetmg.games.graphics;
 
+import br.cefetmg.games.Attack;
+import br.cefetmg.games.Enemy;
 import br.cefetmg.games.movement.Bullet;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -36,7 +38,7 @@ public class BulletRenderer {
         this.camera = camera;
     }
 
-    public void desenha(Bullet agente) {
+    public void desenha(Attack agente) {
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(agente.cor);

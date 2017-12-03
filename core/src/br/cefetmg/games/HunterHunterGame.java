@@ -64,6 +64,7 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     
     private Array<Bullet> bullets;
+    private ArrayList<Attack> attacks;
     private BulletRenderer bulletRender;
     private BulletTarget objetivo;
     private Follow buscar;
@@ -144,7 +145,9 @@ public class HunterHunterGame extends ApplicationAdapter {
 		buscar.alvo = objetivo;
 		algoritmos.add(buscar);
 		algoritmoCorrente = buscar;
-
+                
+                attacks = new ArrayList<Attack>();
+                
 		bullets = new Array<>();
       //  for(int i=0;i<enemys.size();i++){
             enemys.get(0).setGoal(LevelManager.totalPixelWidth-1, LevelManager.totalPixelHeight/2);          
@@ -253,12 +256,8 @@ public class HunterHunterGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-        
-        
-        
         if (debugMode) {
             batch.begin();
             graphRenderer.renderOffScreenedGraph();
@@ -271,6 +270,7 @@ public class HunterHunterGame extends ApplicationAdapter {
             batch.end();
             shapeRenderer.end();
         }
+        
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
         towerRenderer.renderAll(torres);
@@ -290,49 +290,49 @@ public class HunterHunterGame extends ApplicationAdapter {
         
          
         //Remove o inimigo
-        if (colidiu < 5) {
-            //enemyRender.render(enemy);
-            for (int i = 0; i < enemys.size(); i++) {
-                enemyrender.render(enemys.get(i));
-                if (enemys.get(i).isMoving() == false) {
-                    enemys.remove(i);
-                    deadEnemy++;
+        for (Enemy enemy : enemys) {
+            if(enemy.getLife() > 0)
+                enemyrender.render(enemy);
+        }
+
+        //varios tiros para uma mesma torre
+
+            for (Tower torre : torres) {
+                if(torre.atacandoAlguem()){
+                    if(counter%torre.attackSpeed==0)
+                       attacks.add(new Attack(torre,100,torre.position,torre.target));
+                }else{
+                    torre.target = enemyInRange(torre);
                 }
             }
-        }
-        counter++;
-        //varios tiros para uma mesma torre
-        if(counter%100==0){
-            for(int i=0; i<torres.size();i++){
-                Random r = new Random();
-                int en = r.nextInt(enemys.size());
-                //objetivo.setObjetivo(new Vector3(agent.position.coords.x, agent.position.coords.y, 0));
-                objetivo.setObjetivo(new Vector3(enemys.get(en).position.coords.x,enemys.get(en).position.coords.y, 0));
-                novoBullet(new Vector3(torres.get(i).position.coords.x,torres.get(i).position.coords.y,0)).defineComportamento(buscar);   
-            }
-        }
-        
+//            for(int i=0; i<torres.size();i++){
+//                Random r = new Random();
+//                int en = r.nextInt(enemys.size());
+//                //objetivo.setObjetivo(new Vector3(agent.position.coords.x, agent.position.coords.y, 0));
+//                objetivo.setObjetivo(new Vector3(enemys.get(en).position.coords.x,enemys.get(en).position.coords.y, 0));
+//                novoBullet(new Vector3(torres.get(i).position.coords.x,torres.get(i).position.coords.y,0)).defineComportamento(buscar);   
+//            }}
+
         //verifica colisao com o alvo
-        boolean definiuObjetivo = false;
-        Iterator<Bullet> it = bullets.iterator();
-                    Bullet atual = null;
-                    while (it.hasNext() && !definiuObjetivo) {
-                        atual = it.next();
-                        definiuObjetivo = colideCom(
-                                new Circle(
-                                        new Vector2(
-                                                atual.pose.posicao.x,
-                                                atual.pose.posicao.y),
-                                        BulletRenderer.RAIO),
-                                new Vector3(objetivo.getObjetivo().x, objetivo.getObjetivo().y,0));
-                        if(definiuObjetivo==true){
-                            bullets.removeValue(atual, debugMode);
-                            colidiu++;
-                        }
-                        
-                    }
-                    
-                    
+//        boolean definiuObjetivo = false;
+//        Iterator<Bullet> it = bullets.iterator();
+//                    Bullet atual = null;
+//                    while (it.hasNext() && !definiuObjetivo) {
+//                        atual = it.next();
+//                        definiuObjetivo = colideCom(
+//                                new Circle(
+//                                        new Vector2(
+//                                                atual.pose.posicao.x,
+//                                                atual.pose.posicao.y),
+//                                        BulletRenderer.RAIO),
+//                                new Vector3(objetivo.getObjetivo().x, objetivo.getObjetivo().y,0));
+//                        if(definiuObjetivo==true){
+//                            bullets.removeValue(atual, debugMode);
+//                            colidiu++;
+//                        }
+//                        
+//                    } 
+
         batch.setProjectionMatrix(camera.combined);
 		for (Bullet bullet : bullets) {
 			bulletRender.desenha(bullet);
@@ -346,11 +346,9 @@ public class HunterHunterGame extends ApplicationAdapter {
 		batch.begin();
               //  enemy.render(batch);
 		batch.end();
-        
-                
 
-        Gdx.graphics.setTitle(
-                String.format(windowTitle, Gdx.graphics.getFramesPerSecond()));
+        Gdx.graphics.setTitle(String.format(windowTitle, Gdx.graphics.getFramesPerSecond()));
+        counter++;
     }
     
     private void atualizaAgentes(float delta) {

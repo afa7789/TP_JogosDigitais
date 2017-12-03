@@ -8,6 +8,7 @@ package br.cefetmg.games;
 import br.cefetmg.games.movement.Position;
 import br.cefetmg.games.movement.behavior.Algorithm;
 import br.cefetmg.games.movement.behavior.Seek;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -19,6 +20,8 @@ public class Attack {
     public int damage;
     public TowerType towerType;
     boolean acertou;
+    
+     public Color cor;
     
     public Position position;
     private final Algorithm seek;
