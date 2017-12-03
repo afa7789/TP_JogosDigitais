@@ -5,7 +5,11 @@
  */
 package br.cefetmg.games;
 
+import br.cefetmg.games.movement.Bullet;
+import br.cefetmg.games.movement.BulletTarget;
+import br.cefetmg.games.movement.MovementAlgorithm;
 import br.cefetmg.games.movement.Position;
+import br.cefetmg.games.movement.behavior.Follow;
 import br.cefetmg.games.pathfinding.TileNode;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,6 +17,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import java.util.ArrayList;
 
 /**
  *
@@ -26,11 +33,29 @@ public class Tower {
     public final float ActionZone;
     //public final TextureRegion texture;
     public static Texture texture_teste = new Texture("torre_temporaria.png");
+    public ArrayList<Bullet> bullets;
+    public MovementAlgorithm comportamento;
 
     public Tower() {
         ActionZone = 48f;
+        bullets = new ArrayList<Bullet>();
     }
     
+    public void setComportamento(Vector2 target){
+        Follow buscar = new Follow(80);
+        //buscar.alvo.setObjetivo(Vector3.Zero);
+        buscar.alvo = new BulletTarget(new Vector3(target.x, target.y, 0));
+        comportamento = buscar;
+        comportamento.alvo.setObjetivo(new Vector3(target.x, target.y, 0));
+    }
+    public void newBullet(Vector3 position){
+        Bullet agente = new Bullet(position,
+				new Color(0, 0, 1, 1), comportamento);
+        agente.pose.orientacao = (float) (Math.random() * Math.PI * 2);
+        agente.defineComportamento(comportamento);
+        bullets.add(agente);
+        
+    }
     public void setTorre(int x, int y) {
         this.towerLevel = Strength.VERMELHO;
         this.type = TowerType.LINE;
@@ -43,50 +68,51 @@ public class Tower {
     // Ao acionar o upgrade da Torre a forca dela altera
     // Para alterações na torre desviculadas a tipo dela
     // implementar nessa função de upgrade
-    public void upgradeTower() {
-        switch (towerLevel) {
-            case VERMELHO:
-                towerLevel = Strength.LARANJA;
-                break;
-            case LARANJA:
-                towerLevel = Strength.AMARELO;
-                break;
-            case AMARELO:
-                towerLevel = Strength.VERDE;
-                break;
-            case VERDE:
-                towerLevel = Strength.CIANO;
-                break;
-            case CIANO:
-                towerLevel = Strength.AZUL;
-                break;
-            case AZUL:
-                towerLevel = Strength.VIOLETA;
-                break;
-            default:
-                break;
-        }
-    }
-    // Associa a cor da torre a um poder bruto
-    // A classe Attack, associara' esse poder 'a um dano
-    public int getPower() {
-        switch (towerLevel){
-            case VIOLETA:
-                return 7;
-            case LARANJA:
-                return 2;
-            case AMARELO:
-                return 3;
-            case VERDE:
-                return 4;
-            case CIANO:
-                return 5;
-            case AZUL:
-                return 6;
-            default:
-                return 1;
-        }
-    }
+      public void upgradeTower() {	 
+         switch (towerLevel) {
+             case VERMELHO:
+                 towerLevel = Strength.LARANJA;
+                 break;
+             case LARANJA:
+                 towerLevel = Strength.AMARELO;
+                 break;
+             case AMARELO:
+                 towerLevel = Strength.VERDE;
+                 break;
+             case VERDE:
+                 towerLevel = Strength.CIANO;
+                 break;
+             case CIANO:
+                 towerLevel = Strength.AZUL;
+                 break;
+             case AZUL:
+                 towerLevel = Strength.VIOLETA;
+                 break;
+             default:
+                 break;
+         }
+         
+     }
+     // Associa a cor da torre a um poder bruto
+     // A classe Attack, associara' esse poder 'a um dano
+     public int getPower() {
+         switch (towerLevel){
+             case VIOLETA:
+                 return 7;
+             case LARANJA:
+                 return 2;
+             case AMARELO:
+                 return 3;
+             case VERDE:
+                 return 4;
+             case CIANO:
+                 return 5;
+             case AZUL:
+                 return 6;
+             default:
+                 return 1;
+         }
+      }		      
 
     public void changeTowerType() {//era para ir para o próximo tipo do Enum.
         //type.;
