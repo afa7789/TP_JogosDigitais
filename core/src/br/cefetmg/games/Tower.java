@@ -30,7 +30,11 @@ public class Tower {
     public Position position;
     public TowerType type;
     public Strength towerLevel;
-    public final float ActionZone;
+    public final float actionZone;
+    public int attackSpeed;
+    public boolean isAttacking=false;
+    public Enemy target;
+
     //public final TextureRegion texture;
     public static Texture texture_teste = new Texture("torre_temporaria.png");
     public ArrayList<Bullet> bullets;
@@ -63,8 +67,18 @@ public class Tower {
         System.out.println(" "+towerNode.getPosition().x +" "+towerNode.getPosition().y);
         this.position = new Position(towerNode.getPosition());
         towerNode.setIsObstacle(true);
+        this.attackSpeed=100;
     }
     
+    public boolean atacandoAlguem(){
+        return isAttacking;
+    }
+    public void estáAtacando(){
+        isAttacking = true;
+    }
+    public void parouDeAtacar(){
+        isAttacking = false;
+    }
     // Ao acionar o upgrade da Torre a forca dela altera
     // Para alterações na torre desviculadas a tipo dela
     // implementar nessa função de upgrade
@@ -157,7 +171,7 @@ public class Tower {
     }
     
     public void render (ShapeRenderer renderer) {
-        Circle circle = new Circle(this.position.coords, ActionZone);
+        Circle circle = new Circle(this.position.coords, actionZone);
         renderer.identity();
         renderer.setColor(Color.CHARTREUSE);
         renderer.circle(circle.x, circle.y, circle.radius);
