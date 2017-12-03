@@ -15,14 +15,15 @@ import com.badlogic.gdx.math.Vector3;
 public class Bullet {
     public Vector3 initialPosition;
     public Pose pose;
-    private MovementAlgorithm comportamento;
+    public MovementAlgorithm comportamento;
 
     public Color cor;
 
-    public Bullet(Vector3 posicao, Color cor) {
+    public Bullet(Vector3 posicao, Color cor, MovementAlgorithm comportamento) {
         this.initialPosition=posicao;
         this.pose = new Pose(posicao, 0);
         this.cor = cor;
+        this.comportamento = comportamento;
     }
 
     public void atualiza(float delta) {

@@ -81,7 +81,6 @@ public class HunterHunterGame extends ApplicationAdapter {
     ArrayList<Enemy> enemys = new ArrayList<Enemy>();
     Texture enemyspritesheet;
     long start;
-    
     int cont; //Conta quantos inimigos a no mapa
     int deadEnemy;
 
@@ -92,16 +91,8 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     public GraphRenderer getGraphRenderer() {
         return graphRenderer;
-    }
-
-    public Bullet novoBullet(Vector3 posicao) {
-        Bullet agente = new Bullet(posicao, new Color(0, 0, 1, 1));
-        agente.pose.orientacao = (float) (Math.random() * Math.PI * 2);
-        agente.defineComportamento(algoritmoCorrente);
-        bullets.add(agente);
-        return agente;
-    }
-
+    }  
+    
     @Override
     public void create() {
         teste2 = new Tower();
@@ -217,6 +208,11 @@ public class HunterHunterGame extends ApplicationAdapter {
                         if (emptyPlace) {
                             Tower Aux = new Tower();
                             Aux.setTorre((int) clique.x, (int) clique.y);
+                            Random r = new Random();
+                            int en = r.nextInt(enemys.size());
+                            
+                            Aux.setComportamento(new Vector2(enemys.get(en).position.coords.x,enemys.get(en).position.coords.y));
+                            Aux.newBullet(new Vector3((int) clique.x, (int) clique.y, 0));
                             torres.add(Aux);
                             atualizaGrafo();
                         }
