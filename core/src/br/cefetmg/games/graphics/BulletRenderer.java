@@ -8,6 +8,7 @@ package br.cefetmg.games.graphics;
 import br.cefetmg.games.Attack;
 import br.cefetmg.games.Enemy;
 import br.cefetmg.games.movement.Bullet;
+import br.cefetmg.games.movement.Pose;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 import java.util.HashMap;
 
 /**
@@ -38,22 +40,22 @@ public class BulletRenderer {
         this.camera = camera;
     }
 
-    public void desenha(Attack agente) {
+    public void desenha(Attack agente) {       
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(agente.cor);
         shapeRenderer.translate(
-                agente.pose.posicao.x,
-                agente.pose.posicao.y, 0);
+                agente.posicao.posicao.x,
+                agente.posicao.posicao.y, 0);
         shapeRenderer.rotate(0, 0, 1,
-                agente.pose.orientacao * ((float) (180.0f / Math.PI)));
+                agente.posicao.orientacao * ((float) (180.0f / Math.PI)));
         shapeRenderer.circle(0, 0, RAIO);
         shapeRenderer.identity();
         shapeRenderer.end();
 
         batch.begin();
         batch.setTransformMatrix(new Matrix4()
-                .setToTranslation(agente.pose.posicao));
+                .setToTranslation(agente.posicao.posicao));
         //GlyphLayout layout = getTextoNome(agente.getNomeComportamento());
         //font.draw(batch, layout, -layout.width / 2.0f, layout.height / 2.0f);
         batch.end();
