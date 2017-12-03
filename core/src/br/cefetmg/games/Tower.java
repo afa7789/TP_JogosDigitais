@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
@@ -134,6 +135,40 @@ public class Tower {
 
     public Position getPosition() {
         return position;
+    }
+    
+    public void drawTower(ShapeRenderer renderer) {
+        switch (type) {
+            case LINE:
+                
+                break;
+            case DOUBLE_LINE:
+                break;
+            case TRIANGLE:
+                break;
+            case SQUARE:
+                break;
+            case PENTAGON:
+                break;
+            case HEXAGON:
+                break;
+            case HEPTAGON:
+                break;
+            case OCTAGON:
+                break;
+            case STAR:
+                break;
+            case JEW_STAR:
+                break;
+            case HOURGLASS:
+                break;
+            case CIRCLE:
+                break;
+            case OVAL:
+                break;
+            case INFINITE:
+                break;
+        }
     }
 
     public Texture getTexture() {

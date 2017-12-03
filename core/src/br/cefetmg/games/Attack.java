@@ -45,31 +45,32 @@ public class Attack {
         this.enemy =enemy;
         this.acertou=false;
         this.teste=new Follow(speed);
+        this.cor = defineColor();
     }
     
     private Color defineColor(){
         Color corReceber= new Color();
         switch(strengh){
             case VERMELHO:
-                corReceber.set( 255, 0, 0, 0);
+                corReceber.set( 1, 0, 0, 0);
                 break;
             case LARANJA:
-                corReceber.set( 255, 165, 0, 0);
+                corReceber.set( 1, 0.64f, 0, 0);
                 break;
             case AMARELO:
-                corReceber.set( 255, 255, 0, 0);
+                corReceber.set( 1, 1, 0, 0);
                 break;
             case VERDE:
-                corReceber.set( 0, 255, 0, 0);
+                corReceber.set( 0, 1, 0, 0);
                 break;
             case CIANO: 
-                corReceber.set( 0, 255, 255, 0);
+                corReceber.set( 0, 1, 1, 0);
                 break;
             case AZUL:
-                corReceber.set( 0, 0, 255, 0);
+                corReceber.set( 0, 0, 1, 0);
                 break;
             case VIOLETA:
-                corReceber.set( 79, 47, 79, 0);
+                corReceber.set( 0.30f , 0.18f, 0.30f, 0);
                 break;
             }
         return corReceber;

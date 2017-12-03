@@ -320,15 +320,12 @@ public class HunterHunterGame extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         if (debugMode) {
-            batch.begin();
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
             graphRenderer.renderOffScreenedGraph();
-            batch.end();
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            batch.begin();
             for (Tower t : torres) {
                 t.render(shapeRenderer);
             }
-            batch.end();
             shapeRenderer.end();
         }
         tiledMapRenderer.setView(camera);
