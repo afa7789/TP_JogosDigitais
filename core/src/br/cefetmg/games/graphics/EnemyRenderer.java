@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import java.util.ArrayList;
 
 /**
  * Um renderizador de agentes que usa uma sprite animada com 8 direções.
@@ -43,7 +44,13 @@ public class EnemyRenderer {
         this.sprite = new OrientedCharacterSprite(character,
                 FRAME_WIDTH, FRAME_HEIGHT);
     }
-
+    
+    public void renderAll(ArrayList<Enemy> enemys){
+        for (Enemy enemy : enemys) {
+            render(enemy);
+        }
+    }
+    
     public void render(Enemy agent) {
         sprite.update(Gdx.graphics.getDeltaTime());
         sprite.setCenter(

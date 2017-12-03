@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -39,14 +40,20 @@ public class BulletRenderer {
         this.batch = batch;
         this.camera = camera;
     }
-
+    
+    public void renderAll(ArrayList<Attack> attacks  ){
+        for (Attack attack : attacks) {
+            desenha(attack);
+        }
+    }
+    
     public void desenha(Attack agente) {       
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(agente.cor);
         shapeRenderer.translate(
-                agente.posicao.posicao.x,
-                agente.posicao.posicao.y, 0);
+                agente.position.coords.x,
+                agente.position.coords.y, 0);
         shapeRenderer.rotate(0, 0, 1,
                 agente.posicao.orientacao * ((float) (180.0f / Math.PI)));
         shapeRenderer.circle(0, 0, RAIO);

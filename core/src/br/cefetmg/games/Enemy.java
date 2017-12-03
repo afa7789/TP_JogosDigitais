@@ -88,7 +88,10 @@ public class Enemy {
             facing = Facing.values()[(8 - quadrant) % 8];
         }
     }
-
+    
+    public Vector2 enviaPosicionamento(){
+        return new Vector2(this.position.coords);
+    }
     /**
      * Este método é chamado quando um clique no mapa é realizado.
      *
