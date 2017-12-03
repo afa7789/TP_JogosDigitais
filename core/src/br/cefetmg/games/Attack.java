@@ -15,19 +15,20 @@ import com.badlogic.gdx.math.Vector2;
  * @author Dota
  */
 public class Attack {
-    public int Damage;
+    public int damage;
     public TowerType towerType;
     public int speed;
     public Position position;
     private final Algorithm seek;
-    //public Enemy enemy;
+    public Enemy enemy;
     
-    public Attack(Tower a, int speed, Position position/*,Enemy enemy*/) {
+    public Attack(Tower a, int speed, Position position,Enemy enemy) {
         this.towerType = a.type;
         this.speed = speed;
         this.position = position;
         this.seek = new Seek(speed);
-        this.Damage = defineDamage(a.getPower());
+        this.damage = defineDamage(a.getPower());
+        this.enemy =enemy;
     }
     // A função defineDamage
     // recebe o multiplicador de poder da torre (associado a cor dela)
