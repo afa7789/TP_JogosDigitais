@@ -36,7 +36,7 @@ public class Enemy {
 
     public Color color;
     public boolean shouldMove;
-    double life;
+    public double life;
 
     public Enemy(Vector2 position, Color color) {
         this.position = new Position(position);

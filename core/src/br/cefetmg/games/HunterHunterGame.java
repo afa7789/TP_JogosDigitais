@@ -127,19 +127,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         enemys.add(new Enemy(new Vector2(
                         LevelManager.tileWidth / 2, LevelManager.totalPixelHeight/2),
                 Color.FIREBRICK));
-     
-        //Agent
-       /* enemy = new Agent(
-                new Vector2(
-                        LevelManager.tileWidth / 2, LevelManager.totalPixelHeight/2),
-                Color.FIREBRICK
-        );*/
-//        agentRenderer = new AgentRenderer(batch, camera, new Texture("gon.png"));;
-//        agent = new Agent(
-//                new Vector2(
-//                        LevelManager.tileWidth / 2, LevelManager.totalPixelHeight/2),
-//                Color.FIREBRICK
-//        );
+   
         metricsRenderer = new MetricsRenderer(batch, shapeRenderer,
                 new BitmapFont());
         

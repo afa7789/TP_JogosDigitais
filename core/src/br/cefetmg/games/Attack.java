@@ -15,21 +15,25 @@ import com.badlogic.gdx.math.Vector2;
  * @author Dota
  */
 public class Attack {
+    
     public int damage;
     public TowerType towerType;
-    public int speed;
+    boolean acertou;
+    
     public Position position;
     private final Algorithm seek;
+    private static final float MIN_DISTANCE_CONSIDERED_ZERO_SQUARED = (float) Math.pow(2.0f, 2);
     public Enemy enemy;
     
     public Attack(Tower a, int speed, Position position,Enemy enemy) {
         this.towerType = a.type;
-        this.speed = speed;
         this.position = position;
         this.seek = new Seek(speed);
         this.damage = defineDamage(a.getPower());
         this.enemy =enemy;
+        this.acertou=false;
     }
+    
     // A função defineDamage
     // recebe o multiplicador de poder da torre (associado a cor dela)
     // e retorna o Dano causado da forma
@@ -86,8 +90,20 @@ public class Attack {
         return Damage;
     } 
     
-    public void moveTowards(/*Enemy enemy */){
-        //this.seek.target.coords = enemy.position;
+    public void Update(float delta){
+        this.seek.target.coords = this.enemy.position.coords;
+        
+        Vector2 novaPosição = new Vector2(this.position.coords);
+        
+        //Missil vai perseguir até acertar o inimigo.
+        if( novaPosição.dst2(this.seek.target.coords) < MIN_DISTANCE_CONSIDERED_ZERO_SQUARED){
+            if(!acertou){
+                enemy.looseLife(this.damage);
+                acertou = true;
+            }    
+        }else{
+            this.position.integrate(this.seek.steer(this.position),delta);
+        }
     }
     
     
