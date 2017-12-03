@@ -27,7 +27,7 @@ public class Attack {
     boolean acertou;
     
     public Color cor;
-    
+    Strength strengh;
     public Pose posicao;
     public Position position;
     public MovementAlgorithm teste;
@@ -37,6 +37,7 @@ public class Attack {
     
     public Attack(Tower a, int speed, Position position,Enemy enemy) {
         this.towerType = a.type;
+        this.strengh = a.towerLevel;
         this.position = position;
         this.posicao = new Pose(new Vector3(this.position.coords.x,this.position.coords.y,0),0);
         this.seek = new Seek(speed);
@@ -46,12 +47,41 @@ public class Attack {
         this.teste=new Follow(speed);
     }
     
+    private Color defineColor(){
+        Color corReceber= new Color();
+        switch(strengh){
+            case VERMELHO:
+                corReceber.set( 255, 0, 0, 0);
+                break;
+            case LARANJA:
+                corReceber.set( 255, 165, 0, 0);
+                break;
+            case AMARELO:
+                corReceber.set( 255, 255, 0, 0);
+                break;
+            case VERDE:
+                corReceber.set( 0, 255, 0, 0);
+                break;
+            case CIANO: 
+                corReceber.set( 0, 255, 255, 0);
+                break;
+            case AZUL:
+                corReceber.set( 0, 0, 255, 0);
+                break;
+            case VIOLETA:
+                corReceber.set( 79, 47, 79, 0);
+                break;
+            }
+        return corReceber;
+    }
+    
     // A função defineDamage
     // recebe o multiplicador de poder da torre (associado a cor dela)
     // e retorna o Dano causado da forma
     // Damage = DanoBaseDoTipoDaTorre * MultiplicadorDePoder
     // Ao aplicar status do tipo de torre 
     // pode-se defini-lo nessa função posteriormente
+    
     private int defineDamage (int Power) {
         int Damage = 0;
         switch (towerType) {

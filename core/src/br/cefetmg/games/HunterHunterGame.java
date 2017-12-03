@@ -10,6 +10,7 @@ import br.cefetmg.games.graphics.TowerRenderer;
 import br.cefetmg.games.movement.Bullet;
 import br.cefetmg.games.movement.BulletTarget;
 import br.cefetmg.games.movement.MovementAlgorithm;
+import br.cefetmg.games.movement.Position;
 import br.cefetmg.games.movement.behavior.Follow;
 import br.cefetmg.games.pathfinding.GraphGenerator;
 import br.cefetmg.games.pathfinding.TileNode;
@@ -55,6 +56,8 @@ public class HunterHunterGame extends ApplicationAdapter {
     private EnemyRenderer enemyRenderer;
 
     private ArrayList<Tower> torres = new ArrayList<Tower>();
+            
+    public Tower teste2;
     private final String windowTitle;
     
     private boolean debugMode = false;
@@ -67,7 +70,7 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     private Array<Bullet> bullets;
     private ArrayList<Attack> attacks;
-   ;
+    public Attack teste;
     private BulletTarget objetivo;
     private Follow buscar;
     private MovementAlgorithm algoritmoCorrente;
@@ -101,6 +104,8 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     @Override
     public void create() {
+        teste2 = new Tower();
+
         //init time 
         start = TimeUtils.millis();
         cont = 1;
@@ -146,15 +151,15 @@ public class HunterHunterGame extends ApplicationAdapter {
         buscar.alvo = objetivo;
         algoritmos.add(buscar);
         algoritmoCorrente = buscar;
-
+        
         attacks = new ArrayList<Attack>();
-
+                teste2.setTorre(300,300);
         bullets = new Array<>();
         //  for(int i=0;i<enemys.size();i++){
         enemys.get(0).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
         // }
         //agent.setGoal(LevelManager.totalPixelWidth-1, LevelManager.totalPixelHeight/2);
-
+        teste = new Attack(teste2,40,new Position(new Vector2(500,500)),enemys.get(0));
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyUp(int keycode) {
@@ -268,13 +273,16 @@ public class HunterHunterGame extends ApplicationAdapter {
     public void emissorDeAtaques() {
         for (Tower torre : torres) {
             if (torre.atacandoAlguem()) {
-                if(torre.target.getLife()>0)
+                if(torre.target.getLife()>0){
                     if (counter % torre.attackSpeed == 0) {
+                        System.out.println("Adicionou ataque");
                         attacks.add(new Attack(torre, 100, torre.position, torre.target));
                     }
-                else
-                   torre.parouDeAtacar();
-            } else {
+                }else{
+                    System.out.println("Parou de Atacar");
+                    torre.parouDeAtacar();
+                }
+            }else{
                 torre.target = pegaInimigoMaisProximoDoAlcanceDaTorre(torre);
             }
         }
@@ -285,14 +293,15 @@ public class HunterHunterGame extends ApplicationAdapter {
         Enemy inimigoMaisProximo=null;
         Float distancia;
         for (Enemy enemy : enemys) {
-            distancia=enemy.enviaPosicionamento().dst2(torre.position.coords);
+            distancia = enemy.enviaPosicionamento().dst2(torre.position.coords);
             if(distancia<=torre.actionZone && distancia < menorValor){
+                System.out.println("Agora a torre está a Atacar");
                 torre.estáAtacando();
                 inimigoMaisProximo=enemy;
                 menorValor=distancia;
             }                    
         }
-        return inimigoMaisProximo;
+            return inimigoMaisProximo;
     }
 
     public void removerAtualizarInimigos(float delta) {
@@ -351,6 +360,9 @@ public class HunterHunterGame extends ApplicationAdapter {
         atualizaAtaques(delta);
 
         batch.setProjectionMatrix(camera.combined);
+        
+        bulletRenderer.desenha(teste);
+        towerRenderer.render(teste2);
         
         enemyRenderer.renderAll(enemys);
         towerRenderer.renderAll(torres);
