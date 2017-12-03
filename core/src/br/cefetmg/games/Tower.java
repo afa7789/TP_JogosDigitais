@@ -41,7 +41,7 @@ public class Tower {
     public MovementAlgorithm comportamento;
 
     public Tower() {
-        ActionZone = 48f;
+        actionZone = 48f;
         bullets = new ArrayList<Bullet>();
     }
     
