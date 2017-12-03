@@ -52,7 +52,7 @@ public class BulletRenderer {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(ataque.cor);
         shapeRenderer.translate(
-                ataque.position.coords.x,
+                ataque.position.coords.x, 
                 ataque.position.coords.y, 0);
         shapeRenderer.rotate(0, 0, 1,
                 ataque.posicao.orientacao * ((float) (180.0f / Math.PI)));
