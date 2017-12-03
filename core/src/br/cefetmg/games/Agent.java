@@ -21,6 +21,7 @@ import java.util.Iterator;
  *
  * @author Flávio Coutinho <fegemo@gmail.com>
  */
+
 public class Agent {
 
     public Position position;
@@ -62,7 +63,6 @@ public class Agent {
      */
     public void update(float delta) {
         shouldMove = true;
-
         // verifica se atingimos nosso objetivo imediato
         if (position.coords.dst2(steeringTarget.coords) < MIN_DISTANCE_CONSIDERED_ZERO_SQUARED) {
             // procurar se temos outra conexão na nossa rota
@@ -78,7 +78,6 @@ public class Agent {
         } else if (position.coords.dst2(steeringTarget.coords) < MIN_DISTANCE_CONSIDERED_ZERO_SQUARED * 6) {
             currentNode = nextNode;
         }
-
         // integra
         if (shouldMove) {
             Steering steering = seek.steer(this.position);
@@ -90,14 +89,12 @@ public class Agent {
             facing = Facing.values()[(8 - quadrant) % 8];
         }
     }
-
     /**
      * Este método é chamado quando um clique no mapa é realizado.
      *
      * @param x coordenada x do ponteiro do mouse.
      * @param y coordenada y do ponteiro do mouse.
-     */
-    
+     */  
     public void setGoal(int x, int y) {
         TileNode startNode = LevelManager.graph
                 .getNodeAtCoordinates(

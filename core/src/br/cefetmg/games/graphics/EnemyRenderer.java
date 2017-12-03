@@ -28,11 +28,6 @@ public class EnemyRenderer {
     // da ponte
     private static final int POSITION_OFFSET_Y = FRAME_HEIGHT / 2;        // 20
 
-    // quanto para baixo ele é desenhado quando na água
-    private static final int POSITION_WATER_OFFSET_Y = FRAME_HEIGHT / 8;  // 5
-    // quanto do corpo aparece molhado quanto está na água
-    private static final int UNDERWATER_HEIGHT_PORTION = FRAME_HEIGHT / 4;// 10
-
     /**
      * Cria um novo renderizador com uma textura 8x3 (8 direções, 3 quadros de
      * animação de "andando" em cada uma).
@@ -58,48 +53,8 @@ public class EnemyRenderer {
         sprite.setMoving(agent.isMoving());
         sprite.translateY(POSITION_OFFSET_Y);
         batch.setProjectionMatrix(camera.combined);
-
-        // se o agente está debaixo d'água, para dar o efeito visual:
-        //   1. desenhamos ele deslocado (translateY) um pouco para baixo
-        //   2. desenhamos a metade de cima dele, normal
-        //   3. desenhamos a metade de baixo com a cor azulada
-        if (agent.isUnderWater()) {
-            // verifica qtos % do trajeto para a água o agente está
-            float currentDepth = agent.getUnderWaterLevel();
-            // desloca para baixo
-            sprite.translateY(-POSITION_WATER_OFFSET_Y * currentDepth);
-
-            // vamos desenhar apenas a metade de cima do agente
-            Gdx.gl20.glEnable(GL20.GL_SCISSOR_TEST);
-            Gdx.gl20.glScissor(
-                    (int) sprite.getX(),
-                    (int) (sprite.getY() + UNDERWATER_HEIGHT_PORTION * currentDepth),
-                    FRAME_WIDTH,
-                    (int) (FRAME_HEIGHT - UNDERWATER_HEIGHT_PORTION * currentDepth)
-            );
-            batch.begin();
-            sprite.draw(batch);
-            batch.end();
-
-            // agora, vamos desenhar só a parte de baixo, com a cor azulada
-            Gdx.gl20.glScissor(
-                    (int) sprite.getX(),
-                    (int) sprite.getY(),
-                    FRAME_WIDTH,
-                    (int) (UNDERWATER_HEIGHT_PORTION * currentDepth));
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            batch.setColor(0, 0, 1, 0.5f);
-            batch.begin();
-            sprite.draw(batch);
-            batch.end();
-            batch.setColor(Color.WHITE);
-            Gdx.gl.glDisable(GL20.GL_BLEND);
-            Gdx.gl20.glDisable(GL20.GL_SCISSOR_TEST);
-        } else {
-            // desenha o agente normalmente, já que ele não está debaixo d'água
             batch.begin();
             sprite.draw(batch);
             batch.end();
         }
     }
-}

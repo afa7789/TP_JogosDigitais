@@ -51,8 +51,8 @@ public class HunterHunterGame extends ApplicationAdapter {
     private GraphRenderer graphRenderer;
     private TowerRenderer towerRenderer;
     
-    private Agent agent;
-    private AgentRenderer agentRenderer;
+   // private Agent agent;
+   // private AgentRenderer agentRenderer;
     private ArrayList<Tower> torres = new ArrayList<Tower>();
     private final String windowTitle;
     private boolean debugMode = false;
@@ -71,15 +71,14 @@ public class HunterHunterGame extends ApplicationAdapter {
     private Array<MovementAlgorithm> algoritmos;
     
     private int colidiu =0;
-    
-    //Enemy
-   // Enemy enemy; 
+
     ArrayList<Enemy> enemys = new ArrayList<Enemy>();
     Texture enemyspritesheet ; 
     private EnemyRenderer enemyrender;
     long start;
-    int cont; //Conta quantos inimigso a no mapa
-    int deadenemy;
+    int cont; //Conta quantos inimigos a no mapa
+    int deadEnemy;
+    
     public HunterHunterGame() {
         this.windowTitle = "Hunter x Hunter (%d)";
         showingMetrics = true;
@@ -88,25 +87,21 @@ public class HunterHunterGame extends ApplicationAdapter {
     public GraphRenderer getGraphRenderer() {
         return graphRenderer;
     }
-    
-    
-    public Bullet novoAgente(Vector3 posicao) {
-		Bullet agente = new Bullet(posicao,
-				new Color(0, 0, 1, 1));
+      
+    public Bullet novoBullet(Vector3 posicao) {
+		Bullet agente = new Bullet(posicao,new Color(0, 0, 1, 1));
 		agente.pose.orientacao = (float) (Math.random() * Math.PI * 2);
 		agente.defineComportamento(algoritmoCorrente);
-
 		bullets.add(agente);
 		return agente;
-	}
-    
+    }
     
     @Override
     public void create() {
         //init time 
         start = TimeUtils.millis();
         cont = 1;
-        deadenemy =0;
+        deadEnemy =0;
         
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
@@ -127,9 +122,8 @@ public class HunterHunterGame extends ApplicationAdapter {
         towerRenderer = new TowerRenderer(batch);
         
         //Enemy 
-      //  enemyspritesheet=new Texture("goomba-spritesheet.png");
+        //enemyspritesheet=new Texture("goomba-spritesheet.png");
         enemyrender = new EnemyRenderer(batch, camera, new Texture("gon.png")); //new AgentRenderer(batch, camera,enemyspritesheet);
-        
         enemys.add(new Enemy(new Vector2(
                         LevelManager.tileWidth / 2, LevelManager.totalPixelHeight/2),
                 Color.FIREBRICK));
@@ -140,13 +134,12 @@ public class HunterHunterGame extends ApplicationAdapter {
                         LevelManager.tileWidth / 2, LevelManager.totalPixelHeight/2),
                 Color.FIREBRICK
         );*/
-        agentRenderer = new AgentRenderer(batch, camera, new Texture("gon.png"));
-        agent = new Agent(
-                new Vector2(
-                        LevelManager.tileWidth / 2, LevelManager.totalPixelHeight/2),
-                Color.FIREBRICK
-        );
-
+//        agentRenderer = new AgentRenderer(batch, camera, new Texture("gon.png"));;
+//        agent = new Agent(
+//                new Vector2(
+//                        LevelManager.tileWidth / 2, LevelManager.totalPixelHeight/2),
+//                Color.FIREBRICK
+//        );
         metricsRenderer = new MetricsRenderer(batch, shapeRenderer,
                 new BitmapFont());
         
@@ -213,43 +206,29 @@ public class HunterHunterGame extends ApplicationAdapter {
             public boolean touchDown(int x, int y, int pointer, int button) {
                 Vector2 clique = new Vector2(x, y);
                 viewport.unproject(clique);
-                
                 // Botão ESQUERDO: posiciona objetivo
-                
-                //else if(upgradeMode)
-                    //torre.upgradeTorre((int) clique.x , (int) clique.y);
                 if (button == Input.Buttons.LEFT) {
-                    if (constructionMode){
-                        if (constructionMode){            
-                        
+                    if (constructionMode) {
                         TileNode towerNode = LevelManager.graph.getNodeAtCoordinates((int) clique.x, (int) clique.y);
                         boolean emptyPlace = true;
-                        for(int i=0;i<torres.size();i++){
-                            if(torres.get(i).getPosition().coords.x == towerNode.getPosition().x &&
-                                    torres.get(i).getPosition().coords.y == towerNode.getPosition().y){
+                        for (int i = 0; i < torres.size(); i++) {
+                            if (torres.get(i).getPosition().coords.x == towerNode.getPosition().x && torres.get(i).getPosition().coords.y == towerNode.getPosition().y) {
                                 System.out.println("ja existe uma torre no lugar!");
                                 emptyPlace = false;
                             }
                         }
-                        if(emptyPlace){
+                        if (emptyPlace) {
                             Tower Aux = new Tower();
                             Aux.setTorre((int) clique.x, (int) clique.y);
                             torres.add(Aux);
                             atualizaGrafo();
-                            novoAgente(new Vector3((int) clique.x, (int) clique.y,0));
-                            objetivo.setObjetivo(new Vector3(agent.position.coords.x,agent.position.coords.y,0));
-                        }           
-                        constructionMode=!constructionMode;
+                        }
+                        constructionMode = !constructionMode;
                     }
-                    else
-                        agent.setGoal((int) clique.x, (int) clique.y);
-                    }
-                    else
-                        agent.setGoal((int) clique.x, (int) clique.y);
                 }
                 if (button == Input.Buttons.RIGHT) {
                     for (Tower t : torres) {
-                        System.out.println(t.getPosition().coords.x +" " + (int) clique.x);
+                        //System.out.println(t.getPosition().coords.x +" " + (int) clique.x);
                         if (Math.abs(t.getPosition().coords.x - (int) clique.x) < 16 && Math.abs(t.getPosition().coords.y - (int) clique.y) < 16) {
                             t.upgradeTower();
                             System.out.println("OK");
@@ -277,7 +256,6 @@ public class HunterHunterGame extends ApplicationAdapter {
         graphRenderer = new GraphRenderer(batch, shapeRenderer);
         graphRenderer.renderGraphToTexture(LevelManager.graph);
         metricsRenderer = new MetricsRenderer(batch, shapeRenderer, new BitmapFont());
-        agent.updatePathFinder(LevelManager.graph);
         for(int i=0;i<enemys.size();i++)
             enemys.get(i).updatePathFinder(LevelManager.graph);
     }
@@ -304,14 +282,12 @@ public class HunterHunterGame extends ApplicationAdapter {
             }
             batch.end();
             shapeRenderer.end();
-            
         }
-        agent.update(Gdx.graphics.getDeltaTime());
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
         towerRenderer.renderAll(torres);
         for(int i=0;i<enemys.size();i++) 
-        enemys.get(i).update(Gdx.graphics.getDeltaTime());
+            enemys.get(i).update(Gdx.graphics.getDeltaTime());
 
         //Adiciona Inimigos
          if((TimeUtils.timeSinceMillis(start)/2000)+1>cont){     
@@ -321,28 +297,21 @@ public class HunterHunterGame extends ApplicationAdapter {
             enemys.get(enemys.size()-1).setGoal(LevelManager.totalPixelWidth-1, LevelManager.totalPixelHeight/2);  
             enemys.get(enemys.size()-1).setGoal(LevelManager.totalPixelWidth-1, LevelManager.totalPixelHeight/2);          
             enemys.get(enemys.size()-1).update(Gdx.graphics.getDeltaTime());
-
-            cont++;
-                 
+            cont++;     
         }
         
-        
-        if(colidiu<5){
-            agentRenderer.render(agent); 
-          //  enemyRender.render(enemy);
-          for (int i=0;i<enemys.size();i++){
-            enemyrender.render(enemys.get(i));
-
-           if(enemys.get(i).isMoving()==false){
-                enemys.remove(i);
-                deadenemy++;
-           }
-          } 
-        }
+         
         //Remove o inimigo
-
-        
-        
+        if (colidiu < 5) {
+            //enemyRender.render(enemy);
+            for (int i = 0; i < enemys.size(); i++) {
+                enemyrender.render(enemys.get(i));
+                if (enemys.get(i).isMoving() == false) {
+                    enemys.remove(i);
+                    deadEnemy++;
+                }
+            }
+        }
         counter++;
         //varios tiros para uma mesma torre
         if(counter%100==0){
@@ -351,8 +320,7 @@ public class HunterHunterGame extends ApplicationAdapter {
                 int en = r.nextInt(enemys.size());
                 //objetivo.setObjetivo(new Vector3(agent.position.coords.x, agent.position.coords.y, 0));
                 objetivo.setObjetivo(new Vector3(enemys.get(en).position.coords.x,enemys.get(en).position.coords.y, 0));
-                novoAgente(new Vector3(torres.get(i).position.coords.x,torres.get(i).position.coords.y,0)).defineComportamento(buscar);
-                
+                novoBullet(new Vector3(torres.get(i).position.coords.x,torres.get(i).position.coords.y,0)).defineComportamento(buscar);   
             }
         }
         
@@ -398,7 +366,6 @@ public class HunterHunterGame extends ApplicationAdapter {
     }
     
     private void atualizaAgentes(float delta) {
-
        for (Bullet bullet : bullets) {
 			// atualiza lógica
 			bullet.atualiza(delta);

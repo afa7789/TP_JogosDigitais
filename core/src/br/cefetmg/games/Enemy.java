@@ -63,7 +63,6 @@ public class Enemy {
      */
     public void update(float delta) {
         shouldMove = true;
-
         // verifica se atingimos nosso objetivo imediato
         if (position.coords.dst2(steeringTarget.coords) < MIN_DISTANCE_CONSIDERED_ZERO_SQUARED) {
             // procurar se temos outra conexão na nossa rota
@@ -79,12 +78,10 @@ public class Enemy {
         } else if (position.coords.dst2(steeringTarget.coords) < MIN_DISTANCE_CONSIDERED_ZERO_SQUARED * 6) {
             currentNode = nextNode;
         }
-
         // integra
         if (shouldMove) {
             Steering steering = seek.steer(this.position);
             position.integrate(steering, delta);
-
             // verifica o vetor velocidade para determinar a orientação
             float angle = steering.velocity.angle();
             int quadrant = (int) (((int) angle + (360 - 67.5f)) / 45) % 8;
@@ -112,28 +109,12 @@ public class Enemy {
         // AQUI ESTAMOS CHAMANDO O ALGORITMO A* (instância pathFinder)
         pathFinder.searchConnectionPath(startNode, targetNode,
                 new Heuristic<TileNode>() {
-                
             @Override
             public float estimate(TileNode n, TileNode n1) {
-                /*float xn = n.getPosition().x/LevelManager.tileWidth;
-                float yn = n.getPosition().y/LevelManager.tileHeight;
-                
-                float xn1 = n1.getPosition().x/LevelManager.tileWidth;
-                float yn1 = n1.getPosition().y/LevelManager.tileHeight;
-                
-                float dx = Math.abs(xn-xn1);
-                float dy = Math.abs(yn-yn1);
-                float diagonal = (float)Math.sqrt(2);
-                
-                float percurso = Math.max(dx,dy)+(diagonal-1)*Math.min(dx, dy);
-                
-                return percurso;
-                */      
                 Vector2 v1,v2;
                 v1 = new Vector2(n.getPosition().x/LevelManager.tileWidth,n.getPosition().x/LevelManager.tileHeight);
                 v2 = new Vector2(n1.getPosition().x/LevelManager.tileWidth,n1.getPosition().x/LevelManager.tileHeight);
                 float CustoEuclidiano=v1.dst(v2);
-                //return CustoEuclidiano;
                 Vector2 Diagonal = new Vector2(Math.abs(v1.x - v2.x), Math.abs(v1.y- v2.y));
                 return (float) (CustoEuclidiano * (Diagonal.x + Diagonal.y) + ((Math.sqrt(2)-2)*(CustoEuclidiano)*Math.min(Diagonal.x,Diagonal.y)));
             }
@@ -161,41 +142,19 @@ public class Enemy {
         return shouldMove;
     }
 
-    public boolean isUnderWater() {
-        return currentNode == null || nextNode == null
-                ? false
-                : currentNode.isWater() || nextNode.isWater();
-    }
-
     private float getPercentageOfNodeTraversalConcluded() {
         float totalDistance2 = currentNode.getPosition()
                 .dst2(nextNode.getPosition());
         float remainingDistance2 = position.coords.dst2(nextNode.getPosition());
         return (totalDistance2 - remainingDistance2) / totalDistance2;
     }
-
-    public float getUnderWaterLevel() {
-        if (currentNode != null && nextNode != null) {
-            if (currentNode.isWater() && nextNode.isWater()) {
-                // vai continuar na água
-                return 1;
-            } else if (currentNode.isWater() && !nextNode.isWater()) {
-                // está saindo da água
-                return 1 - getPercentageOfNodeTraversalConcluded();
-            } else if (nextNode.isWater() && !currentNode.isWater()) {
-                // está entrando na água
-                return getPercentageOfNodeTraversalConcluded();
-            }
-        }
-        return 0;
-    }
-
     /**
      * Retorna as métricas da última execução do algoritmo de planejamento de
      * trajetórias.
      *
      * @return as métricas.
      */
+    
     public Metrics getPathFindingMetrics() {
         return pathFinder.metrics;
     }
