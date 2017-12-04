@@ -364,8 +364,7 @@ public class HunterHunterGame extends ApplicationAdapter {
             if (quantidadeDeInimigosDisponiveis >=  3*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERDE, viewport.getWorldWidth(), viewport.getWorldHeight()));   
             else if (quantidadeDeInimigosDisponiveis >=  2*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
             else if (quantidadeDeInimigosDisponiveis >= maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AZUL, viewport.getWorldWidth(), viewport.getWorldHeight())); 
-            else enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VIOLETA, viewport.getWorldWidth(), viewport.getWorldHeight())); 
-            
+            else enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VIOLETA, viewport.getWorldWidth(), viewport.getWorldHeight()));
         } else {
             if (quantidadeDeInimigosDisponiveis >=  3*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
             else if (quantidadeDeInimigosDisponiveis >= 2*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AZUL, viewport.getWorldWidth(), viewport.getWorldHeight())); 
