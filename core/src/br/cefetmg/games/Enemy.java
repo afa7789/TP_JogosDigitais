@@ -55,7 +55,7 @@ public class Enemy {
         this.terminouOPercurso = false;
         this.life=100;
         this.desenhe = true;
-        this.fullSpeed = 75;
+        //this.fullSpeed = 75;
     }
     
     public void naoDesenhar(){

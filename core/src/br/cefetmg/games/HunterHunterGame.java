@@ -472,6 +472,7 @@ public void controleDeFase(){
             if(debugMode)System.out.println("Nova Fase " + nivel);
             nivel++;
             enemys.removeAll(enemys);//deve tirar todos os enemys.
+            attacks.removeAll(attacks);//deve tirar todos os ataques
             quantidadeDeTorresDisponiveis = pontos * nivel;// tem que colocar de acordo com o numero de Inimigos q matou.
             quantidadeDeInimigosDisponiveis = 4 + (numeroDeVidasMaximo-numeroDeVidas) * nivel;
             somatorioDePontos += pontos;
