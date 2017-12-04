@@ -108,7 +108,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         quantidadeDeTorresDisponiveis = 10;
         quantidadeDeInimigosDisponiveis = 3;
         
-        teste2 = new Tower(viewport.getWorldWidth(), viewport.getWorldHeight());
+        
 
         //init time 
         start = TimeUtils.millis();
