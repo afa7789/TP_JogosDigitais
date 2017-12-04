@@ -332,7 +332,8 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     public void adicionaInimigos() {
         if (InimigosPodemSpawnar()) {
-            if( TimeUtils.timeSinceMillis(start)%(500/(nivel+1)) <= 1){//aranjar jeito melhor de fazer isso.
+            System.out.println(cont);
+            if( cont%(500/(nivel+1)) <= 1){//aranjar jeito melhor de fazer isso.
                 System.out.println("era para spawnar");
                 if (debugMode) System.out.println("spawno");
                 enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2),Color.FIREBRICK));
@@ -409,7 +410,7 @@ public class HunterHunterGame extends ApplicationAdapter {
                     atualizaGrafo();
                 }if(!enemy.shouldMove && enemy.terminouOPercurso ){
                     //chegouNoFim
-                    //removendoOInimigo(enemy);
+                    removendoOInimigo(enemy);
                     cont--; //tem q tirar isso quando voltar com a de cima.
                     perdeVida();
                 }
