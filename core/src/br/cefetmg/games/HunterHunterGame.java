@@ -131,7 +131,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         viewport = new ScreenViewport(camera);
 
         // Carrega o mapa
-        tiledMap = LevelManager.LoadLevel("map.tmx");
+        tiledMap = LevelManager.LoadLevel("tp-mapa-teste.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, batch);
 
         graphRenderer = new GraphRenderer(batch, shapeRenderer);
@@ -167,8 +167,8 @@ public class HunterHunterGame extends ApplicationAdapter {
         //  for(int i=0;i<enemys.size();i++){
         //enemys.get(0).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
         
-        teste2 = new Tower(viewport.getWorldWidth(), viewport.getWorldHeight());
-        teste2.setTorre(300,300, debugMode);
+        // teste2 = new Tower(viewport.getWorldWidth(), viewport.getWorldHeight());
+        // teste2.setTorre(300,300, debugMode);
         
         
         //agent.setGoal(LevelManager.totalPixelWidth-1, LevelManager.totalPixelHeight/2);
