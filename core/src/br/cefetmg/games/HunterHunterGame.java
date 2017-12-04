@@ -115,6 +115,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         somatorioDePontos = 0;
         valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo = 10;
         booleanSpawn = false;
+        constructionMode=false;
         quantidadeDeTorresDisponiveis = 5;
         quantidadeDeInimigosDisponiveis = 5;
         maximoDeInimigos = quantidadeDeInimigosDisponiveis;
@@ -123,6 +124,8 @@ public class HunterHunterGame extends ApplicationAdapter {
         cont = 0;
         deadEnemy = 0;
         posicaoy=0;
+        enemys = new ArrayList<Enemy>();
+        torres = new ArrayList<Tower>();
         attacks = new ArrayList<Attack>();
         torres = new ArrayList<Tower>();
         enemys= new ArrayList<Enemy>();
