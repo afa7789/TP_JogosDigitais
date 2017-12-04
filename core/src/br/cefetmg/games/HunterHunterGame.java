@@ -41,7 +41,7 @@ import java.util.Random;
 
 public class HunterHunterGame extends ApplicationAdapter {
 
-    private SpriteBatch batch;
+     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
     private TiledMap tiledMap;
 
@@ -171,10 +171,6 @@ public class HunterHunterGame extends ApplicationAdapter {
         algoritmos.add(buscar);
         algoritmoCorrente = buscar;
 
-   
-        
-        
-        
         //bullets = new Array<>();
         //  for(int i=0;i<enemys.size();i++){
         //enemys.get(0).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
@@ -550,10 +546,11 @@ public class HunterHunterGame extends ApplicationAdapter {
         hud.button_render();
         //hud.update();
         if(hud.getState()==0){
+            restart();
             hud.setState(1);
+
         }else if(hud.getState()==1)
             if(numeroDeVidas>0){
-
 
                if(numeroDeVidas>=0 && !GameOver){
 

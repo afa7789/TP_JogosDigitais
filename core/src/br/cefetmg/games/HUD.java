@@ -114,8 +114,8 @@ public class HUD {
     void listeningbutton(int button, Vector2 clique) {
         if (button == Input.Buttons.LEFT) {
                    if((int) clique.y>650&&(int) clique.y<700 &&(int) clique.x>10 &&(int) clique.x<130 ){ 
-                       
                         state=0;
+                        System.out.println("Assim");
                    }
                    if((int) clique.y>650&&(int) clique.y<700 &&(int) clique.x>894 &&(int) clique.x<1014 ){
                        if(state==2)
