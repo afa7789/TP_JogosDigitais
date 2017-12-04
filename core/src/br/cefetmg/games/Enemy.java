@@ -124,11 +124,8 @@ public class Enemy {
         }, path);
         
         pathIterator = path.iterator();
-<<<<<<< HEAD
        // System.out.println(path.nodes.size);
-=======
         if (debugMode) System.out.println(path.nodes.size);
->>>>>>> master
     }
 
     /**
