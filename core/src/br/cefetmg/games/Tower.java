@@ -238,6 +238,14 @@ public class Tower {
                 renderer.box(position.coords.cpy().sub(size).scl(1.02f).x, position.coords.cpy().sub(size).y, 0f, 1.1f * size.x, 2*size.y, 0f);
                 break;
             case PENTAGON:
+                size = new Vector2(worldDimensions.cpy().scl(reajuste));
+                renderer.polygon(new float[] {      
+                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().sub(size).y,               // Vertex 0         /3 \
+                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().sub(size).y,               // Vertex 1         4--2
+                    position.coords.cpy().scl(0.99f).add(size).x, position.coords.cpy().scl(0.98f).add(size).y,               // Vertex 2         |/ |
+                    position.coords.cpy().x, position.coords.cpy().add(size).scl(1.03f).y,
+                    position.coords.cpy().scl(1.01f).sub(size).x, position.coords.cpy().scl(0.98f).add(size).y                // Vertex 3         0--1
+                });
                 break;
             case HEXAGON:
                 break;
