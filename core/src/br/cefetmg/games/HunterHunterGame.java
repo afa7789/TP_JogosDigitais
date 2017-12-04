@@ -376,7 +376,7 @@ public class HunterHunterGame extends ApplicationAdapter {
     }
     
     public void removendoUltimaTorre(){//Pego o Tamanho do ArrayList e remove a ultima torre posta
-        torres.remove(torres.size());
+        torres.remove(torres.size()-1);
         //para corrigir isso vou usar adicionar Pontos para compensar então na proxima Wave ele pode por mais torre.
         adicionarPontos();
     }
