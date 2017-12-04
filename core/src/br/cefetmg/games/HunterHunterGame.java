@@ -73,6 +73,7 @@ public class HunterHunterGame extends ApplicationAdapter {
     private int quantidadeDeTorresDisponiveis = 10;
     
     int counter = 0;
+    int nivel = 0;
 
     private Array<Bullet> bullets;
     private ArrayList<Attack> attacks;
