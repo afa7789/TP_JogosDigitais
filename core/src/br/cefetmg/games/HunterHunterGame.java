@@ -376,27 +376,41 @@ public class HunterHunterGame extends ApplicationAdapter {
         }
 
     }
-
+public void controleDeFase(){
+            boolean faseAcabou=false;
+        if(quantidadeDeTorresDisponiveis == 0){
+            booleanSpawn=true;
+        }
+        if( (quantidadeDeInimigosDisponiveis == 0 && cont==0) && quantidadeDeTorresDisponiveis == 0){
+            faseAcabou=true;
+            System.out.println("Fim da Fase");
+        }
+        if(faseAcabou){
+            System.out.println("Nova Fase");
+            nivel++;
+            quantidadeDeTorresDisponiveis = 5;// tem que colocar de acordo com o numero de Inimigos q matou.
+            quantidadeDeInimigosDisponiveis = 3 * nivel;
+            faseAcabou=false;
+        }
+    }
+    
     @Override
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
-        
-        //desenho do Mapa e etc
-        desenhoGeral();
-
+        controleDeFase();
         //Adiciona Inimigos
         adicionaInimigos();
-
         //Remove o inimigo
         removerAtualizarInimigos(delta);
-
         //Atualiza as Torres quem elas atacam e etc
         emissorDeAtaques();
-        
         //Atualiza Posição dos Ataques da Dano nos inimigos
         atualizaAtaques(delta);
-
+        //desenho do Mapa e etc
+        desenhoGeral();
         batch.setProjectionMatrix(camera.combined);
+//        bulletRenderer.desenha(teste);
+//        towerRenderer.render(teste2);
         
         bulletRenderer.desenha(teste);
         towerRenderer.render(teste2, shapeRenderer);
@@ -404,10 +418,10 @@ public class HunterHunterGame extends ApplicationAdapter {
         enemyRenderer.renderAll(enemys);
         towerRenderer.renderAll(torres, shapeRenderer);
         bulletRenderer.renderAll(attacks);
-
         Gdx.graphics.setTitle(String.format(windowTitle, Gdx.graphics.getFramesPerSecond()));
         counter++;
     }
+    
 
     private void atualizaAtaques(float delta) {
         for (Attack attack : attacks) {
