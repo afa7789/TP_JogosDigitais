@@ -9,6 +9,7 @@ import br.cefetmg.games.Tower;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 
 /**
@@ -23,16 +24,23 @@ public class TowerRenderer {
         this.batch = batch;
         this.camera = camera;
     }
-    public void render(Tower tower){
-            batch.setProjectionMatrix(camera.combined);
-            batch.begin();
-            batch.draw( tower.getTexture(), tower.position.coords.x - tower.getTexture().getHeight()/2, tower.position.coords.y - tower.getTexture().getHeight()/2);
-            batch.end();
+    public void render(Tower tower, ShapeRenderer renderer){
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw( tower.getTexture(), tower.position.coords.x - tower.getTexture().getHeight()/2, tower.position.coords.y - tower.getTexture().getHeight()/2);
+        batch.end();
+        renderer.setProjectionMatrix(camera.combined);
+        renderer.begin(ShapeRenderer.ShapeType.Line);
+        renderer.identity();
+        renderer.setColor(tower.getColor());
+        tower.getForm(renderer);
+        renderer.end();
+        
     }
     
-    public void renderAll(ArrayList<Tower> Towers){
+    public void renderAll(ArrayList<Tower> Towers, ShapeRenderer renderer){
         for (Tower Tower : Towers) {
-            render(Tower);
+            render(Tower, renderer);
         }
     }
 

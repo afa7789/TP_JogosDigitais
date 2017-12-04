@@ -95,7 +95,6 @@ public class HunterHunterGame extends ApplicationAdapter {
     
     @Override
     public void create() {
-        teste2 = new Tower();
 
         //init time 
         start = TimeUtils.millis();
@@ -143,13 +142,15 @@ public class HunterHunterGame extends ApplicationAdapter {
         algoritmoCorrente = buscar;
         
         attacks = new ArrayList<Attack>();
-                teste2.setTorre(300,300, debugMode);
+        teste2 = new Tower(viewport.getWorldWidth(), viewport.getWorldHeight());
+        teste2.setTorre(300,300, debugMode);
         bullets = new Array<>();
         //  for(int i=0;i<enemys.size();i++){
         enemys.get(0).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
         // }
         //agent.setGoal(LevelManager.totalPixelWidth-1, LevelManager.totalPixelHeight/2);
         teste = new Attack(teste2,40,new Position(new Vector2(500,500)),enemys.get(0));
+        
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyUp(int keycode) {
@@ -201,11 +202,12 @@ public class HunterHunterGame extends ApplicationAdapter {
                         for (int i = 0; i < torres.size(); i++) {
                             if (torres.get(i).getPosition().coords.x == towerNode.getPosition().x && torres.get(i).getPosition().coords.y == towerNode.getPosition().y) {
                                 if (debugMode) System.out.println("ja existe uma torre no lugar!");
+                                torres.get(i).changeTowerType();
                                 emptyPlace = false;
                             }
                         }
                         if (emptyPlace) {
-                            Tower Aux = new Tower();
+                            Tower Aux = new Tower(viewport.getWorldWidth(), viewport.getWorldHeight());
                             Aux.setTorre((int) clique.x, (int) clique.y, debugMode);
                             Random r = new Random();
                             int en = r.nextInt(enemys.size());
@@ -359,10 +361,10 @@ public class HunterHunterGame extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
         
         bulletRenderer.desenha(teste);
-        towerRenderer.render(teste2);
+        towerRenderer.render(teste2, shapeRenderer);
         
         enemyRenderer.renderAll(enemys);
-        towerRenderer.renderAll(torres);
+        towerRenderer.renderAll(torres, shapeRenderer);
         bulletRenderer.renderAll(attacks);
 
         Gdx.graphics.setTitle(String.format(windowTitle, Gdx.graphics.getFramesPerSecond()));
