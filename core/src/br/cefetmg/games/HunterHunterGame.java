@@ -409,7 +409,8 @@ public class HunterHunterGame extends ApplicationAdapter {
                     atualizaGrafo();
                 }if(!enemy.shouldMove && enemy.terminouOPercurso ){
                     //chegouNoFim
-                    //removendoOInimigo(enemy);                  
+                    //removendoOInimigo(enemy);
+                    cont--; //tem q tirar isso quando voltar com a de cima.
                     perdeVida();
                 }
             } else {
