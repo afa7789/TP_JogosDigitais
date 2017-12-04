@@ -78,7 +78,7 @@ public class HunterHunterGame extends ApplicationAdapter {
     int numeroDeVidas = 10;
     int pontos=0;
     int somatorioDePontos=0;
-    int valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo= 10;
+    int valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo=10;
     
     
     private Array<Bullet> bullets;
@@ -375,12 +375,20 @@ public class HunterHunterGame extends ApplicationAdapter {
         numeroDeVidas--;
     }
     
+    public void removendoUltimaTorre(){//Pego o Tamanho do ArrayList e remove a ultima torre posta
+        torres.remove(torres.size());
+        //para corrigir isso vou usar adicionar Pontos para compensar então na proxima Wave ele pode por mais torre.
+        adicionarPontos();
+    }
+    
     public void removerAtualizarInimigos(float delta) {
         for (Enemy enemy : enemys) {
             enemy.update(delta);
             if (enemy.getLife() > 0) {
                 if(!enemy.shouldMove && !enemy.terminouOPercurso){
-                    //removendoUltimaTorre();
+                    removendoUltimaTorre();
+                    //Acho que tem q atualizar o Path após remover a torre.
+                    atualizaGrafo();
                 }if(!enemy.shouldMove && enemy.terminouOPercurso ){
                     //chegouNoFim
                     removendoOInimigo(enemy);                  
@@ -420,13 +428,13 @@ public class HunterHunterGame extends ApplicationAdapter {
     }
     
 public void controleDeFase(){
-    
         boolean faseAcabou=false;
         if(somatorioDePontos%valorParaGanharVidaExtra == 0){
             if(numeroDeVidas<numeroDeVidasMaximo)
                 numeroDeVidas++;
             else{
-                pontos+=valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo;
+                for(int i =0;i<valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo; i++)
+                    adicionarPontos();
             }
         }
         if(quantidadeDeTorresDisponiveis == 0){
@@ -440,9 +448,9 @@ public void controleDeFase(){
             if(debugMode)System.out.println("Nova Fase " + nivel);
             nivel++;
             quantidadeDeTorresDisponiveis = pontos * nivel;// tem que colocar de acordo com o numero de Inimigos q matou.
+            quantidadeDeInimigosDisponiveis = 4 + (numeroDeVidasMaximo-numeroDeVidas) * nivel;
             somatorioDePontos += pontos;
             pontos=0;
-            quantidadeDeInimigosDisponiveis = 4 + (numeroDeVidasMaximo-numeroDeVidas) * nivel;
             faseAcabou=false;
         }
     }
@@ -460,6 +468,7 @@ public void controleDeFase(){
         //Atualiza Posição dos Ataques da Dano nos inimigos
         atualizaAtaques(delta);
         //desenho do Mapa e etc
+        atualizaGrafo();
         desenhoGeral();
         batch.setProjectionMatrix(camera.combined);
 //        bulletRenderer.desenha(teste);
