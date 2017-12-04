@@ -502,8 +502,9 @@ public void controleDeFase(){
 //        bulletRenderer.desenha(teste);
 //        towerRenderer.render(teste2);
 
-        enemyRenderer.renderAll(enemys);
+        
         towerRenderer.renderAll(torres, shapeRenderer);
+        enemyRenderer.renderAll(enemys);
         bulletRenderer.renderAll(attacks);
         Gdx.graphics.setTitle(String.format(windowTitle, Gdx.graphics.getFramesPerSecond()));
         counter++;

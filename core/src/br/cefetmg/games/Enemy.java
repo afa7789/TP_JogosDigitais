@@ -29,7 +29,7 @@ public class Enemy {
     private final DefaultGraphPath<TileConnection> path;
     private Iterator<TileConnection> pathIterator;
     private final Target steeringTarget;
-    private final float fullSpeed = 75;
+    private float fullSpeed;
     private static final float MIN_DISTANCE_CONSIDERED_ZERO_SQUARED = (float) Math.pow(2.0f, 2);
     private Facing facing;
     private TileNode nextNode, currentNode;
@@ -54,6 +54,7 @@ public class Enemy {
         this.terminouOPercurso = false;
         this.life=100;
         this.desenhe = true;
+        this.fullSpeed = 75;
     }
     
     public void naoDesenhar(){
