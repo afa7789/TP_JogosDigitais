@@ -4,10 +4,10 @@ import br.cefetmg.games.Agent;
 import br.cefetmg.games.Enemy;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 
 /**
@@ -45,14 +45,14 @@ public class EnemyRenderer {
                 FRAME_WIDTH, FRAME_HEIGHT);
     }
     
-    public void renderAll(ArrayList<Enemy> enemys){
+    public void renderAll(ArrayList<Enemy> enemys, ShapeRenderer renderer){
         for (Enemy enemy : enemys) {
             if(enemy.desenhe)
-                render(enemy);
+                render(enemy, renderer);
         }
     }
     
-    public void render(Enemy agent) {
+    public void render(Enemy agent, ShapeRenderer renderer) {
         sprite.update(Gdx.graphics.getDeltaTime());
         sprite.setCenter(
                 agent.position.coords.x,
@@ -64,5 +64,12 @@ public class EnemyRenderer {
             batch.begin();
             sprite.draw(batch);
             batch.end();
+        renderer.setProjectionMatrix(camera.combined);
+        renderer.identity();
+        renderer.begin(ShapeRenderer.ShapeType.Line);
+        renderer.setColor(agent.getColor());
+        agent.getForm(renderer);
+        renderer.end();
+            
         }
     }

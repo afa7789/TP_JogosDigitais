@@ -67,7 +67,8 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     public boolean booleanSpawn;
     
-    private int quantidadeDeInimigosDisponiveis=3;
+    private int quantidadeDeInimigosDisponiveis;
+    private int maximoDeInimigos;
     
     private int quantidadeDeTorresDisponiveis=1;
     public int valorParaGanharVidaExtra=100;
@@ -113,6 +114,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         booleanSpawn = false;
         quantidadeDeTorresDisponiveis = 5;
         quantidadeDeInimigosDisponiveis = 5;
+        maximoDeInimigos = quantidadeDeInimigosDisponiveis;
         
 
         //init time 
@@ -339,6 +341,38 @@ public class HunterHunterGame extends ApplicationAdapter {
             return false;
         }
     }
+    
+    public void criaInimigo(){
+        if (nivel < 3) {
+            enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERMELHO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
+        } else if (nivel < 5) {
+            if (quantidadeDeInimigosDisponiveis >= maximoDeInimigos/2) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERMELHO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
+            else enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.LARANJA, viewport.getWorldWidth(), viewport.getWorldHeight()));   
+        } else if (nivel < 7) {
+            if (quantidadeDeInimigosDisponiveis >=  3*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERMELHO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
+            else if (quantidadeDeInimigosDisponiveis >=  1*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.LARANJA, viewport.getWorldWidth(), viewport.getWorldHeight()));   
+            else enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AMARELO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
+        } else if (nivel < 10) {
+            if (quantidadeDeInimigosDisponiveis >=  3*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.LARANJA, viewport.getWorldWidth(), viewport.getWorldHeight()));   
+            else if (quantidadeDeInimigosDisponiveis >=  1*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AMARELO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
+            else enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERDE, viewport.getWorldWidth(), viewport.getWorldHeight()));    
+        } else if (nivel < 11) {
+            if (quantidadeDeInimigosDisponiveis >=  3*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AMARELO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
+            else if (quantidadeDeInimigosDisponiveis >=  1*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERDE, viewport.getWorldWidth(), viewport.getWorldHeight()));   
+            else enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight())); 
+        } else if (nivel < 12) {
+            if (quantidadeDeInimigosDisponiveis >=  3*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERDE, viewport.getWorldWidth(), viewport.getWorldHeight()));   
+            else if (quantidadeDeInimigosDisponiveis >=  2*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
+            else if (quantidadeDeInimigosDisponiveis >= maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AZUL, viewport.getWorldWidth(), viewport.getWorldHeight())); 
+            else enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VIOLETA, viewport.getWorldWidth(), viewport.getWorldHeight())); 
+            
+        } else {
+            if (quantidadeDeInimigosDisponiveis >=  3*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
+            else if (quantidadeDeInimigosDisponiveis >= 2*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AZUL, viewport.getWorldWidth(), viewport.getWorldHeight())); 
+            else enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VIOLETA, viewport.getWorldWidth(), viewport.getWorldHeight())); 
+        }
+        
+    }
 
     public void adicionaInimigos() {
         if (InimigosPodemSpawnar()) {
@@ -346,7 +380,7 @@ public class HunterHunterGame extends ApplicationAdapter {
             if( counter%(200/(nivel+1)) == 0){//aranjar jeito melhor de fazer isso.
                 System.out.println("era para spawnar");
                 if (debugMode) System.out.println("spawno");
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2),Color.FIREBRICK));
+                criaInimigo();
                 enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
                 //enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
                 enemys.get(enemys.size() - 1).update(Gdx.graphics.getDeltaTime());
@@ -468,7 +502,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         if(quantidadeDeTorresDisponiveis == 0){
             booleanSpawn=true;
         }
-        System.out.println("aass " + quantidadeDeInimigosDisponiveis+ " "+ cont+ " " + (quantidadeDeInimigosDisponiveis == 0 && cont==0) + " " + quantidadeDeTorresDisponiveis);
+        if (debugMode) System.out.println("aass " + quantidadeDeInimigosDisponiveis+ " "+ cont+ " " + (quantidadeDeInimigosDisponiveis == 0 && cont==0) + " " + quantidadeDeTorresDisponiveis);
         if( (quantidadeDeInimigosDisponiveis == 0 && cont==0) && quantidadeDeTorresDisponiveis == 0){
             faseAcabou=true;
             if(debugMode)System.out.println("Fim da Fase");
@@ -481,6 +515,8 @@ public class HunterHunterGame extends ApplicationAdapter {
             attacks.removeAll(attacks);//deve tirar todos os ataques
             quantidadeDeTorresDisponiveis = pontos * nivel;// tem que colocar de acordo com o numero de Inimigos q matou.
             quantidadeDeInimigosDisponiveis = 4 + (numeroDeVidasMaximo-numeroDeVidas) * nivel;
+            maximoDeInimigos = quantidadeDeInimigosDisponiveis;
+            
             somatorioDePontos += pontos;
             pontos=0;
             if(somatorioDePontos%valorParaGanharVidaExtra == 0){
@@ -533,14 +569,13 @@ public class HunterHunterGame extends ApplicationAdapter {
             controleDeFase();
             //desenho do Mapa e etc
             desenhoGeral();
-        
-    //        bulletRenderer.desenha(teste);
-    //        towerRenderer.render(teste2);
-            enemyRenderer.renderAll(enemys);
-            towerRenderer.renderAll(torres, shapeRenderer);
-            bulletRenderer.renderAll(attacks);
-            Gdx.graphics.setTitle(String.format(windowTitle, Gdx.graphics.getFramesPerSecond()));
-            counter++;
+
+        towerRenderer.renderAll(torres, shapeRenderer);
+        enemyRenderer.renderAll(enemys, shapeRenderer);
+        bulletRenderer.renderAll(attacks);
+        Gdx.graphics.setTitle(String.format(windowTitle, Gdx.graphics.getFramesPerSecond()));
+        counter++;
+
         }else{
             System.out.println("Game Over sua pontuação: "+ somatorioDePontos);
             GameOver=true;
@@ -548,6 +583,10 @@ public class HunterHunterGame extends ApplicationAdapter {
         }
         
     }
+
+    
+
+
 
     private void atualizaAtaques(float delta) {
         for (Attack attack : attacks) {
