@@ -307,7 +307,7 @@ public class HunterHunterGame extends ApplicationAdapter {
     public void emissorDeAtaques() {
         for (Tower torre : torres) {
             if (torre.atacandoAlguem()) {
-                if (torre.target.getLife() > 0) {
+                if(torre.target.getLife()>0){
                     if (counter % torre.attackSpeed == 0) {
                         if (debugMode) System.out.println("Adicionou ataque");
                         attacks.add(new Attack(torre, 100, torre.position, torre.target));
@@ -316,26 +316,26 @@ public class HunterHunterGame extends ApplicationAdapter {
                     if (debugMode) System.out.println("Parou de Atacar");    
                     torre.parouDeAtacar();
                 }
-            } else {
+            }else{
                 torre.target = pegaInimigoMaisProximoDoAlcanceDaTorre(torre);
             }
         }
     }
-
-    public Enemy pegaInimigoMaisProximoDoAlcanceDaTorre(Tower torre) {
-        Float menorValor = torre.actionZone;
-        Enemy inimigoMaisProximo = null;
+    
+    public Enemy pegaInimigoMaisProximoDoAlcanceDaTorre(Tower torre){
+        Float menorValor=torre.actionZone;
+        Enemy inimigoMaisProximo=null;
         Float distancia;
         for (Enemy enemy : enemys) {
             distancia = enemy.enviaPosicionamento().dst2(torre.position.coords);
-            if (distancia <= torre.actionZone && distancia < menorValor) {
+            if(distancia<=torre.actionZone && distancia < menorValor){
                 if (debugMode) System.out.println("Agora a torre está a Atacar");
                 torre.estáAtacando();
-                inimigoMaisProximo = enemy;
-                menorValor = distancia;
-            }
+                inimigoMaisProximo=enemy;
+                menorValor=distancia;
+            }                    
         }
-        return inimigoMaisProximo;
+            return inimigoMaisProximo;
     }
 
     public void removerAtualizarInimigos(float delta) {
@@ -376,8 +376,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         }
 
     }
-    
-    public void controleDeFase(){
+public void controleDeFase(){
             boolean faseAcabou=false;
         if(quantidadeDeTorresDisponiveis == 0){
             booleanSpawn=true;
@@ -422,6 +421,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         Gdx.graphics.setTitle(String.format(windowTitle, Gdx.graphics.getFramesPerSecond()));
         counter++;
     }
+    
 
     private void atualizaAtaques(float delta) {
         for (Attack attack : attacks) {
