@@ -29,7 +29,7 @@ public class Enemy {
     private final DefaultGraphPath<TileConnection> path;
     private Iterator<TileConnection> pathIterator;
     private final Target steeringTarget;
-    private final float fullSpeed = 75;
+    private final float fullSpeed = 200;
     private static final float MIN_DISTANCE_CONSIDERED_ZERO_SQUARED = (float) Math.pow(2.0f, 2);
     private Facing facing;
     private TileNode nextNode, currentNode;

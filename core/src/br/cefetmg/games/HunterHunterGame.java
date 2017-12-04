@@ -451,21 +451,14 @@ public class HunterHunterGame extends ApplicationAdapter {
             shapeRenderer.end();
         }
         if(showingMetrics) {
-            metricsRenderer.render(numeroDeVidas,numeroDeVidasMaximo, nivel);
+            metricsRenderer.render(numeroDeVidas,pontos, nivel);
         }
 
     }
     
 public void controleDeFase(){
         boolean faseAcabou=false;
-        if(somatorioDePontos%valorParaGanharVidaExtra == 0){
-            if(numeroDeVidas<numeroDeVidasMaximo)
-                numeroDeVidas++;
-            else{
-                for(int i =0;i<valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo; i++)
-                    adicionarPontos();
-            }
-        }
+
         if(quantidadeDeTorresDisponiveis == 0){
             booleanSpawn=true;
         }
@@ -483,34 +476,47 @@ public void controleDeFase(){
             quantidadeDeInimigosDisponiveis = 4 + (numeroDeVidasMaximo-numeroDeVidas) * nivel;
             somatorioDePontos += pontos;
             pontos=0;
+            if(somatorioDePontos%valorParaGanharVidaExtra == 0){
+                if(numeroDeVidas<numeroDeVidasMaximo && numeroDeVidas>0)
+                    numeroDeVidas++;
+                else{
+                    for(int i =0;i<valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo; i++)
+                        adicionarPontos();
+            }
+        }
             faseAcabou=false;
         }
     }
     
     @Override
     public void render() {
+        
         float delta = Gdx.graphics.getDeltaTime();
-        controleDeFase();
-        //Adiciona Inimigos
-        adicionaInimigos();
-        //Remove o inimigo
-        removerAtualizarInimigos(delta);
-        //Atualiza as Torres quem elas atacam e etc
-        emissorDeAtaques();
-        //Atualiza Posição dos Ataques da Dano nos inimigos
-        atualizaAtaques(delta);
-        //desenho do Mapa e etc
-        atualizaGrafo();
-        desenhoGeral();
-        batch.setProjectionMatrix(camera.combined);
-//        bulletRenderer.desenha(teste);
-//        towerRenderer.render(teste2);
+        if(numeroDeVidas>0){
+            //Adiciona Inimigos
+            adicionaInimigos();
+            //Atualiza as Torres quem elas atacam e etc
+            emissorDeAtaques();
+            //Atualiza Posição dos Ataques da Dano nos inimigos
+            atualizaAtaques(delta);
+            //Remove o inimigo
+            removerAtualizarInimigos(delta);
+            controleDeFase();
+            //desenho do Mapa e etc
+            desenhoGeral();
+            batch.setProjectionMatrix(camera.combined);
+    //        bulletRenderer.desenha(teste);
+    //        towerRenderer.render(teste2);
 
-        enemyRenderer.renderAll(enemys);
-        towerRenderer.renderAll(torres, shapeRenderer);
-        bulletRenderer.renderAll(attacks);
-        Gdx.graphics.setTitle(String.format(windowTitle, Gdx.graphics.getFramesPerSecond()));
-        counter++;
+            enemyRenderer.renderAll(enemys);
+            towerRenderer.renderAll(torres, shapeRenderer);
+            bulletRenderer.renderAll(attacks);
+            Gdx.graphics.setTitle(String.format(windowTitle, Gdx.graphics.getFramesPerSecond()));
+            counter++;
+        }else{
+            System.out.println("Game Over sua pontuação: "+ somatorioDePontos);
+            numeroDeVidas=0;
+        }
     }
     
 
