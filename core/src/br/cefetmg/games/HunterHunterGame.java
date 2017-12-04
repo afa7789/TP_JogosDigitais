@@ -143,10 +143,10 @@ public class HunterHunterGame extends ApplicationAdapter {
         algoritmoCorrente = buscar;
         
         attacks = new ArrayList<Attack>();
-                teste2.setTorre(300,300);
+                teste2.setTorre(300,300, debugMode);
         bullets = new Array<>();
         //  for(int i=0;i<enemys.size();i++){
-        enemys.get(0).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
+        enemys.get(0).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
         // }
         //agent.setGoal(LevelManager.totalPixelWidth-1, LevelManager.totalPixelHeight/2);
         teste = new Attack(teste2,40,new Position(new Vector2(500,500)),enemys.get(0));
@@ -200,13 +200,13 @@ public class HunterHunterGame extends ApplicationAdapter {
                         boolean emptyPlace = true;
                         for (int i = 0; i < torres.size(); i++) {
                             if (torres.get(i).getPosition().coords.x == towerNode.getPosition().x && torres.get(i).getPosition().coords.y == towerNode.getPosition().y) {
-                                System.out.println("ja existe uma torre no lugar!");
+                                if (debugMode) System.out.println("ja existe uma torre no lugar!");
                                 emptyPlace = false;
                             }
                         }
                         if (emptyPlace) {
                             Tower Aux = new Tower();
-                            Aux.setTorre((int) clique.x, (int) clique.y);
+                            Aux.setTorre((int) clique.x, (int) clique.y, debugMode);
                             Random r = new Random();
                             int en = r.nextInt(enemys.size());
                             
@@ -223,7 +223,7 @@ public class HunterHunterGame extends ApplicationAdapter {
                         //System.out.println(t.getPosition().coords.x +" " + (int) clique.x);
                         if (Math.abs(t.getPosition().coords.x - (int) clique.x) < 16 && Math.abs(t.getPosition().coords.y - (int) clique.y) < 16) {
                             t.upgradeTower();
-                            System.out.println("OK");
+                            if (debugMode) System.out.println("OK");
                         }
                     }
                 }
@@ -244,7 +244,7 @@ public class HunterHunterGame extends ApplicationAdapter {
     }
 
     public void atualizaGrafo() {
-        LevelManager.setGraph(GraphGenerator.generateGraphAgain(LevelManager.graph.getAllNodes(), LevelManager.tiledMap));
+        LevelManager.setGraph(GraphGenerator.generateGraphAgain(LevelManager.graph.getAllNodes(), LevelManager.tiledMap),debugMode);
         graphRenderer = new GraphRenderer(batch, shapeRenderer);
         graphRenderer.renderGraphToTexture(LevelManager.graph);
         metricsRenderer = new MetricsRenderer(batch, shapeRenderer, new BitmapFont());
@@ -258,8 +258,8 @@ public class HunterHunterGame extends ApplicationAdapter {
             enemys.add(new Enemy(new Vector2(
                     LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2),
                     Color.FIREBRICK));
-            enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
-            enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
+            enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2,debugMode);
+            enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
             enemys.get(enemys.size() - 1).update(Gdx.graphics.getDeltaTime());
             cont++;
         }
@@ -270,11 +270,11 @@ public class HunterHunterGame extends ApplicationAdapter {
             if (torre.atacandoAlguem()) {
                 if(torre.target.getLife()>0){
                     if (counter % torre.attackSpeed == 0) {
-                        System.out.println("Adicionou ataque");
+                        if (debugMode) System.out.println("Adicionou ataque");
                         attacks.add(new Attack(torre, 100, torre.position, torre.target));
                     }
                 }else{
-                    System.out.println("Parou de Atacar");
+                    if (debugMode) System.out.println("Parou de Atacar");    
                     torre.parouDeAtacar();
                 }
             }else{
@@ -290,7 +290,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         for (Enemy enemy : enemys) {
             distancia = enemy.enviaPosicionamento().dst2(torre.position.coords);
             if(distancia<=torre.actionZone && distancia < menorValor){
-                System.out.println("Agora a torre está a Atacar");
+                if (debugMode) System.out.println("Agora a torre está a Atacar");
                 torre.estáAtacando();
                 inimigoMaisProximo=enemy;
                 menorValor=distancia;
