@@ -316,7 +316,7 @@ public class HunterHunterGame extends ApplicationAdapter {
                 if (debugMode) System.out.println("spawno");
                 enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2),Color.FIREBRICK));
                 enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
-                enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
+                //enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
                 enemys.get(enemys.size() - 1).update(Gdx.graphics.getDeltaTime());
                 cont++;
                 quantidadeDeInimigosDisponiveis--;
