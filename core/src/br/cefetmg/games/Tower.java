@@ -68,6 +68,7 @@ public class Tower {
         this.towerLevel = Strength.VERMELHO;
         this.type = TowerType.LINE;
         TileNode towerNode = LevelManager.graph.getNodeAtCoordinates(x, y);
+        //System.out.println(" "+towerNode.getPosition().x +" "+towerNode.getPosition().y);
         if (debugMode) System.out.println(" "+towerNode.getPosition().x +" "+towerNode.getPosition().y);
         this.position = new Position(towerNode.getPosition());
         towerNode.setIsObstacle(true);
