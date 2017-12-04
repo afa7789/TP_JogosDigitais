@@ -130,6 +130,36 @@ public class Tower {
                  return 1;
          }
       }		      
+     
+    public Color getColor(){
+        Color corReceber= new Color();
+        switch(towerLevel){
+            case VERMELHO:
+                corReceber.set( 1, 0, 0, 0);
+                break;
+            case LARANJA:
+                corReceber.set( 1, 0.64f, 0, 0);
+                break;
+            case AMARELO:
+                corReceber.set( 1, 1, 0, 0);
+                break;
+            case VERDE:
+                corReceber.set( 0, 1, 0, 0);
+                break;
+            case CIANO: 
+                corReceber.set( 0, 1, 1, 0);
+                break;
+            case AZUL:
+                corReceber.set( 0, 0, 1, 0);
+                break;
+            case VIOLETA:
+                corReceber.set( 0.30f , 0.18f, 0.30f, 0);
+                break;
+            }
+        return corReceber;
+    }
+     
+     
 
     public void changeTowerType() {//era para ir para o próximo tipo do Enum.
         //type.;
