@@ -99,7 +99,7 @@ public class Enemy {
      * @param y coordenada y do ponteiro do mouse.
      */
     
-    public void setGoal(int x, int y) {
+    public void setGoal(int x, int y, boolean debugMode) {
         TileNode startNode = LevelManager.graph
                 .getNodeAtCoordinates(
                         (int) this.position.coords.x,
@@ -124,7 +124,11 @@ public class Enemy {
         }, path);
         
         pathIterator = path.iterator();
+<<<<<<< HEAD
        // System.out.println(path.nodes.size);
+=======
+        if (debugMode) System.out.println(path.nodes.size);
+>>>>>>> master
     }
 
     /**

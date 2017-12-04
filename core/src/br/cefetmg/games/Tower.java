@@ -35,15 +35,18 @@ public class Tower {
     public int attackSpeed;
     public boolean isAttacking=false;
     public Enemy target;
+    public static Vector2 worldDimensions;
+    public static final float reajuste = 0.02f;
 
     //public final TextureRegion texture;
     public static Texture texture_teste = new Texture("torre_temporaria.png");
     public ArrayList<Bullet> bullets;
     public MovementAlgorithm comportamento;
 
-    public Tower() {
+    public Tower(float worldWidth, float worldHeight) {
         actionZone = 48f;
         bullets = new ArrayList<Bullet>();
+        worldDimensions = new Vector2(worldWidth, worldHeight);
     }
     
     public void setComportamento(Vector2 target){
@@ -61,16 +64,23 @@ public class Tower {
         bullets.add(agente);
         
     }
-    public void setTorre(int x, int y) {
+    public void setTorre(int x, int y, boolean debugMode) {
         this.towerLevel = Strength.VERMELHO;
         this.type = TowerType.LINE;
         TileNode towerNode = LevelManager.graph.getNodeAtCoordinates(x, y);
+<<<<<<< HEAD
         //System.out.println(" "+towerNode.getPosition().x +" "+towerNode.getPosition().y);
+=======
+        if (debugMode) System.out.println(" "+towerNode.getPosition().x +" "+towerNode.getPosition().y);
+>>>>>>> master
         this.position = new Position(towerNode.getPosition());
         towerNode.setIsObstacle(true);
         this.attackSpeed=100;
     }
     
+    public Texture getTexture (){
+        return texture_teste;
+    }
     public boolean atacandoAlguem(){
         return isAttacking;
     }
@@ -127,88 +137,146 @@ public class Tower {
              default:
                  return 1;
          }
-      }		      
-
+    }
+     
+    public Color getColor(){
+        Color corReceber= new Color();
+        switch(towerLevel){
+            case VERMELHO:
+                corReceber.set( 1, 0, 0, 0);
+                break;
+            case LARANJA:
+                corReceber.set( 1, 0.64f, 0, 0);
+                break;
+            case AMARELO:
+                corReceber.set( 1, 1, 0, 0);
+                break;
+            case VERDE:
+                corReceber.set( 0, 1, 0, 0);
+                break;
+            case CIANO: 
+                corReceber.set( 0, 1, 1, 0);
+                break;
+            case AZUL:
+                corReceber.set( 0, 0, 1, 0);
+                break;
+            case VIOLETA:
+                corReceber.set( 0.30f , 0.18f, 0.30f, 0);
+                break;
+            }
+        return corReceber;
+    }
+     
+     
     public void changeTowerType() {//era para ir para o próximo tipo do Enum.
-        //type.;
+        switch (type) {
+            case LINE:
+                type = TowerType.DOUBLE_LINE;
+                break;
+            case DOUBLE_LINE:
+                type = TowerType.TRIANGLE;
+                break;
+            case TRIANGLE:
+                type = TowerType.SQUARE;
+                break;
+            case SQUARE:
+                type = TowerType.PENTAGON;
+                break;
+            case PENTAGON:
+                type = TowerType.HEXAGON;
+                break;
+            case HEXAGON:
+                type = TowerType.HEPTAGON;
+                break;
+            case HEPTAGON:
+                type = TowerType.OCTAGON;
+                break;
+            case OCTAGON:
+                type = TowerType.STAR;
+                break;
+            case STAR:
+                type = TowerType.JEW_STAR;
+                break;
+            case JEW_STAR:
+                type = TowerType.HOURGLASS;
+                break;
+            case HOURGLASS:
+                type = TowerType.CIRCLE;
+                break;
+            case CIRCLE:
+                type = TowerType.OVAL;
+                break;
+            case OVAL:
+                type = TowerType.INFINITE;
+                break;
+        }
     }
 
     public Position getPosition() {
         return position;
     }
     
-    public void drawTower(ShapeRenderer renderer) {
-        switch (type) {
-            case LINE:
-                
-                break;
-            case DOUBLE_LINE:
-                break;
-            case TRIANGLE:
-                break;
-            case SQUARE:
-                break;
-            case PENTAGON:
-                break;
-            case HEXAGON:
-                break;
-            case HEPTAGON:
-                break;
-            case OCTAGON:
-                break;
-            case STAR:
-                break;
-            case JEW_STAR:
-                break;
-            case HOURGLASS:
-                break;
-            case CIRCLE:
-                break;
-            case OVAL:
-                break;
-            case INFINITE:
-                break;
-        }
-    }
+    
 
-    public Texture getTexture() {
+    public ShapeRenderer getForm(ShapeRenderer renderer) {
+        Vector2 size;
         switch (type) {
             case LINE:
-                return texture_teste;
+                size = new Vector2(0, worldDimensions.cpy().scl(reajuste).y);
+                renderer.line(position.coords.cpy().sub(size), position.coords.cpy().add(size));
+                break;
             case DOUBLE_LINE:
-                return texture_teste;
+                renderer.x(position.coords, 10);
+                break;
             case TRIANGLE:
-                return texture_teste;
+                // O 1.02f é um reajuste para ficar mais agradável o triangulo
+                size = new Vector2(worldDimensions.cpy().scl(reajuste));
+                renderer.triangle(position.coords.cpy().sub(size).x, position.coords.cpy().sub(size).y,
+                        position.coords.cpy().add(size).x, position.coords.cpy().sub(size).y,
+                        position.coords.cpy().x, position.coords.cpy().add(size).scl(1.02f).y);
+                break;
             case SQUARE:
-                return texture_teste;
+                // 1.02f , 1.1f , 2 reajustes para ficar mais agradevel a tela
+                // 0f variáveis de controle do eixo z
+                size = new Vector2(worldDimensions.cpy().scl(reajuste));
+                renderer.box(position.coords.cpy().sub(size).scl(1.02f).x, position.coords.cpy().sub(size).y, 0f, 1.1f * size.x, 2*size.y, 0f);
+                break;
             case PENTAGON:
-                return texture_teste;
+                size = new Vector2(worldDimensions.cpy().scl(reajuste));
+                renderer.polygon(new float[] {      
+                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().sub(size).y,               // Vertex 0         /3 \
+                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().sub(size).y,               // Vertex 1         4--2
+                    position.coords.cpy().scl(0.99f).add(size).x, position.coords.cpy().scl(0.98f).add(size).y,               // Vertex 2         |/ |
+                    position.coords.cpy().x, position.coords.cpy().add(size).scl(1.03f).y,
+                    position.coords.cpy().scl(1.01f).sub(size).x, position.coords.cpy().scl(0.98f).add(size).y                // Vertex 3         0--1
+                });
+                break;
             case HEXAGON:
-                return texture_teste;
+                break;
             case HEPTAGON:
-                return texture_teste;
+                break;
             case OCTAGON:
-                return texture_teste;
+                break;
             case STAR:
-                return texture_teste;
+                break;
             case JEW_STAR:
-                return texture_teste;
+                break;
             case HOURGLASS:
-                return texture_teste;
+                break;
             case CIRCLE:
-                return texture_teste;
+                break;
             case OVAL:
-                return texture_teste;
+                break;
             case INFINITE:
-                return texture_teste;
+                break;
         }
-        return texture_teste;
+        return renderer;
     }
     
     public void render (ShapeRenderer renderer) {
         Circle circle = new Circle(this.position.coords, actionZone);
         renderer.identity();
-        renderer.setColor(Color.CHARTREUSE);
+        renderer.setColor(Color.RED);
         renderer.circle(circle.x, circle.y, circle.radius);
     }
 
