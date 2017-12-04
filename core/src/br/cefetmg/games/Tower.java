@@ -271,20 +271,10 @@ public class Tower {
                 });
                 break;
             case JEW_STAR:
-                size = new Vector2(worldDimensions.cpy().scl(reajuste));
-                renderer.polygon(new float[] {      
-                    position.coords.cpy().x, position.coords.cpy().y,                                               // Vertex 0
-                    position.coords.cpy().scl(1.03f).sub(size).x, position.coords.cpy().sub(size).y,               // Vertex 0     
-                    position.coords.cpy().scl(0.97f).add(size).x, position.coords.cpy().scl(0.96f).add(size).y,    // Vertex 2     
-                    position.coords.cpy().scl(1.03f).sub(size).x, position.coords.cpy().add(size).y,    // Vertex 4     
-                    position.coords.cpy().scl(1.03f).sub(size).x, position.coords.cpy().sub(size).y,               // Vertex 0
-//                    position.coords.cpy().x, position.coords.cpy().y,                                               // Vertex 0
-//                    position.coords.cpy().scl(0.97f).add(size).x, position.coords.cpy().sub(size).y,               // Vertex 1     
-//                    position.coords.cpy().scl(0.97f).add(size).x, position.coords.cpy().add(size).scl(1.01f).y,    // Vertex 3       
-//                    position.coords.cpy().scl(1.03f).sub(size).x, position.coords.cpy().scl(0.96f).add(size).y,    // Vertex 5                      
-//                    position.coords.cpy().scl(0.97f).add(size).x, position.coords.cpy().sub(size).y,               // Vertex 1     
-//                    position.coords.cpy().x, position.coords.cpy().y,                                               // Vertex 0
-                });
+            size = new Vector2(worldDimensions.cpy().scl(reajuste));
+                renderer.triangle(position.coords.cpy().sub(size).x, position.coords.cpy().sub(size).y,
+                        position.coords.cpy().add(size).x, position.coords.cpy().sub(size).y,
+                        position.coords.cpy().x, position.coords.cpy().add(size).scl(1.02f).y);                            // Vertex 0
                 break;
             case HOURGLASS:
                 size = new Vector2(worldDimensions.cpy().scl(reajuste));
