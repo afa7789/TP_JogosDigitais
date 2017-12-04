@@ -98,7 +98,7 @@ public class HunterHunterGame extends ApplicationAdapter {
     int deadEnemy;
 
     public HunterHunterGame() {
-        this.windowTitle = "Hunter x Hunter (%d)";
+        this.windowTitle = "Geometric Doodle's Hunt(%d)";
         showingMetrics = true;
     }
 
@@ -230,25 +230,32 @@ public class HunterHunterGame extends ApplicationAdapter {
                 Vector2 clique = new Vector2(x, y);
                 viewport.unproject(clique);
                 // Botão ESQUERDO: posiciona torre
+                
                 if (button == Input.Buttons.LEFT) {
-                    if (quantidadeDeTorresDisponiveis > 0 && !constructionMode) {
-                        construtorDeTorre(clique.x, clique.y);
-                        quantidadeDeTorresDisponiveis--;
-                    } else {
-                        //seila tocar um som para mostrar que não pode construir.
-                    }
-                    if (constructionMode) {
-                        rebuildTower(clique.x, clique.y);
-                        constructionMode = !constructionMode;
-
+                    if(quantidadeDeTorresDisponiveis>0){
+                        if (!constructionMode) {
+                            construtorDeTorre(clique.x, clique.y);
+                        } else {
+                            //seila tocar um som para mostrar que não pode construir.
+                        }
+                        if (constructionMode) {
+                            rebuildTower(clique.x, clique.y);
+                            constructionMode = !constructionMode;
+                        }
                     }
                 }
                 if (button == Input.Buttons.RIGHT) {
-                    for (Tower t : torres) {
-                        //System.out.println(t.getPosition().coords.x +" " + (int) clique.x);
-                        if (Math.abs(t.getPosition().coords.x - (int) clique.x) < 16 && Math.abs(t.getPosition().coords.y - (int) clique.y) < 16) {
-                            t.upgradeTower();
-                            if (debugMode) System.out.println("OK");
+                    if(quantidadeDeTorresDisponiveis>0){
+                        for (Tower t : torres) {
+                            //System.out.println(t.getPosition().coords.x +" " + (int) clique.x);
+                            if (Math.abs(t.getPosition().coords.x - (int) clique.x) < 16 && Math.abs(t.getPosition().coords.y - (int) clique.y) < 16) {
+                                t.upgradeTower();
+                                if(t.isMaxPower){
+                                    if(debugMode) System.out.println("já está com poder no maximo não da para aumentar");
+                                }else
+                                    quantidadeDeTorresDisponiveis--;
+                                if (debugMode) System.out.println("OK");
+                            }
                         }
                     }
                 }
@@ -270,7 +277,14 @@ public class HunterHunterGame extends ApplicationAdapter {
         for (Tower torre : torres) {
             if (torre.position.coords.x == towerNode.getPosition().x && torre.position.coords.y == towerNode.getPosition().y) {
                 if (debugMode) System.out.println("ja existe uma torre no lugar!");
-                if (constructionMode) torre.changeTowerType();
+                if (constructionMode){
+                    if(torre.isFinalForm){
+                        if(debugMode) System.out.println("Já ta na FormaFinal");
+                    }else{
+                        quantidadeDeTorresDisponiveis--; 
+                        torre.changeTowerType();
+                    }
+                }
                 return false;
             }
         }
@@ -286,6 +300,7 @@ public class HunterHunterGame extends ApplicationAdapter {
             Tower Aux = new Tower(viewport.getWorldWidth(), viewport.getWorldHeight());
             Aux.setTorre((int) x, (int) y, debugMode);
             torres.add(Aux);
+            quantidadeDeTorresDisponiveis--;
             atualizaGrafo();
         }
         
