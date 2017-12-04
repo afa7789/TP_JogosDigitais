@@ -30,6 +30,8 @@ public class Tower {
     
     public Position position;
     public TowerType type;
+    public boolean isMaxPower;
+    public boolean isFinalForm;
     public Strength towerLevel;
     public final float actionZone;
     public int tempoEntreAtaques;
@@ -108,8 +110,11 @@ public class Tower {
                  towerLevel = Strength.AZUL;
                  break;
              case AZUL:
-                 towerLevel = Strength.VIOLETA;
-                 break;
+                towerLevel = Strength.VIOLETA;
+                break;
+             case VIOLETA:
+                 
+                break;
              default:
                  break;
          }
@@ -166,6 +171,7 @@ public class Tower {
      
      
     public void changeTowerType() {//era para ir para o próximo tipo do Enum.
+        //tem q seta o Type IS Final para true se tentar no final.
         switch (type) {
             case LINE:
                 type = TowerType.DOUBLE_LINE;
