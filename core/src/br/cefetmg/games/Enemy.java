@@ -33,7 +33,7 @@ public class Enemy {
     private static final float MIN_DISTANCE_CONSIDERED_ZERO_SQUARED = (float) Math.pow(2.0f, 2);
     private Facing facing;
     private TileNode nextNode, currentNode;
-
+    public Vector2 Goal;
     public Color color;
     public boolean shouldMove;
     public double life;
@@ -106,6 +106,7 @@ public class Enemy {
                         (int) this.position.coords.y);
         TileNode targetNode = LevelManager.graph
                 .getNodeAtCoordinates(x, y);
+        Goal = new Vector2(x,y);
 
         path.clear();
         pathFinder.metrics.reset();
@@ -136,7 +137,13 @@ public class Enemy {
     public Facing getFacing() {
         return facing;
     }
-
+    
+    public boolean chegouNoFinal(){
+        if( this.position.coords.dst2(Goal) > 0.5f)
+            return true;
+        return false;
+    }
+    
     /**
      * Retorna se o agente está se movimentando ou se está parado.
      *
