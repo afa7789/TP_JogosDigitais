@@ -46,7 +46,7 @@ public class MetricsRenderer {
         batch.begin();
         font.draw(batch, String.format("VIDAS: %d", vidas), initialX,
                 initialY + 2*fontHeight);
-        font.draw(batch, String.format("VIDAS: %d", vidasMaximo), initialX,
+        font.draw(batch, String.format("PONTOS: %d", vidasMaximo), initialX,
                 initialY + fontHeight);
         font.draw(batch, String.format("Nivel: %d",
                 nivel),
