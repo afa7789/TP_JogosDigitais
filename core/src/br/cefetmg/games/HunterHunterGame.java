@@ -62,7 +62,7 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     private boolean debugMode = false;
     private boolean constructionMode = false;
-
+    private boolean GameOver = false;
     private boolean showingMetrics;
 
     public boolean booleanSpawn;
@@ -75,7 +75,7 @@ public class HunterHunterGame extends ApplicationAdapter {
     int counter = 0;
     int nivel = 0;
     int numeroDeVidasMaximo = 10;
-    int numeroDeVidas = 10;
+    int numeroDeVidas = 5;
     int pontos=1;
     int somatorioDePontos=0;
     int valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo=10;
@@ -362,7 +362,7 @@ public class HunterHunterGame extends ApplicationAdapter {
                 if (torre.target > 0 && enemys.get(torre.target).life>0) {
                     if (counter % torre.tempoEntreAtaques == 0) {
                         if (debugMode) System.out.println("Adicionou ataque");
-                        attacks.add(new Attack(torre, 100, torre.position, torre.target ));
+                        attacks.add(new Attack(torre, 150, torre.position, torre.target ));
                     }
                 }else{
                     if (debugMode) System.out.println("Parou de Atacar");    
@@ -380,7 +380,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         Float distancia;
         for (Enemy enemy : enemys) {
             distancia = enemy.enviaPosicionamento().dst2(torre.position.coords);
-            if(distancia<=torre.actionZone && distancia < menorValor){
+            if(distancia <= torre.actionZone + 20 && distancia < menorValor){
                 if (debugMode) System.out.println("Agora a torre está a Atacar");
                 torre.estáAtacando();
                 inimigoMaisProximo = enemys.lastIndexOf(enemy);
@@ -462,7 +462,7 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     }
     
-public void controleDeFase(){
+    public void controleDeFase(){
         boolean faseAcabou=false;
 
         if(quantidadeDeTorresDisponiveis == 0){
@@ -517,21 +517,23 @@ public void controleDeFase(){
         }*/
        
         if(numeroDeVidas>0){
+        //Remove o inimigo e atualiza posição dele
+        removerAtualizarInimigos(delta);
+        //Atualiza Posição dos Ataques da Dano nos inimigos
+        atualizaAtaques(delta);
+        if(numeroDeVidas>=0 && !GameOver){
+
             //Adiciona Inimigos
             adicionaInimigos();
             //Atualiza as Torres quem elas atacam e etc
             emissorDeAtaques();
-            //Atualiza Posição dos Ataques da Dano nos inimigos
-            atualizaAtaques(delta);
-            //Remove o inimigo
-            removerAtualizarInimigos(delta);
+            //controla as waves, pontos ,vidas etc
             controleDeFase();
             //desenho do Mapa e etc
             desenhoGeral();
         
     //        bulletRenderer.desenha(teste);
     //        towerRenderer.render(teste2);
-
             enemyRenderer.renderAll(enemys);
             towerRenderer.renderAll(torres, shapeRenderer);
             bulletRenderer.renderAll(attacks);
@@ -539,8 +541,10 @@ public void controleDeFase(){
             counter++;
         }else{
             System.out.println("Game Over sua pontuação: "+ somatorioDePontos);
-            numeroDeVidas=0;
+            GameOver=true;
+            numeroDeVidas=-1;
         }
+    }
     }
     
 

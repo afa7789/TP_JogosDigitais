@@ -175,6 +175,7 @@ public class Tower {
         switch (type) {
             case LINE:
                 type = TowerType.DOUBLE_LINE;
+
                 break;
             case DOUBLE_LINE:
                 type = TowerType.TRIANGLE;

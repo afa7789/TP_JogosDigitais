@@ -136,7 +136,7 @@ public class Attack {
     
     public void update(float delta,ArrayList<Enemy> Enemys){
         //Ta crashando quando vai pegar a posição dele.
-        this.seek.target.coords = Enemys.get(enemy).getPosition(); //isso aqui ta fudendo o bagulho.
+        this.seek.target.coords = new Vector2( Enemys.get(enemy).getPosition() ); //isso aqui ta fudendo o bagulho.
         
         Vector2 novaPosição = new Vector2(this.position.coords);
         Direction direcionamento = teste.guiar(this.posicao);
