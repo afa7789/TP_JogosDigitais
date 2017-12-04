@@ -6,6 +6,7 @@
 package br.cefetmg.games.graphics;
 
 import br.cefetmg.games.Tower;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
@@ -16,11 +17,14 @@ import java.util.ArrayList;
  */
 public class TowerRenderer {
     private SpriteBatch batch;
+    private final Camera camera;
 
-    public TowerRenderer(SpriteBatch batch) {
+    public TowerRenderer(SpriteBatch batch, Camera camera) {
         this.batch = batch;
+        this.camera = camera;
     }
     public void render(Tower tower){
+            batch.setProjectionMatrix(camera.combined);
             batch.begin();
             batch.draw( tower.getTexture(), tower.position.coords.x - tower.getTexture().getHeight()/2, tower.position.coords.y - tower.getTexture().getHeight()/2);
             batch.end();

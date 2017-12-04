@@ -118,7 +118,7 @@ public class HunterHunterGame extends ApplicationAdapter {
 
         graphRenderer = new GraphRenderer(batch, shapeRenderer);
         graphRenderer.renderGraphToTexture(LevelManager.graph);
-        towerRenderer = new TowerRenderer(batch);
+        towerRenderer = new TowerRenderer(batch, camera);
 
         //Enemy 
         //enemyspritesheet=new Texture("goomba-spritesheet.png");
@@ -130,7 +130,6 @@ public class HunterHunterGame extends ApplicationAdapter {
         metricsRenderer = new MetricsRenderer(batch, shapeRenderer,
                 new BitmapFont());
 
-        batch = new SpriteBatch();
         bulletRenderer = new BulletRenderer(camera, batch);
 
         // define o objetivo (perseguição, fuga) inicialmente no centro do mundo
@@ -319,17 +318,22 @@ public class HunterHunterGame extends ApplicationAdapter {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
+        
+        tiledMapRenderer.setView(camera);
+        tiledMapRenderer.render();
+        
         if (debugMode) {
-            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+
+            batch.begin();
             graphRenderer.renderOffScreenedGraph();
+            batch.end();
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             for (Tower t : torres) {
                 t.render(shapeRenderer);
             }
             shapeRenderer.end();
         }
-        tiledMapRenderer.setView(camera);
-        tiledMapRenderer.render();
 
     }
 

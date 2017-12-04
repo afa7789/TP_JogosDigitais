@@ -208,7 +208,7 @@ public class Tower {
     public void render (ShapeRenderer renderer) {
         Circle circle = new Circle(this.position.coords, actionZone);
         renderer.identity();
-        renderer.setColor(Color.CHARTREUSE);
+        renderer.setColor(Color.RED);
         renderer.circle(circle.x, circle.y, circle.radius);
     }
 
