@@ -25,7 +25,7 @@ public class Enemy {
 
     public Position position;
     private final Algorithm seek;
-    private IndexedAStarPathFinder pathFinder;
+    private static IndexedAStarPathFinder pathFinder;
     private final DefaultGraphPath<TileConnection> path;
     private Iterator<TileConnection> pathIterator;
     private final Target steeringTarget;
