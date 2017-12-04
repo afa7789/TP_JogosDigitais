@@ -62,7 +62,7 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     private boolean debugMode = false;
     private boolean constructionMode = false;
-
+    private boolean GameOver = false;
     private boolean showingMetrics;
 
     public boolean booleanSpawn;
@@ -496,7 +496,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         removerAtualizarInimigos(delta);
         //Atualiza Posição dos Ataques da Dano nos inimigos
         atualizaAtaques(delta);
-        if(numeroDeVidas>0){
+        if(numeroDeVidas>=0 && !GameOver){
             //Adiciona Inimigos
             adicionaInimigos();
             //Atualiza as Torres quem elas atacam e etc
@@ -515,7 +515,8 @@ public class HunterHunterGame extends ApplicationAdapter {
             counter++;
         }else{
             System.out.println("Game Over sua pontuação: "+ somatorioDePontos);
-            numeroDeVidas=0;
+            GameOver=true;
+            numeroDeVidas=-1;
         }
     }
     
