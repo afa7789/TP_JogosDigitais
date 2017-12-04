@@ -223,7 +223,7 @@ public class HunterHunterGame extends ApplicationAdapter {
                 viewport.unproject(clique);
                 // Botão ESQUERDO: posiciona torre
                 if (button == Input.Buttons.LEFT) {
-                    if (quantidadeDeTorresDisponiveis > 0) {
+                    if (quantidadeDeTorresDisponiveis > 0 && !constructionMode) {
                         construtorDeTorre(clique.x, clique.y);
                         quantidadeDeTorresDisponiveis--;
                     } else {
