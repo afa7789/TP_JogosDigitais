@@ -36,6 +36,7 @@ public class Enemy {
     public Vector2 Goal;
     public Color color;
     public boolean shouldMove;
+    public boolean terminouOPercurso;
     public double life;
 
     public Enemy(Vector2 position, Color color) {
@@ -49,6 +50,7 @@ public class Enemy {
         this.pathIterator = this.path.iterator();
         this.facing = Facing.EAST;
         this.shouldMove = false;
+        this.terminouOPercurso = false;
         this.life=100;
     }
     
@@ -86,6 +88,8 @@ public class Enemy {
             float angle = steering.velocity.angle();
             int quadrant = (int) (((int) angle + (360 - 67.5f)) / 45) % 8;
             facing = Facing.values()[(8 - quadrant) % 8];
+        } else {
+            terminouOPercurso = chegouNoFinal();
         }
     }
     
