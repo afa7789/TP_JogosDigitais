@@ -106,22 +106,27 @@ public class HunterHunterGame extends ApplicationAdapter {
     public GraphRenderer getGraphRenderer() {
         return graphRenderer;
     }
-
-    @Override
-    public void create() {
-
-        
+    void restart(){
         booleanSpawn = false;
         quantidadeDeTorresDisponiveis = 5;
         quantidadeDeInimigosDisponiveis = 5;
         maximoDeInimigos = quantidadeDeInimigosDisponiveis;
         
-
-        //init time 
         start = TimeUtils.millis();
         cont = 0;
         deadEnemy = 0;
         posicaoy=0;
+        attacks = new ArrayList<Attack>();
+    }
+    @Override
+    public void create() {
+
+        
+       
+        
+        restart();
+        //init time 
+       
         
         //init hud
         hud=new HUD();
@@ -166,7 +171,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         algoritmos.add(buscar);
         algoritmoCorrente = buscar;
 
-        attacks = new ArrayList<Attack>();
+   
         
         
         
@@ -544,36 +549,35 @@ public class HunterHunterGame extends ApplicationAdapter {
         batch.end();
         hud.button_render();
         //hud.update();
-       /* if(hud.getState()==1){
-            play(delta);
-        }*/
-       
-        if(numeroDeVidas>0){
-        
-         
-           if(numeroDeVidas>=0 && !GameOver){
+        if(hud.getState()==0){
+            hud.setState(1);
+        }else if(hud.getState()==1)
+            if(numeroDeVidas>0){
 
-               //Adiciona Inimigos
-               adicionaInimigos();
-               //Atualiza as Torres quem elas atacam e etc
-               emissorDeAtaques();
-               //controla as waves, pontos ,vidas etc
-               controleDeFase();
-               //desenho do Mapa e etc
-               desenhoGeral();
-               if(hud.state==1)
-                play(delta);
-           towerRenderer.renderAll(torres, shapeRenderer);
-           enemyRenderer.renderAll(enemys, shapeRenderer);
-           bulletRenderer.renderAll(attacks);
-           Gdx.graphics.setTitle(String.format(windowTitle, Gdx.graphics.getFramesPerSecond()));
-           
 
-           }else{
-               System.out.println("Game Over sua pontuação: "+ somatorioDePontos);
-               GameOver=true;
-               numeroDeVidas=-1;
-           }
+               if(numeroDeVidas>=0 && !GameOver){
+
+                   //Adiciona Inimigos
+                   adicionaInimigos();
+                   //Atualiza as Torres quem elas atacam e etc
+                   emissorDeAtaques();
+                   //controla as waves, pontos ,vidas etc
+                   controleDeFase();
+                   //desenho do Mapa e etc
+                   desenhoGeral();
+                   if(hud.state==1)
+                    play(delta);
+               towerRenderer.renderAll(torres, shapeRenderer);
+               enemyRenderer.renderAll(enemys, shapeRenderer);
+               bulletRenderer.renderAll(attacks);
+               Gdx.graphics.setTitle(String.format(windowTitle, Gdx.graphics.getFramesPerSecond()));
+
+
+               }else{
+                   System.out.println("Game Over sua pontuação: "+ somatorioDePontos);
+                   GameOver=true;
+                   numeroDeVidas=-1;
+               }
          }
     }
     void play(float delta){
