@@ -346,6 +346,7 @@ public class HunterHunterGame extends ApplicationAdapter {
             } else {
                 //Tem q somar os pontos aqui
                 enemys.remove(enemy);
+                cont--;
             }
         }
     }
