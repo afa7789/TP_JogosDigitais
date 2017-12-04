@@ -558,14 +558,15 @@ public class HunterHunterGame extends ApplicationAdapter {
         removerAtualizarInimigos(delta);
         //Atualiza Posição dos Ataques da Dano nos inimigos
         atualizaAtaques(delta);
-        if(numeroDeVidas>=0 && !GameOver){
+        //controla as waves, pontos ,vidas etc
+        controleDeFase();
+        if(numeroDeVidas>0 && !GameOver){
 
             //Adiciona Inimigos
             adicionaInimigos();
             //Atualiza as Torres quem elas atacam e etc
             emissorDeAtaques();
-            //controla as waves, pontos ,vidas etc
-            controleDeFase();
+
             //desenho do Mapa e etc
             desenhoGeral();
 
