@@ -6,6 +6,7 @@
 package br.cefetmg.games.graphics;
 
 import br.cefetmg.games.Tower;
+import br.cefetmg.games.TowerType;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -30,8 +31,8 @@ public class TowerRenderer {
         batch.draw( tower.getTexture(), tower.position.coords.x - tower.getTexture().getHeight()/2, tower.position.coords.y - tower.getTexture().getHeight()/2);
         batch.end();
         renderer.setProjectionMatrix(camera.combined);
-        renderer.begin(ShapeRenderer.ShapeType.Line);
         renderer.identity();
+        renderer.begin(ShapeRenderer.ShapeType.Line);
         renderer.setColor(tower.getColor());
         tower.getForm(renderer);
         renderer.end();

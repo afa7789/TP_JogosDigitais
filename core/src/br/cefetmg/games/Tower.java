@@ -66,7 +66,7 @@ public class Tower {
     }
     public void setTorre(int x, int y, boolean debugMode) {
         this.towerLevel = Strength.VERMELHO;
-        this.type = TowerType.LINE;
+        this.type = TowerType.INFINITE;
         TileNode towerNode = LevelManager.graph.getNodeAtCoordinates(x, y);
         //System.out.println(" "+towerNode.getPosition().x +" "+towerNode.getPosition().y);
         if (debugMode) System.out.println(" "+towerNode.getPosition().x +" "+towerNode.getPosition().y);
@@ -240,49 +240,19 @@ public class Tower {
                 break;
             case PENTAGON:
                 size = new Vector2(worldDimensions.cpy().scl(reajuste));
-                renderer.polygon(new float[] {      
-                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().sub(size).y,               // Vertex 0         3  
-                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().sub(size).y,               // Vertex 1      /     \
-                    position.coords.cpy().scl(0.99f).add(size).x, position.coords.cpy().scl(0.98f).add(size).y,    // Vertex 2     4       2 
-                    position.coords.cpy().x, position.coords.cpy().add(size).scl(1.03f).y,                         // Vertex 3      \     /
-                    position.coords.cpy().scl(1.01f).sub(size).x, position.coords.cpy().scl(0.98f).add(size).y     // Vertex 4       0---1   
-                });
+                renderer.circle(position.coords.cpy().x, position.coords.cpy().y, size.x,5);
                 break;
             case HEXAGON:
                 size = new Vector2(worldDimensions.cpy().scl(reajuste));
-                renderer.polygon(new float[] {      
-                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().sub(size).y,               // Vertex 0     
-                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().sub(size).y,               // Vertex 1     
-                    position.coords.cpy().scl(0.99f).add(size).x, position.coords.cpy().scl(0.96f).add(size).y,    // Vertex 2     
-                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().add(size).scl(1.01f).y,    // Vertex 3      
-                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().add(size).scl(1.01f).y,    // Vertex 4      
-                    position.coords.cpy().scl(1.01f).sub(size).x, position.coords.cpy().scl(0.96f).add(size).y,    // Vertex 5                      
-                });
+                renderer.circle(position.coords.cpy().x, position.coords.cpy().y, size.x,6);
                 break;
             case HEPTAGON:
                 size = new Vector2(worldDimensions.cpy().scl(reajuste));
-                renderer.polygon(new float[] {      
-                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().sub(size).y,               // Vertex 0     
-                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().sub(size).y,               // Vertex 1     
-                    position.coords.cpy().scl(0.99f).add(size).x, position.coords.cpy().scl(0.96f).add(size).y,    // Vertex 2     
-                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().add(size).scl(1.01f).y,    // Vertex 3
-                    position.coords.cpy().x, position.coords.cpy().add(size).scl(1.03f).y,                         // Vertex 6
-                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().add(size).scl(1.01f).y,    // Vertex 4      
-                    position.coords.cpy().scl(1.01f).sub(size).x, position.coords.cpy().scl(0.96f).add(size).y,    // Vertex 5            
-                });
+                renderer.circle(position.coords.cpy().x, position.coords.cpy().y, size.x,7);
                 break;
             case OCTAGON:
                 size = new Vector2(worldDimensions.cpy().scl(reajuste));
-                renderer.polygon(new float[] {      
-                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().sub(size).y,               // Vertex 0
-                    position.coords.cpy().x, position.coords.cpy().sub(size).scl(0.97f).y,                         // Vertex 1
-                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().sub(size).y,               // Vertex 2     
-                    position.coords.cpy().scl(0.99f).add(size).x, position.coords.cpy().scl(0.96f).add(size).y,    // Vertex 3     
-                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().add(size).scl(1.01f).y,    // Vertex 4
-                    position.coords.cpy().x, position.coords.cpy().add(size).scl(1.03f).y,                         // Vertex 5
-                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().add(size).scl(1.01f).y,    // Vertex 6      
-                    position.coords.cpy().scl(1.01f).sub(size).x, position.coords.cpy().scl(0.96f).add(size).y,    // Vertex 7            
-                });
+                renderer.circle(position.coords.cpy().x, position.coords.cpy().y, size.x,8);
                 break;
             case STAR:
                 size = new Vector2(worldDimensions.cpy().scl(reajuste));
@@ -312,22 +282,39 @@ public class Tower {
                 break;
             case HOURGLASS:
                 size = new Vector2(worldDimensions.cpy().scl(reajuste));
-                renderer.polygon(new float[] {      
-                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().sub(size).y,               // Vertex 0         3  
-                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().sub(size).y,               // Vertex 1      /     \
-                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().scl(0.98f).add(size).y,     // Vertex 4       0---1   
-                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().scl(0.98f).add(size).y    // Vertex 2     4       2  
+                renderer.polygon(new float[] {
+                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().sub(size).y,              // Vertex 0         3  
+                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().sub(size).y,              // Vertex 1      /     \
+                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().scl(1.02f).sub(size).y,              // Vertex 1      /     \
+                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().scl(1.02f).sub(size).y,              // Vertex 0         3  
+                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().scl(1.02f).sub(size).y,              // Vertex 1      /     \
+                    
+                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().scl(0.98f).add(size).y,   // Vertex 4       0---1   
+                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().scl(0.98f).add(size).y,    // Vertex 2     4       2  
+                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().add(size).y,    // Vertex 2     4       2 
+                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().add(size).y,   // Vertex 4       0---1              
+                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().scl(0.98f).add(size).y,   // Vertex 4       0---1   
+                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().scl(0.98f).add(size).y,    // Vertex 2     4       2  
+                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().scl(1.02f).sub(size).y              // Vertex 0         3 
                 });
                 break;
             case CIRCLE:
+                size = new Vector2(worldDimensions.cpy().scl(reajuste));
+                renderer.circle(position.coords.cpy().x, position.coords.cpy().y, size.x);
                 break;
             case OVAL:
+                size = new Vector2(worldDimensions.cpy().scl(reajuste));
+                renderer.ellipse(position.coords.cpy().sub(size).x, position.coords.cpy().sub(size).y, (2 * size.x), (2 * size.y));
                 break;
             case INFINITE:
+                size = new Vector2(worldDimensions.cpy().scl(reajuste/2));
+                renderer.circle(position.coords.cpy().add(size).x, position.coords.cpy().y, size.x);
+                renderer.circle(position.coords.cpy().sub(size).x, position.coords.cpy().y, size.x);
                 break;
         }
         return renderer;
     }
+    
     
     public void render (ShapeRenderer renderer) {
         Circle circle = new Circle(this.position.coords, actionZone);
