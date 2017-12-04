@@ -41,6 +41,7 @@ public class Tower {
     public ArrayList<Bullet> bullets;
     public MovementAlgorithm comportamento;
     public static Vector2 worldDimensions;
+    public static final float reajuste = 0.02f;
 
     public Tower(float worldWidth, float worldHeight) {
         actionZone = 48f;
@@ -73,6 +74,9 @@ public class Tower {
         this.attackSpeed=100;
     }
     
+    public Texture getTexture (){
+        return texture_teste;
+    }
     public boolean atacandoAlguem(){
         return isAttacking;
     }
