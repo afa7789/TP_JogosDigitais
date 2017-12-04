@@ -122,6 +122,7 @@ public class HunterHunterGame extends ApplicationAdapter {
 
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
+        metricsRenderer = new MetricsRenderer(batch, shapeRenderer, new BitmapFont());
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
@@ -131,7 +132,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         viewport = new ScreenViewport(camera);
 
         // Carrega o mapa
-        tiledMap = LevelManager.LoadLevel("tp-mapa-teste.tmx");
+        tiledMap = LevelManager.LoadLevel("map.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, batch);
 
         graphRenderer = new GraphRenderer(batch, shapeRenderer);
@@ -332,7 +333,7 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     public void adicionaInimigos() {
         if (InimigosPodemSpawnar()) {
-            System.out.println(counter);
+            // System.out.println(counter);
             if( counter%(500/(nivel+1)) <= 1){//aranjar jeito melhor de fazer isso.
                 System.out.println("era para spawnar");
                 if (debugMode) System.out.println("spawno");
@@ -443,6 +444,9 @@ public class HunterHunterGame extends ApplicationAdapter {
                 t.render(shapeRenderer);
             }
             shapeRenderer.end();
+        }
+        if(showingMetrics) {
+            metricsRenderer.render(numeroDeVidas,numeroDeVidasMaximo, nivel);
         }
 
     }

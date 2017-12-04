@@ -26,30 +26,31 @@ public class MetricsRenderer {
         font.setColor(Color.WHITE);
     }
 
-    public void render(Metrics metrics, int totalNodes) {
+    public void render(int vidas, int vidasMaximo, int nivel) {
         float verticalSpacing = 5;
         float fontHeight = font.getLineHeight() + verticalSpacing;
         float initialY = fontHeight + verticalSpacing;
         float initialX = 10;
 
         // desenha o fundo semi-transparente
-        /*Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glEnable(GL20.GL_BLEND);
         shapes.setColor(0, 0, 0, 0.25f);
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         shapes.rect(0, 0,
                 Gdx.graphics.getWidth(),
-                initialY + fontHeight + verticalSpacing);
+                initialY + (2* fontHeight) + verticalSpacing);
         shapes.end();
-        Gdx.gl.glDisable(GL20.GL_BLEND);*/
+        Gdx.gl.glDisable(GL20.GL_BLEND);
 
         // desenha o texto com as métricas
         batch.begin();
-        /*font.draw(batch, String.format("Total de nós: %d", totalNodes), initialX,
+        font.draw(batch, String.format("VIDAS: %d", vidas), initialX,
+                initialY + 2*fontHeight);
+        font.draw(batch, String.format("VIDAS: %d", vidasMaximo), initialX,
                 initialY + fontHeight);
-        font.draw(batch, String.format("Nós visitados: %d (%.2f%%)",
-                metrics.visitedNodes,
-                (((float) metrics.visitedNodes * 100) / totalNodes)),
-                initialX, initialY);*/
+        font.draw(batch, String.format("Nivel: %d",
+                nivel),
+                initialX, initialY);
         batch.end();
     }
 }
