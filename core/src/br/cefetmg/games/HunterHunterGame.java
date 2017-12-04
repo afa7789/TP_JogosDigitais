@@ -108,7 +108,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         quantidadeDeTorresDisponiveis = 10;
         quantidadeDeInimigosDisponiveis = 3;
         
-        teste2 = new Tower();
+        teste2 = new Tower(viewport.getWorldWidth(), viewport.getWorldHeight());
 
         //init time 
         start = TimeUtils.millis();
@@ -257,8 +257,8 @@ public class HunterHunterGame extends ApplicationAdapter {
             //Aux.setComportamento(new Vector2(enemys.get(en).position.coords.x,enemys.get(e
             //System.out.println("vai por a torre");
             atualizaGrafo();
-            Tower Aux = new Tower();
-            Aux.setTorre((int) x, (int) y);
+            Tower Aux = new Tower(viewport.getWorldWidth(), viewport.getWorldHeight());
+            Aux.setTorre((int) x, (int) y, debugMode);
             torres.add(Aux);
         }
     }
@@ -291,8 +291,8 @@ public class HunterHunterGame extends ApplicationAdapter {
             if( TimeUtils.timeSinceMillis(start)%500 == 0){
                 System.out.println("spawno");
                 enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2),Color.FIREBRICK));
-                enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
-                enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
+                enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
+                enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
                 enemys.get(enemys.size() - 1).update(Gdx.graphics.getDeltaTime());
                 cont++;
                 quantidadeDeInimigosDisponiveis--;
