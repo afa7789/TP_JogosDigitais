@@ -35,13 +35,13 @@ public class Tower {
     public int attackSpeed;
     public boolean isAttacking=false;
     public Enemy target;
+    public static Vector2 worldDimensions;
+    public static final float reajuste = 0.02f;
 
     //public final TextureRegion texture;
     public static Texture texture_teste = new Texture("torre_temporaria.png");
     public ArrayList<Bullet> bullets;
     public MovementAlgorithm comportamento;
-    public static Vector2 worldDimensions;
-    public static final float reajuste = 0.02f;
 
     public Tower(float worldWidth, float worldHeight) {
         actionZone = 48f;
@@ -133,7 +133,7 @@ public class Tower {
              default:
                  return 1;
          }
-      }		      
+    }
      
     public Color getColor(){
         Color corReceber= new Color();
@@ -164,7 +164,6 @@ public class Tower {
     }
      
      
-
     public void changeTowerType() {//era para ir para o próximo tipo do Enum.
         switch (type) {
             case LINE:
@@ -273,7 +272,7 @@ public class Tower {
     public void render (ShapeRenderer renderer) {
         Circle circle = new Circle(this.position.coords, actionZone);
         renderer.identity();
-        renderer.setColor(Color.CHARTREUSE);
+        renderer.setColor(Color.RED);
         renderer.circle(circle.x, circle.y, circle.radius);
     }
 
