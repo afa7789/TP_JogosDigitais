@@ -336,13 +336,8 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     public void adicionaInimigos() {
         if (InimigosPodemSpawnar()) {
-<<<<<<< Updated upstream
-            // System.out.println(counter);
-            if( counter%(500/(nivel+1)) <= 1){//aranjar jeito melhor de fazer isso.
-=======
-            System.out.println(counter);
+            //System.out.println(counter);
             if( counter%(200/(nivel+1)) == 0){//aranjar jeito melhor de fazer isso.
->>>>>>> Stashed changes
                 System.out.println("era para spawnar");
                 if (debugMode) System.out.println("spawno");
                 enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2),Color.FIREBRICK));
