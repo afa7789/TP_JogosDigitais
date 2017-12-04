@@ -65,6 +65,12 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     private boolean showingMetrics;
 
+    public boolean booleanSpawn;
+    
+    private int quantidadeDeInimigosDisponiveis;
+    
+    private int quantidadeDeTorresDisponiveis;
+
     int counter = 0;
 
     private Array<Bullet> bullets;
@@ -94,6 +100,12 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     @Override
     public void create() {
+
+        booleanSpawn = false;
+        
+        quantidadeDeTorresDisponiveis = 10;
+        quantidadeDeInimigosDisponiveis =3;
+        
         teste2 = new Tower();
 
         //init time 
@@ -122,9 +134,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         //Enemy 
         //enemyspritesheet=new Texture("goomba-spritesheet.png");
         enemyRenderer = new EnemyRenderer(batch, camera, new Texture("gon.png")); //new AgentRenderer(batch, camera,enemyspritesheet);
-        enemys.add(new Enemy(new Vector2(
-                LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2),
-                Color.FIREBRICK));
+        //enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2),Color.FIREBRICK));
 
         metricsRenderer = new MetricsRenderer(batch, shapeRenderer,
                 new BitmapFont());
@@ -133,7 +143,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         bulletRenderer = new BulletRenderer(camera, batch);
 
         // define o objetivo (perseguição, fuga) inicialmente no centro do mundo
-        objetivo = new BulletTarget(new Vector3(0, 0, 0));
+        //objetivo = new BulletTarget(new Vector3(0, 0, 0));
 
         // configura e registra os comportamentos disponíveis
         algoritmos = new Array<>();
@@ -143,8 +153,10 @@ public class HunterHunterGame extends ApplicationAdapter {
         algoritmoCorrente = buscar;
 
         attacks = new ArrayList<Attack>();
-        teste2.setTorre(300, 300);
-        bullets = new Array<>();
+        
+        //teste2.setTorre(300, 300);
+        
+        //bullets = new Array<>();
         //  for(int i=0;i<enemys.size();i++){
         enemys.get(0).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
         // }
@@ -186,28 +198,10 @@ public class HunterHunterGame extends ApplicationAdapter {
                 if (keycode == Input.Keys.C) {
                     constructionMode = !constructionMode;
                 }
+                if (keycode == Input.Keys.A) {
+                    booleanSpawn = !booleanSpawn;
+                }
                 return false;
-            }
-
-            public void construtorDeTorre(float x, float y) {
-                TileNode towerNode = LevelManager.graph.getNodeAtCoordinates((int) x, (int) y);
-                boolean emptyPlace = true;
-                for (Tower torre : torres){
-                    if (torre.position.coords.x == towerNode.getPosition().x && torre.position.coords.y == towerNode.getPosition().y){
-                        System.out.println("ja existe uma torre no lugar!");
-                        emptyPlace = false;
-                    }
-                }
-                if (emptyPlace) {
-                    //Aux.newBullet(new Vector3((int) clique.x, (int) clique.y, 0));
-                    //torres.add(Aux);
-                    //Random r = new Random();
-                    //int en = r.nextInt(enemys.size());
-                    //Aux.setComportamento(new Vector2(enemys.get(en).position.coords.x,enemys.get(e
-                    atualizaGrafo();
-                    Tower Aux = new Tower();
-                    Aux.setTorre((int) x, (int) y);
-                }
             }
 
             @Override
@@ -216,7 +210,13 @@ public class HunterHunterGame extends ApplicationAdapter {
                 viewport.unproject(clique);
                 // Botão ESQUERDO: posiciona torre
                 if (button == Input.Buttons.LEFT) {
-                    construtorDeTorre(clique.x,clique.y);
+                    if (quantidadeDeTorresDisponiveis > 0) {
+                        construtorDeTorre(clique.x, clique.y);
+                        quantidadeDeTorresDisponiveis--;
+                    } else {
+                        //seila tocar um som para mostrar que não pode construir.
+                    }
+
                 }
                 if (button == Input.Buttons.RIGHT) {
                     for (Tower t : torres) {
@@ -238,6 +238,27 @@ public class HunterHunterGame extends ApplicationAdapter {
      * @param w Largura da janela.
      * @param h Altura da janela.
      */
+    public void construtorDeTorre(float x, float y) {
+        TileNode towerNode = LevelManager.graph.getNodeAtCoordinates((int) x, (int) y);
+        boolean emptyPlace = true;
+        for (Tower torre : torres) {
+            if (torre.position.coords.x == towerNode.getPosition().x && torre.position.coords.y == towerNode.getPosition().y) {
+                System.out.println("ja existe uma torre no lugar!");
+                emptyPlace = false;
+            }
+        }
+        if (emptyPlace) {
+            //Aux.newBullet(new Vector3((int) clique.x, (int) clique.y, 0));
+            //torres.add(Aux);
+            //Random r = new Random();
+            //int en = r.nextInt(enemys.size());
+            //Aux.setComportamento(new Vector2(enemys.get(en).position.coords.x,enemys.get(e
+            atualizaGrafo();
+            Tower Aux = new Tower();
+            Aux.setTorre((int) x, (int) y);
+        }
+    }
+
     @Override
     public void resize(int w, int h) {
         viewport.update(w, h);
@@ -253,15 +274,23 @@ public class HunterHunterGame extends ApplicationAdapter {
         }
     }
 
+    public boolean InimigosPodemSpawnar() {
+        if (booleanSpawn) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void adicionaInimigos() {
-        if ((TimeUtils.timeSinceMillis(start) / 2000) + 1 > cont) {
-            enemys.add(new Enemy(new Vector2(
-                    LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2),
-                    Color.FIREBRICK));
-            enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
-            enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
-            enemys.get(enemys.size() - 1).update(Gdx.graphics.getDeltaTime());
-            cont++;
+        if (InimigosPodemSpawnar()) {
+            if ((TimeUtils.timeSinceMillis(start) / 2000) + 1 > cont) {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2),Color.FIREBRICK));
+                enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
+                enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
+                enemys.get(enemys.size() - 1).update(Gdx.graphics.getDeltaTime());
+                cont++;
+            }
         }
     }
 
@@ -335,31 +364,22 @@ public class HunterHunterGame extends ApplicationAdapter {
     @Override
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
-
-        //desenho do Mapa e etc
-        desenhoGeral();
-
         //Adiciona Inimigos
         adicionaInimigos();
-
         //Remove o inimigo
         removerAtualizarInimigos(delta);
-
         //Atualiza as Torres quem elas atacam e etc
         emissorDeAtaques();
-
         //Atualiza Posição dos Ataques da Dano nos inimigos
         atualizaAtaques(delta);
-
+        //desenho do Mapa e etc
+        desenhoGeral();
         batch.setProjectionMatrix(camera.combined);
-
         bulletRenderer.desenha(teste);
         towerRenderer.render(teste2);
-
         enemyRenderer.renderAll(enemys);
         towerRenderer.renderAll(torres);
         bulletRenderer.renderAll(attacks);
-
         Gdx.graphics.setTitle(String.format(windowTitle, Gdx.graphics.getFramesPerSecond()));
         counter++;
     }
