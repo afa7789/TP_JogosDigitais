@@ -73,13 +73,13 @@ public class HunterHunterGame extends ApplicationAdapter {
     private int quantidadeDeTorresDisponiveis = 1;
     public int valorParaGanharVidaExtra = 100;
 
-    int counter = 0;
-    int nivel = 0;
-    int numeroDeVidasMaximo = 10;
-    int numeroDeVidas = 5;
-    int pontos = 1;
-    int somatorioDePontos = 0;
-    int valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo = 10;
+    int counter;
+    int nivel;
+    int numeroDeVidasMaximo;
+    int numeroDeVidas;
+    int pontos;
+    int somatorioDePontos ;
+    int valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo;
     int posicaoy;
 
     private Array<Bullet> bullets;
@@ -107,6 +107,13 @@ public class HunterHunterGame extends ApplicationAdapter {
         return graphRenderer;
     }
     void restart(){
+        counter = 0;
+        nivel = 0;
+        numeroDeVidasMaximo = 10;
+        numeroDeVidas = 5;
+        pontos = 1;
+        somatorioDePontos = 0;
+        valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo = 10;
         booleanSpawn = false;
         quantidadeDeTorresDisponiveis = 5;
         quantidadeDeInimigosDisponiveis = 5;
@@ -122,14 +129,14 @@ public class HunterHunterGame extends ApplicationAdapter {
     public void create() {
 
         
-       
+          hud = new HUD();
         
         restart();
         //init time 
-       
+       hud.setFulllif(numeroDeVidas);
         
         //init hud
-        hud = new HUD();
+     
 
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
@@ -467,6 +474,7 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     public void perdeVida() {
         numeroDeVidas--;
+        hud.contdead();
     }
 
     public void removendoUltimaTorre() {//Pego o Tamanho do ArrayList e remove a ultima torre posta
