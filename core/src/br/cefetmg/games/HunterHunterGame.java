@@ -282,18 +282,28 @@ public class HunterHunterGame extends ApplicationAdapter {
         }
     }
 
-    public void adicionaInimigos() {
-        if ((TimeUtils.timeSinceMillis(start) / 2000) + 1 > cont) {
-            enemys.add(new Enemy(new Vector2(
-                    LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2),
-                    Color.FIREBRICK));
-            enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2,debugMode);
-            enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
-            enemys.get(enemys.size() - 1).update(Gdx.graphics.getDeltaTime());
-            cont++;
+    public boolean InimigosPodemSpawnar() {
+        if ( booleanSpawn && quantidadeDeInimigosDisponiveis > 0) {
+            return true;
+        } else {
+            return false;
         }
     }
-    
+
+    public void adicionaInimigos() {
+        if (InimigosPodemSpawnar()) {
+            if( TimeUtils.timeSinceMillis(start)%500 == 0){
+                System.out.println("spawno");
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2),Color.FIREBRICK));
+                enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
+                enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
+                enemys.get(enemys.size() - 1).update(Gdx.graphics.getDeltaTime());
+                cont++;
+                quantidadeDeInimigosDisponiveis--;
+            }
+        }
+    }
+
     public void emissorDeAtaques() {
         for (Tower torre : torres) {
             if (torre.atacandoAlguem()) {
