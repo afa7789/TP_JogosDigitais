@@ -230,7 +230,7 @@ public class HunterHunterGame extends ApplicationAdapter {
                         //seila tocar um som para mostrar que não pode construir.
                     }
                     if (constructionMode) {
-                        upgradeTower(clique.x, clique.y);
+                        rebuildTower(clique.x, clique.y);
                         constructionMode = !constructionMode;
 
                     }
@@ -257,7 +257,7 @@ public class HunterHunterGame extends ApplicationAdapter {
      */
 
     
-    public boolean upgradeTower (float x, float y) {
+    public boolean rebuildTower (float x, float y) {
         TileNode towerNode = LevelManager.graph.getNodeAtCoordinates((int) x, (int) y);
         for (Tower torre : torres) {
             if (torre.position.coords.x == towerNode.getPosition().x && torre.position.coords.y == towerNode.getPosition().y) {
@@ -269,8 +269,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         return true;
     }
     public void construtorDeTorre (float x, float y) {
-        boolean emptyPlace = upgradeTower(x,y);
-        
+        boolean emptyPlace = rebuildTower(x,y);
         if (emptyPlace) {
 //            Random r = new Random();
 //            int en = r.nextInt(enemys.size());
