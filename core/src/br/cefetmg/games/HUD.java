@@ -118,7 +118,10 @@ public class HUD {
                         state=0;
                    }
                    if((int) clique.y>650&&(int) clique.y<700 &&(int) clique.x>894 &&(int) clique.x<1014 ){
-                    
+                       if(state==2)
+                           state=1;
+                       else  if(state==1)
+                           state=2;
                    }
            }         
     }
