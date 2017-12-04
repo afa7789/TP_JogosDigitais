@@ -115,6 +115,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         somatorioDePontos = 0;
         valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo = 10;
         booleanSpawn = false;
+        constructionMode=false;
         quantidadeDeTorresDisponiveis = 5;
         quantidadeDeInimigosDisponiveis = 5;
         maximoDeInimigos = quantidadeDeInimigosDisponiveis;
