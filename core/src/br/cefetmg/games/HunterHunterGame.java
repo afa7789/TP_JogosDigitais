@@ -56,25 +56,25 @@ public class HunterHunterGame extends ApplicationAdapter {
     private EnemyRenderer enemyRenderer;
 
     private ArrayList<Tower> torres = new ArrayList<Tower>();
-
+            
     public Tower teste2;
     private final String windowTitle;
-
+    
     private boolean debugMode = false;
     private boolean constructionMode = false;
-
+    
+    
     private boolean showingMetrics;
-
+    
     public boolean booleanSpawn;
     
-    private int quantidadeDeInimigosDisponiveis=3;
+    private int quantidadeDeInimigosDisponiveis = 3;
     
-    private int quantidadeDeTorresDisponiveis=10;
-
+    private int quantidadeDeTorresDisponiveis = 10;
+    
     int counter = 0;
-    int nivel =0 ;
-    
-    
+    int nivel = 0;
+
     private Array<Bullet> bullets;
     private ArrayList<Attack> attacks;
     public Attack teste;
@@ -98,18 +98,15 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     public GraphRenderer getGraphRenderer() {
         return graphRenderer;
-    }
-
+    }  
+    
     @Override
     public void create() {
-
-        booleanSpawn = false;
         
+        booleanSpawn = false;
         quantidadeDeTorresDisponiveis = 10;
         quantidadeDeInimigosDisponiveis = 3;
         
-        
-
         //init time 
         start = TimeUtils.millis();
         cont = 1;
@@ -136,7 +133,9 @@ public class HunterHunterGame extends ApplicationAdapter {
         //Enemy 
         //enemyspritesheet=new Texture("goomba-spritesheet.png");
         enemyRenderer = new EnemyRenderer(batch, camera, new Texture("gon.png")); //new AgentRenderer(batch, camera,enemyspritesheet);
-        enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2),Color.FIREBRICK));
+        enemys.add(new Enemy(new Vector2(
+                LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2),
+                Color.FIREBRICK));
 
         metricsRenderer = new MetricsRenderer(batch, shapeRenderer,
                 new BitmapFont());
@@ -144,7 +143,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         bulletRenderer = new BulletRenderer(camera, batch);
 
         // define o objetivo (perseguição, fuga) inicialmente no centro do mundo
-        //objetivo = new BulletTarget(new Vector3(0, 0, 0));
+        // objetivo = new BulletTarget(new Vector3(0, 0, 0));
 
         // configura e registra os comportamentos disponíveis
         algoritmos = new Array<>();
@@ -152,16 +151,14 @@ public class HunterHunterGame extends ApplicationAdapter {
         buscar.alvo = objetivo;
         algoritmos.add(buscar);
         algoritmoCorrente = buscar;
-
-        attacks = new ArrayList<Attack>();
         
+        attacks = new ArrayList<Attack>();
         teste2 = new Tower(viewport.getWorldWidth(), viewport.getWorldHeight());
         teste2.setTorre(300,300, debugMode);
         bullets = new Array<>();
         //  for(int i=0;i<enemys.size();i++){
         enemys.get(0).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
         // }
-        
         //agent.setGoal(LevelManager.totalPixelWidth-1, LevelManager.totalPixelHeight/2);
         teste = new Attack(teste2,40,new Position(new Vector2(500,500)),enemys.get(0));
         
@@ -211,13 +208,15 @@ public class HunterHunterGame extends ApplicationAdapter {
             public boolean touchDown(int x, int y, int pointer, int button) {
                 Vector2 clique = new Vector2(x, y);
                 viewport.unproject(clique);
-                // Botão ESQUERDO: posiciona torre
+                // Botão ESQUERDO: posiciona objetivo
                 if (button == Input.Buttons.LEFT) {
                     if (quantidadeDeTorresDisponiveis > 0) {
                         construtorDeTorre(clique.x, clique.y);
                         quantidadeDeTorresDisponiveis--;
-                    } else {
-                        //seila tocar um som para mostrar que não pode construir.
+                    }
+                    if (constructionMode) {
+                        upgradeTower(clique.x, clique.y);
+                        constructionMode = !constructionMode;
                     }
                 }
                 if (button == Input.Buttons.RIGHT) {
@@ -240,29 +239,34 @@ public class HunterHunterGame extends ApplicationAdapter {
      * @param w Largura da janela.
      * @param h Altura da janela.
      */
-    public void construtorDeTorre(float x, float y) {
+    
+    public boolean upgradeTower (float x, float y) {
         TileNode towerNode = LevelManager.graph.getNodeAtCoordinates((int) x, (int) y);
-        boolean emptyPlace = true;
         for (Tower torre : torres) {
             if (torre.position.coords.x == towerNode.getPosition().x && torre.position.coords.y == towerNode.getPosition().y) {
-                System.out.println("ja existe uma torre no lugar!");
-                emptyPlace = false;
+                if (debugMode) System.out.println("ja existe uma torre no lugar!");
+                if (constructionMode) torre.changeTowerType();
+                return false;
             }
         }
+        return true;
+    }
+    public void construtorDeTorre (float x, float y) {
+        boolean emptyPlace = upgradeTower(x,y);
+        
         if (emptyPlace) {
-            //Aux.newBullet(new Vector3((int) clique.x, (int) clique.y, 0));
-            //torres.add(Aux);
-            //Random r = new Random();
-            //int en = r.nextInt(enemys.size());
-            //Aux.setComportamento(new Vector2(enemys.get(en).position.coords.x,enemys.get(e
-            //System.out.println("vai por a torre");
-            atualizaGrafo();
+//            Random r = new Random();
+//            int en = r.nextInt(enemys.size());
+//
+//            Aux.setComportamento(new Vector2(enemys.get(en).position.coords.x,enemys.get(en).position.coords.y));
+//            Aux.newBullet(new Vector3((int) clique.x, (int) clique.y, 0));
             Tower Aux = new Tower(viewport.getWorldWidth(), viewport.getWorldHeight());
             Aux.setTorre((int) x, (int) y, debugMode);
             torres.add(Aux);
+            atualizaGrafo();
         }
+        
     }
-
     @Override
     public void resize(int w, int h) {
         viewport.update(w, h);
