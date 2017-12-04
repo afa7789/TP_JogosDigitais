@@ -275,24 +275,20 @@ public class Tower {
                 renderer.triangle(position.coords.cpy().sub(size).x, position.coords.cpy().sub(size).y,
                         position.coords.cpy().add(size).x, position.coords.cpy().sub(size).y,
                         position.coords.cpy().x, position.coords.cpy().add(size).scl(1.02f).y);                            // Vertex 0
+                renderer.triangle(position.coords.cpy().sub(size).x, position.coords.cpy().add(size).y,
+                        position.coords.cpy().add(size).x, position.coords.cpy().add(size).y,
+                        position.coords.cpy().x, position.coords.cpy().sub(size).scl(0.98f).y);
+                
                 break;
             case HOURGLASS:
                 size = new Vector2(worldDimensions.cpy().scl(reajuste));
-                renderer.polygon(new float[] {
-                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().sub(size).y,              // Vertex 0         3  
-                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().sub(size).y,              // Vertex 1      /     \
-                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().scl(1.02f).sub(size).y,              // Vertex 1      /     \
-                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().scl(1.02f).sub(size).y,              // Vertex 0         3  
-                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().scl(1.02f).sub(size).y,              // Vertex 1      /     \
-                    
-                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().scl(0.98f).add(size).y,   // Vertex 4       0---1   
-                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().scl(0.98f).add(size).y,    // Vertex 2     4       2  
-                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().add(size).y,    // Vertex 2     4       2 
-                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().add(size).y,   // Vertex 4       0---1              
-                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().scl(0.98f).add(size).y,   // Vertex 4       0---1   
-                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().scl(0.98f).add(size).y,    // Vertex 2     4       2  
-                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().scl(1.02f).sub(size).y              // Vertex 0         3 
-                });
+                renderer.triangle(position.coords.cpy().sub(size).x, position.coords.cpy().sub(size).y,
+                        position.coords.cpy().add(size).x, position.coords.cpy().sub(size).y,
+                        position.coords.cpy().x, position.coords.cpy().add(size).scl(0.96f).y);                            // Vertex 0
+                renderer.triangle(position.coords.cpy().sub(size).x, position.coords.cpy().add(size).y,
+                        position.coords.cpy().add(size).x, position.coords.cpy().add(size).y,
+                        position.coords.cpy().x, position.coords.cpy().add(size).scl(0.96f).y);
+                
                 break;
             case CIRCLE:
                 size = new Vector2(worldDimensions.cpy().scl(reajuste));
