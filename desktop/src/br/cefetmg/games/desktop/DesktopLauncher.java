@@ -10,7 +10,7 @@ public class DesktopLauncher {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         new LwjglApplication(new HunterHunterGame(), config);
         config.width = 1024;
-        config.height = 640;
+        config.height = 700;
         config.resizable = false;
     }
 }

@@ -79,7 +79,7 @@ public class HunterHunterGame extends ApplicationAdapter {
     int pontos=0;
     int somatorioDePontos=0;
     int valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo=10;
-    
+    int posicaoy;
     
     private Array<Bullet> bullets;
     private ArrayList<Attack> attacks;
@@ -119,7 +119,8 @@ public class HunterHunterGame extends ApplicationAdapter {
         start = TimeUtils.millis();
         cont = 1;
         deadEnemy = 0;
-
+        posicaoy=0;
+        
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         metricsRenderer = new MetricsRenderer(batch, shapeRenderer, new BitmapFont());
@@ -232,16 +233,18 @@ public class HunterHunterGame extends ApplicationAdapter {
                 Vector2 clique = new Vector2(x, y);
                 viewport.unproject(clique);
                 // Botão ESQUERDO: posiciona torre
-                
+                 if(clique.y<640)
+                    posicaoy=(int)clique.y;
+                 
                 if (button == Input.Buttons.LEFT) {
                     if(quantidadeDeTorresDisponiveis>0){
                         if (!constructionMode) {
-                            construtorDeTorre(clique.x, clique.y);
+                            construtorDeTorre(clique.x, posicaoy);
                         } else {
                             //seila tocar um som para mostrar que não pode construir.
                         }
                         if (constructionMode) {
-                            rebuildTower(clique.x, clique.y);
+                            rebuildTower(clique.x, posicaoy);
                             constructionMode = !constructionMode;
                         }
                     }
@@ -250,7 +253,7 @@ public class HunterHunterGame extends ApplicationAdapter {
                     if(quantidadeDeTorresDisponiveis>0){
                         for (Tower t : torres) {
                             //System.out.println(t.getPosition().coords.x +" " + (int) clique.x);
-                            if (Math.abs(t.getPosition().coords.x - (int) clique.x) < 16 && Math.abs(t.getPosition().coords.y - (int) clique.y) < 16) {
+                            if (Math.abs(t.getPosition().coords.x - (int) clique.x) < 16 && Math.abs(t.getPosition().coords.y -posicaoy) < 16) {
                                 t.upgradeTower();
                                 if(t.isMaxPower){
                                     if(debugMode) System.out.println("já está com poder no maximo não da para aumentar");
