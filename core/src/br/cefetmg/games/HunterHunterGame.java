@@ -539,20 +539,22 @@ public class HunterHunterGame extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
         
         float delta = Gdx.graphics.getDeltaTime();
-         batch.begin();
+        batch.begin();
         hud.render(batch);
         batch.end();
         hud.button_render();
-      //  hud.update();
-      /*  if(hud.getState()==1)
-            play();
-        else if (hud.getState()==0){
-            create();
-     //       hud.setState(1);
-        }*/
+        //hud.update();
+        if(hud.getState()==1){
+            play(delta);
+            System.out.println("ola");
+        }
        
         if(numeroDeVidas>0){
-        //Remove o inimigo e atualiza posição dele
+         //   play(delta);
+         }
+    }
+    void play(float delta){
+         //Remove o inimigo e atualiza posição dele
         removerAtualizarInimigos(delta);
         //Atualiza Posição dos Ataques da Dano nos inimigos
         atualizaAtaques(delta);
@@ -578,10 +580,12 @@ public class HunterHunterGame extends ApplicationAdapter {
             GameOver=true;
             numeroDeVidas=-1;
         }
+        
     }
 
-    }
     
+
+
 
     private void atualizaAtaques(float delta) {
         for (Attack attack : attacks) {
