@@ -107,8 +107,8 @@ public class HunterHunterGame extends ApplicationAdapter {
 
         
         booleanSpawn = false;
-        quantidadeDeTorresDisponiveis = 10;
-        quantidadeDeInimigosDisponiveis = 3;
+        quantidadeDeTorresDisponiveis = 30;
+        quantidadeDeInimigosDisponiveis = 5;
         
 
         //init time 
@@ -214,6 +214,10 @@ public class HunterHunterGame extends ApplicationAdapter {
                 if (keycode == Input.Keys.A) {
                     booleanSpawn = !booleanSpawn;
                 }
+                if (keycode == Input.Keys.E) {
+                    System.out.println(quantidadeDeTorresDisponiveis);
+                    quantidadeDeTorresDisponiveis++;
+                }
                 return false;
             }
 
@@ -273,7 +277,6 @@ public class HunterHunterGame extends ApplicationAdapter {
         if (emptyPlace) {
 //            Random r = new Random();
 //            int en = r.nextInt(enemys.size());
-//
 //            Aux.setComportamento(new Vector2(enemys.get(en).position.coords.x,enemys.get(en).position.coords.y));
 //            Aux.newBullet(new Vector3((int) clique.x, (int) clique.y, 0));
             Tower Aux = new Tower(viewport.getWorldWidth(), viewport.getWorldHeight());
@@ -309,7 +312,7 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     public void adicionaInimigos() {
         if (InimigosPodemSpawnar()) {
-            if( TimeUtils.timeSinceMillis(start)%500 == 0){
+            if( TimeUtils.timeSinceMillis(start)%(500/(nivel+1)) == 0){
                 if (debugMode) System.out.println("spawno");
                 enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2),Color.FIREBRICK));
                 enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
@@ -322,10 +325,10 @@ public class HunterHunterGame extends ApplicationAdapter {
     }
 
     public void emissorDeAtaques() {
-        for (Tower torre : torres) {
+        for(Tower torre : torres) {
             if (torre.atacandoAlguem()) {
                 if (torre.target.getLife() > 0) {
-                    if (counter % torre.attackSpeed == 0) {
+                    if (counter % torre.tempoEntreAtaques == 0) {
                         if (debugMode) System.out.println("Adicionou ataque");
                         attacks.add(new Attack(torre, 100, torre.position, torre.target));
                     }
@@ -402,13 +405,13 @@ public void controleDeFase(){
         }
         if( (quantidadeDeInimigosDisponiveis == 0 && cont==0) && quantidadeDeTorresDisponiveis == 0){
             faseAcabou=true;
-            System.out.println("Fim da Fase");
+            if(debugMode)System.out.println("Fim da Fase");
         }
         if(faseAcabou){
-            System.out.println("Nova Fase");
+            if(debugMode)System.out.println("Nova Fase " + nivel);
             nivel++;
-            quantidadeDeTorresDisponiveis = 5;// tem que colocar de acordo com o numero de Inimigos q matou.
-            quantidadeDeInimigosDisponiveis = 3 * nivel;
+            quantidadeDeTorresDisponiveis = 10 * nivel;// tem que colocar de acordo com o numero de Inimigos q matou.
+            quantidadeDeInimigosDisponiveis = 13 * nivel;
             faseAcabou=false;
         }
     }
