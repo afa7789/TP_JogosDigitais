@@ -217,6 +217,7 @@ public class HunterHunterGame extends ApplicationAdapter {
                 }
                 if (keycode == Input.Keys.A) {
                     booleanSpawn = !booleanSpawn;
+                    System.out.println( booleanSpawn + "  " +quantidadeDeInimigosDisponiveis + "  "+ (booleanSpawn && quantidadeDeInimigosDisponiveis > 0) );
                 }
                 if (keycode == Input.Keys.E) {
                     System.out.println(quantidadeDeTorresDisponiveis);
