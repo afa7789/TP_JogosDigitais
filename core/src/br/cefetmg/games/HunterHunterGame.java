@@ -70,11 +70,15 @@ public class HunterHunterGame extends ApplicationAdapter {
     private int quantidadeDeInimigosDisponiveis=3;
     
     private int quantidadeDeTorresDisponiveis=10;
-    
+    public int valorParaGanharVidaExtra=100;
     
     int counter = 0;
     int nivel = 0;
-
+    int numeroDeVidasMaximo = 10;
+    int numeroDeVidas = 10;
+    int pontos=0;
+    int somatorioDePontos=0;
+    int valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo= 10;
     
     
     private Array<Bullet> bullets;
@@ -357,16 +361,35 @@ public class HunterHunterGame extends ApplicationAdapter {
         }
         return inimigoMaisProximo;
     }
-
+    
+    public void removendoOInimigo(Enemy enemy){
+        enemys.remove(enemy);
+        cont--;
+    }
+    
+    public void adicionarPontos(){
+        pontos++;
+    }
+    
+    public void perdeVida(){
+        numeroDeVidas--;
+    }
+    
     public void removerAtualizarInimigos(float delta) {
         for (Enemy enemy : enemys) {
             enemy.update(delta);
             if (enemy.getLife() > 0) {
-                //enemyRenderer.render(enemy);
+                if(!enemy.shouldMove && !enemy.terminouOPercurso){
+                    //removendoUltimaTorre();
+                }if(!enemy.shouldMove && enemy.terminouOPercurso ){
+                    //chegouNoFim
+                    removendoOInimigo(enemy);                  
+                    perdeVida();
+                }
             } else {
                 //Tem q somar os pontos aqui
-                enemys.remove(enemy);
-                cont--;
+                    adicionarPontos();
+                    removendoOInimigo(enemy);
             }
         }
     }
@@ -383,7 +406,6 @@ public class HunterHunterGame extends ApplicationAdapter {
         tiledMapRenderer.render();
         
         if (debugMode) {
-
             batch.begin();
             graphRenderer.renderOffScreenedGraph();
             batch.end();
@@ -400,6 +422,13 @@ public class HunterHunterGame extends ApplicationAdapter {
 public void controleDeFase(){
     
         boolean faseAcabou=false;
+        if(somatorioDePontos%valorParaGanharVidaExtra == 0){
+            if(numeroDeVidas<numeroDeVidasMaximo)
+                numeroDeVidas++;
+            else{
+                pontos+=valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo;
+            }
+        }
         if(quantidadeDeTorresDisponiveis == 0){
             booleanSpawn=true;
         }
@@ -410,8 +439,10 @@ public void controleDeFase(){
         if(faseAcabou){
             if(debugMode)System.out.println("Nova Fase " + nivel);
             nivel++;
-            quantidadeDeTorresDisponiveis = 10 * nivel;// tem que colocar de acordo com o numero de Inimigos q matou.
-            quantidadeDeInimigosDisponiveis = 13 * nivel;
+            quantidadeDeTorresDisponiveis = pontos * nivel;// tem que colocar de acordo com o numero de Inimigos q matou.
+            somatorioDePontos += pontos;
+            pontos=0;
+            quantidadeDeInimigosDisponiveis = 4 + (numeroDeVidasMaximo-numeroDeVidas) * nivel;
             faseAcabou=false;
         }
     }
