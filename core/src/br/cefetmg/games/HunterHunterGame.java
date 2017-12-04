@@ -90,7 +90,7 @@ public class HunterHunterGame extends ApplicationAdapter {
     private Array<MovementAlgorithm> algoritmos;
 
     private int colidiu = 0;
-
+    HUD hud;
     ArrayList<Enemy> enemys = new ArrayList<Enemy>();
     Texture enemyspritesheet;
     long start;
@@ -120,6 +120,9 @@ public class HunterHunterGame extends ApplicationAdapter {
         cont = 0;
         deadEnemy = 0;
         posicaoy=0;
+        
+        //init hud
+        hud=new HUD();
         
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
@@ -232,10 +235,13 @@ public class HunterHunterGame extends ApplicationAdapter {
             public boolean touchDown(int x, int y, int pointer, int button) {
                 Vector2 clique = new Vector2(x, y);
                 viewport.unproject(clique);
-                // Botão ESQUERDO: posiciona torre
+                
+                hud.listeningbutton(button,clique);
+
+                
                  if(clique.y<640)
                     posicaoy=(int)clique.y;
-                 
+                // Botão ESQUERDO: posiciona torre
                 if (button == Input.Buttons.LEFT) {
                     if(quantidadeDeTorresDisponiveis>0){
                         if (!constructionMode) {
@@ -429,11 +435,11 @@ public class HunterHunterGame extends ApplicationAdapter {
     }
 
     public void desenhoGeral() {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+       /* Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         camera.update();
-        batch.setProjectionMatrix(camera.combined);
+        batch.setProjectionMatrix(camera.combined);*/
 
         
         tiledMapRenderer.setView(camera);
@@ -491,8 +497,25 @@ public void controleDeFase(){
     
     @Override
     public void render() {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        
+        batch.setProjectionMatrix(camera.combined);
         
         float delta = Gdx.graphics.getDeltaTime();
+         batch.begin();
+        hud.render(batch);
+        batch.end();
+        hud.button_render();
+      //  hud.update();
+      /*  if(hud.getState()==1)
+            play();
+        else if (hud.getState()==0){
+            create();
+     //       hud.setState(1);
+        }*/
+       
         if(numeroDeVidas>0){
             //Adiciona Inimigos
             adicionaInimigos();
@@ -505,7 +528,7 @@ public void controleDeFase(){
             controleDeFase();
             //desenho do Mapa e etc
             desenhoGeral();
-            batch.setProjectionMatrix(camera.combined);
+        
     //        bulletRenderer.desenha(teste);
     //        towerRenderer.render(teste2);
 
