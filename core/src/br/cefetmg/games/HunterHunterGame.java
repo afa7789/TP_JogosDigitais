@@ -55,7 +55,7 @@ public class HunterHunterGame extends ApplicationAdapter {
     private BulletRenderer bulletRenderer;
     private EnemyRenderer enemyRenderer;
 
-    private ArrayList<Tower> torres = new ArrayList<Tower>();
+    private ArrayList<Tower> torres;
 
     public Tower teste2;
     private final String windowTitle;
@@ -92,7 +92,7 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     private int colidiu = 0;
     HUD hud;
-    ArrayList<Enemy> enemys = new ArrayList<Enemy>();
+    ArrayList<Enemy> enemys;
     Texture enemyspritesheet;
     long start;
     int cont; //Conta quantos inimigos a no mapa
@@ -124,6 +124,8 @@ public class HunterHunterGame extends ApplicationAdapter {
         deadEnemy = 0;
         posicaoy=0;
         attacks = new ArrayList<Attack>();
+        torres = new ArrayList<Tower>();
+        enemys= new ArrayList<Enemy>();
     }
     @Override
     public void create() {
