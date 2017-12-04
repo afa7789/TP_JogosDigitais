@@ -123,6 +123,8 @@ public class HunterHunterGame extends ApplicationAdapter {
         cont = 0;
         deadEnemy = 0;
         posicaoy=0;
+        enemys = new ArrayList<Enemy>();
+        torres = new ArrayList<Tower>();
         attacks = new ArrayList<Attack>();
     }
     @Override
