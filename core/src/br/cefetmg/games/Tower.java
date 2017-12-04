@@ -162,7 +162,47 @@ public class Tower {
      
 
     public void changeTowerType() {//era para ir para o próximo tipo do Enum.
-        //type.;
+        switch (type) {
+            case LINE:
+                type = TowerType.DOUBLE_LINE;
+                break;
+            case DOUBLE_LINE:
+                type = TowerType.TRIANGLE;
+                break;
+            case TRIANGLE:
+                type = TowerType.SQUARE;
+                break;
+            case SQUARE:
+                type = TowerType.PENTAGON;
+                break;
+            case PENTAGON:
+                type = TowerType.HEXAGON;
+                break;
+            case HEXAGON:
+                type = TowerType.HEPTAGON;
+                break;
+            case HEPTAGON:
+                type = TowerType.OCTAGON;
+                break;
+            case OCTAGON:
+                type = TowerType.STAR;
+                break;
+            case STAR:
+                type = TowerType.JEW_STAR;
+                break;
+            case JEW_STAR:
+                type = TowerType.HOURGLASS;
+                break;
+            case HOURGLASS:
+                type = TowerType.CIRCLE;
+                break;
+            case CIRCLE:
+                type = TowerType.OVAL;
+                break;
+            case OVAL:
+                type = TowerType.INFINITE;
+                break;
+        }
     }
 
     public Position getPosition() {
