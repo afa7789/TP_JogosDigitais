@@ -126,6 +126,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         attacks = new ArrayList<Attack>();
         torres = new ArrayList<Tower>();
         enemys= new ArrayList<Enemy>();
+         hud.setFulllif(numeroDeVidas);
     }
     @Override
     public void create() {
@@ -134,8 +135,8 @@ public class HunterHunterGame extends ApplicationAdapter {
           hud = new HUD();
         
         restart();
-        //init time 
-       hud.setFulllif(numeroDeVidas);
+    
+   
         
         //init hud
      
