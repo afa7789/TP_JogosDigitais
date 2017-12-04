@@ -147,7 +147,7 @@ public class HunterHunterGame extends ApplicationAdapter {
 
         //Enemy 
         //enemyspritesheet=new Texture("goomba-spritesheet.png");
-        enemyRenderer = new EnemyRenderer(batch, camera, new Texture("gon.png")); //new AgentRenderer(batch, camera,enemyspritesheet);
+        enemyRenderer = new EnemyRenderer(batch, camera/*, new Texture("gon.png")*/); //new AgentRenderer(batch, camera,enemyspritesheet);
         //enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2),Color.FIREBRICK));
 
         metricsRenderer = new MetricsRenderer(batch, shapeRenderer,

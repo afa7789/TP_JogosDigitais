@@ -26,10 +26,10 @@ public class TowerRenderer {
         this.camera = camera;
     }
     public void render(Tower tower, ShapeRenderer renderer){
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        batch.draw( tower.getTexture(), tower.position.coords.x - tower.getTexture().getHeight()/2, tower.position.coords.y - tower.getTexture().getHeight()/2);
-        batch.end();
+//        batch.setProjectionMatrix(camera.combined);
+//        batch.begin();
+//        batch.draw( tower.getTexture(), tower.position.coords.x - tower.getTexture().getHeight()/2, tower.position.coords.y - tower.getTexture().getHeight()/2);
+//        batch.end();
         renderer.setProjectionMatrix(camera.combined);
         renderer.identity();
         renderer.begin(ShapeRenderer.ShapeType.Line);

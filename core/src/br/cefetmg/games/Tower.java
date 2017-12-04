@@ -40,8 +40,8 @@ public class Tower {
     public static Vector2 worldDimensions;
     public static final float reajuste = 0.02f;
 
-    //public final TextureRegion texture;
-    public static Texture texture_teste = new Texture("torre_temporaria.png");
+    // public final TextureRegion texture;
+    // public static Texture texture_teste = new Texture("torre_temporaria.png");
     public ArrayList<Bullet> bullets;
     public MovementAlgorithm comportamento;
 
@@ -77,9 +77,9 @@ public class Tower {
         this.tempoEntreAtaques=100;
     }
     
-    public Texture getTexture (){
-        return texture_teste;
-    }
+//    public Texture getTexture (){
+//        return texture_teste;
+//    }
     public boolean atacandoAlguem(){
         return isAttacking;
     }

@@ -19,7 +19,7 @@ public class EnemyRenderer {
 
     private final SpriteBatch batch;
     private final Camera camera;
-    private final OrientedCharacterSprite sprite;
+    // private final OrientedCharacterSprite sprite;
 
     // tamanho dos quadros da animação (40x40)
     private static final int FRAME_WIDTH = 40;
@@ -37,12 +37,12 @@ public class EnemyRenderer {
      * @param camera
      * @param character
      */
-    public EnemyRenderer(SpriteBatch batch, Camera camera,
-            Texture character) {
+    public EnemyRenderer(SpriteBatch batch, Camera camera/*,
+            Texture character*/) {
         this.batch = batch;
         this.camera = camera;
-        this.sprite = new OrientedCharacterSprite(character,
-                FRAME_WIDTH, FRAME_HEIGHT);
+        /*this.sprite = new OrientedCharacterSprite(character,
+                FRAME_WIDTH, FRAME_HEIGHT);*/
     }
     
     public void renderAll(ArrayList<Enemy> enemys, ShapeRenderer renderer){
@@ -53,17 +53,17 @@ public class EnemyRenderer {
     }
     
     public void render(Enemy agent, ShapeRenderer renderer) {
-        sprite.update(Gdx.graphics.getDeltaTime());
-        sprite.setCenter(
-                agent.position.coords.x,
-                agent.position.coords.y);
-        sprite.setFacing(agent.getFacing());
-        sprite.setMoving(agent.isMoving());
-        sprite.translateY(POSITION_OFFSET_Y);
-        batch.setProjectionMatrix(camera.combined);
-            batch.begin();
-            sprite.draw(batch);
-            batch.end();
+//        sprite.update(Gdx.graphics.getDeltaTime());
+//        sprite.setCenter(
+//                agent.position.coords.x,
+//                agent.position.coords.y);
+//        sprite.setFacing(agent.getFacing());
+//        sprite.setMoving(agent.isMoving());
+//        sprite.translateY(POSITION_OFFSET_Y);
+//        batch.setProjectionMatrix(camera.combined);
+//            batch.begin();
+//            sprite.draw(batch);
+//            batch.end();
         renderer.setProjectionMatrix(camera.combined);
         renderer.identity();
         renderer.begin(ShapeRenderer.ShapeType.Line);
