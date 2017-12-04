@@ -364,8 +364,7 @@ public class HunterHunterGame extends ApplicationAdapter {
             if (quantidadeDeInimigosDisponiveis >=  3*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERDE, viewport.getWorldWidth(), viewport.getWorldHeight()));   
             else if (quantidadeDeInimigosDisponiveis >=  2*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
             else if (quantidadeDeInimigosDisponiveis >= maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AZUL, viewport.getWorldWidth(), viewport.getWorldHeight())); 
-            else enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VIOLETA, viewport.getWorldWidth(), viewport.getWorldHeight())); 
-            
+            else enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VIOLETA, viewport.getWorldWidth(), viewport.getWorldHeight()));
         } else {
             if (quantidadeDeInimigosDisponiveis >=  3*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
             else if (quantidadeDeInimigosDisponiveis >= 2*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AZUL, viewport.getWorldWidth(), viewport.getWorldHeight())); 
@@ -540,20 +539,22 @@ public class HunterHunterGame extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
         
         float delta = Gdx.graphics.getDeltaTime();
-         batch.begin();
+        batch.begin();
         hud.render(batch);
         batch.end();
         hud.button_render();
-      //  hud.update();
-      /*  if(hud.getState()==1)
-            play();
-        else if (hud.getState()==0){
-            create();
-     //       hud.setState(1);
-        }*/
+        //hud.update();
+        if(hud.getState()==1){
+            play(delta);
+            System.out.println("ola");
+        }
        
         if(numeroDeVidas>0){
-        //Remove o inimigo e atualiza posição dele
+         //   play(delta);
+         }
+    }
+    void play(float delta){
+         //Remove o inimigo e atualiza posição dele
         removerAtualizarInimigos(delta);
         //Atualiza Posição dos Ataques da Dano nos inimigos
         atualizaAtaques(delta);
@@ -579,10 +580,12 @@ public class HunterHunterGame extends ApplicationAdapter {
             GameOver=true;
             numeroDeVidas=-1;
         }
+        
     }
 
-    }
     
+
+
 
     private void atualizaAtaques(float delta) {
         for (Attack attack : attacks) {
