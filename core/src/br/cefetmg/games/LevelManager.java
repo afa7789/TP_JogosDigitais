@@ -38,7 +38,7 @@ public class LevelManager {
     }
     
     public static void setGraph(TileGraph a, boolean debugMode){
-        if (debugMode) System.out.println("funcionou ???");
+        //if (debugMode) System.out.println("funcionou ???");
         graph = new TileGraph(a.getAllNodes());
         //graph = graph2;
     } 

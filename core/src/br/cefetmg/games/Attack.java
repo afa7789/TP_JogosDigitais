@@ -134,7 +134,7 @@ public class Attack {
     } 
     
     public void update(float delta){
-        this.seek.target.coords = this.enemy.position.coords;
+        this.seek.target.coords = this.enemy.getPosition();
         
         Vector2 novaPosição = new Vector2(this.position.coords);
         Direction direcionamento = teste.guiar(this.posicao);

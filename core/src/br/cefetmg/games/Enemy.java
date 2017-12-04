@@ -141,6 +141,9 @@ public class Enemy {
     public Facing getFacing() {
         return facing;
     }
+    public Vector2 getPosition(){
+        return this.position.coords;
+    }
     
     public boolean chegouNoFinal(){
         if( this.position.coords.dst2(Goal) > 0.5f)
