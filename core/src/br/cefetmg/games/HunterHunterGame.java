@@ -66,22 +66,22 @@ public class HunterHunterGame extends ApplicationAdapter {
     private boolean showingMetrics;
 
     public boolean booleanSpawn;
-    
+
     private int quantidadeDeInimigosDisponiveis;
     private int maximoDeInimigos;
-    
-    private int quantidadeDeTorresDisponiveis=1;
-    public int valorParaGanharVidaExtra=100;
-    
+
+    private int quantidadeDeTorresDisponiveis = 1;
+    public int valorParaGanharVidaExtra = 100;
+
     int counter = 0;
     int nivel = 0;
     int numeroDeVidasMaximo = 10;
     int numeroDeVidas = 5;
-    int pontos=1;
-    int somatorioDePontos=0;
-    int valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo=10;
+    int pontos = 1;
+    int somatorioDePontos = 0;
+    int valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo = 10;
     int posicaoy;
-    
+
     private Array<Bullet> bullets;
     private ArrayList<Attack> attacks;
     public Attack teste;
@@ -129,8 +129,8 @@ public class HunterHunterGame extends ApplicationAdapter {
        
         
         //init hud
-        hud=new HUD();
-        
+        hud = new HUD();
+
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         metricsRenderer = new MetricsRenderer(batch, shapeRenderer, new BitmapFont());
@@ -163,7 +163,6 @@ public class HunterHunterGame extends ApplicationAdapter {
         // define o objetivo (perseguição, fuga) inicialmente no centro do mundo
         //objetivo = new BulletTarget(new Vector3(0, 0, 0));
         // objetivo = new BulletTarget(new Vector3(0, 0, 0));
-
         // configura e registra os comportamentos disponíveis
         algoritmos = new Array<>();
         buscar = new Follow(80);
@@ -178,19 +177,11 @@ public class HunterHunterGame extends ApplicationAdapter {
         //bullets = new Array<>();
         //  for(int i=0;i<enemys.size();i++){
         //enemys.get(0).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
-        
         // teste2 = new Tower(viewport.getWorldWidth(), viewport.getWorldHeight());
         // teste2.setTorre(300,300, debugMode);
-        
-        
         //agent.setGoal(LevelManager.totalPixelWidth-1, LevelManager.totalPixelHeight/2);
-
-        
         //teste2.setTorre(300, 300);
         //teste = new Attack(teste2, 40, new Position(new Vector2(500, 500)), enemys.get(0));
-
-
-        
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyUp(int keycode) {
@@ -229,10 +220,10 @@ public class HunterHunterGame extends ApplicationAdapter {
                 }
                 if (keycode == Input.Keys.A) {
                     booleanSpawn = !booleanSpawn;
-                    System.out.println( booleanSpawn + "  " +quantidadeDeInimigosDisponiveis + "  "+ (booleanSpawn && quantidadeDeInimigosDisponiveis > 0) );
+                    System.out.println(booleanSpawn + "  " + quantidadeDeInimigosDisponiveis + "  " + (booleanSpawn && quantidadeDeInimigosDisponiveis > 0));
                 }
                 if (keycode == Input.Keys.E) {
-                    System.out.println(quantidadeDeTorresDisponiveis+1);
+                    System.out.println(quantidadeDeTorresDisponiveis + 1);
                     quantidadeDeTorresDisponiveis++;
                 }
                 return false;
@@ -242,15 +233,15 @@ public class HunterHunterGame extends ApplicationAdapter {
             public boolean touchDown(int x, int y, int pointer, int button) {
                 Vector2 clique = new Vector2(x, y);
                 viewport.unproject(clique);
-                
-                hud.listeningbutton(button,clique);
 
-                
-                 if(clique.y<640)
-                    posicaoy=(int)clique.y;
+                hud.listeningbutton(button, clique);
+
+                if (clique.y < 640) {
+                    posicaoy = (int) clique.y;
+                }
                 // Botão ESQUERDO: posiciona torre
                 if (button == Input.Buttons.LEFT) {
-                    if(quantidadeDeTorresDisponiveis>0){
+                    if (quantidadeDeTorresDisponiveis > 0) {
                         if (!constructionMode) {
                             construtorDeTorre(clique.x, posicaoy);
                         } else {
@@ -263,16 +254,21 @@ public class HunterHunterGame extends ApplicationAdapter {
                     }
                 }
                 if (button == Input.Buttons.RIGHT) {
-                    if(quantidadeDeTorresDisponiveis>0){
+                    if (quantidadeDeTorresDisponiveis > 0) {
                         for (Tower t : torres) {
                             //System.out.println(t.getPosition().coords.x +" " + (int) clique.x);
-                            if (Math.abs(t.getPosition().coords.x - (int) clique.x) < 16 && Math.abs(t.getPosition().coords.y -posicaoy) < 16) {
+                            if (Math.abs(t.getPosition().coords.x - (int) clique.x) < 16 && Math.abs(t.getPosition().coords.y - posicaoy) < 16) {
                                 t.upgradeTower();
-                                if(t.isMaxPower){
-                                    if(debugMode) System.out.println("já está com poder no maximo não da para aumentar");
-                                }else
+                                if (t.isMaxPower) {
+                                    if (debugMode) {
+                                        System.out.println("já está com poder no maximo não da para aumentar");
+                                    }
+                                } else {
                                     quantidadeDeTorresDisponiveis--;
-                                if (debugMode) System.out.println("OK");
+                                }
+                                if (debugMode) {
+                                    System.out.println("OK");
+                                }
                             }
                         }
                     }
@@ -288,18 +284,20 @@ public class HunterHunterGame extends ApplicationAdapter {
      * @param w Largura da janela.
      * @param h Altura da janela.
      */
-
-    
-    public boolean rebuildTower (float x, float y) {
+    public boolean rebuildTower(float x, float y) {
         TileNode towerNode = LevelManager.graph.getNodeAtCoordinates((int) x, (int) y);
         for (Tower torre : torres) {
             if (torre.position.coords.x == towerNode.getPosition().x && torre.position.coords.y == towerNode.getPosition().y) {
-                if (debugMode) System.out.println("ja existe uma torre no lugar!");
-                if (constructionMode){
-                    if(torre.isFinalForm){
-                        if(debugMode) System.out.println("Já ta na FormaFinal");
-                    }else{
-                        quantidadeDeTorresDisponiveis--; 
+                if (debugMode) {
+                    System.out.println("ja existe uma torre no lugar!");
+                }
+                if (constructionMode) {
+                    if (torre.isFinalForm) {
+                        if (debugMode) {
+                            System.out.println("Já ta na FormaFinal");
+                        }
+                    } else {
+                        quantidadeDeTorresDisponiveis--;
                         torre.changeTowerType();
                     }
                 }
@@ -308,8 +306,9 @@ public class HunterHunterGame extends ApplicationAdapter {
         }
         return true;
     }
-    public void construtorDeTorre (float x, float y) {
-        boolean emptyPlace = rebuildTower(x,y);
+
+    public void construtorDeTorre(float x, float y) {
+        boolean emptyPlace = rebuildTower(x, y);
         if (emptyPlace) {
 //            Random r = new Random();
 //            int en = r.nextInt(enemys.size());
@@ -321,7 +320,7 @@ public class HunterHunterGame extends ApplicationAdapter {
             quantidadeDeTorresDisponiveis--;
             atualizaGrafo();
         }
-        
+
     }
 
     @Override
@@ -330,7 +329,7 @@ public class HunterHunterGame extends ApplicationAdapter {
     }
 
     public void atualizaGrafo() {
-        LevelManager.setGraph(GraphGenerator.generateGraphAgain(LevelManager.graph.getAllNodes(), LevelManager.tiledMap),debugMode);
+        LevelManager.setGraph(GraphGenerator.generateGraphAgain(LevelManager.graph.getAllNodes(), LevelManager.tiledMap), debugMode);
         graphRenderer = new GraphRenderer(batch, shapeRenderer);
         graphRenderer.renderGraphToTexture(LevelManager.graph);
         metricsRenderer = new MetricsRenderer(batch, shapeRenderer, new BitmapFont());
@@ -340,50 +339,76 @@ public class HunterHunterGame extends ApplicationAdapter {
     }
 
     public boolean InimigosPodemSpawnar() {
-        if ( booleanSpawn && quantidadeDeInimigosDisponiveis > 0) {
+        if (booleanSpawn && quantidadeDeInimigosDisponiveis > 0) {
             return true;
         } else {
             return false;
         }
     }
-    
-    public void criaInimigo(){
+
+    public void criaInimigo() {
         if (nivel < 3) {
-            enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERMELHO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
+            enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERMELHO, viewport.getWorldWidth(), viewport.getWorldHeight()));
         } else if (nivel < 5) {
-            if (quantidadeDeInimigosDisponiveis >= maximoDeInimigos/2) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERMELHO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
-            else enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.LARANJA, viewport.getWorldWidth(), viewport.getWorldHeight()));   
+            if (quantidadeDeInimigosDisponiveis >= maximoDeInimigos / 2) {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERMELHO, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            } else {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.LARANJA, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            }
         } else if (nivel < 7) {
-            if (quantidadeDeInimigosDisponiveis >=  3*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERMELHO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
-            else if (quantidadeDeInimigosDisponiveis >=  1*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.LARANJA, viewport.getWorldWidth(), viewport.getWorldHeight()));   
-            else enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AMARELO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
+            if (quantidadeDeInimigosDisponiveis >= 3 * maximoDeInimigos / 4) {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERMELHO, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            } else if (quantidadeDeInimigosDisponiveis >= 1 * maximoDeInimigos / 4) {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.LARANJA, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            } else {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AMARELO, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            }
         } else if (nivel < 10) {
-            if (quantidadeDeInimigosDisponiveis >=  3*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.LARANJA, viewport.getWorldWidth(), viewport.getWorldHeight()));   
-            else if (quantidadeDeInimigosDisponiveis >=  1*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AMARELO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
-            else enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERDE, viewport.getWorldWidth(), viewport.getWorldHeight()));    
+            if (quantidadeDeInimigosDisponiveis >= 3 * maximoDeInimigos / 4) {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.LARANJA, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            } else if (quantidadeDeInimigosDisponiveis >= 1 * maximoDeInimigos / 4) {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AMARELO, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            } else {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERDE, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            }
         } else if (nivel < 11) {
-            if (quantidadeDeInimigosDisponiveis >=  3*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AMARELO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
-            else if (quantidadeDeInimigosDisponiveis >=  1*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERDE, viewport.getWorldWidth(), viewport.getWorldHeight()));   
-            else enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight())); 
+            if (quantidadeDeInimigosDisponiveis >= 3 * maximoDeInimigos / 4) {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AMARELO, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            } else if (quantidadeDeInimigosDisponiveis >= 1 * maximoDeInimigos / 4) {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERDE, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            } else {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            }
         } else if (nivel < 12) {
-            if (quantidadeDeInimigosDisponiveis >=  3*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERDE, viewport.getWorldWidth(), viewport.getWorldHeight()));   
-            else if (quantidadeDeInimigosDisponiveis >=  2*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
-            else if (quantidadeDeInimigosDisponiveis >= maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AZUL, viewport.getWorldWidth(), viewport.getWorldHeight())); 
-            else enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VIOLETA, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            if (quantidadeDeInimigosDisponiveis >= 3 * maximoDeInimigos / 4) {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERDE, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            } else if (quantidadeDeInimigosDisponiveis >= 2 * maximoDeInimigos / 4) {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            } else if (quantidadeDeInimigosDisponiveis >= maximoDeInimigos / 4) {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AZUL, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            } else {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VIOLETA, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            }
         } else {
-            if (quantidadeDeInimigosDisponiveis >=  3*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight()));   
-            else if (quantidadeDeInimigosDisponiveis >= 2*maximoDeInimigos/4) enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AZUL, viewport.getWorldWidth(), viewport.getWorldHeight())); 
-            else enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VIOLETA, viewport.getWorldWidth(), viewport.getWorldHeight())); 
+            if (quantidadeDeInimigosDisponiveis >= 3 * maximoDeInimigos / 4) {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            } else if (quantidadeDeInimigosDisponiveis >= 2 * maximoDeInimigos / 4) {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AZUL, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            } else {
+                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VIOLETA, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            }
         }
-        
+
     }
 
     public void adicionaInimigos() {
         if (InimigosPodemSpawnar()) {
             //System.out.println(counter);
-            if( counter%(200/(nivel+1)) == 0){//aranjar jeito melhor de fazer isso.
+            if (counter % (200 / (nivel + 1)) == 0) {//aranjar jeito melhor de fazer isso.
                 System.out.println("era para spawnar");
-                if (debugMode) System.out.println("spawno");
+                if (debugMode) {
+                    System.out.println("spawno");
+                }
                 criaInimigo();
                 enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
                 //enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
@@ -395,15 +420,19 @@ public class HunterHunterGame extends ApplicationAdapter {
     }
 
     public void emissorDeAtaques() {
-        for(Tower torre : torres) {
+        for (Tower torre : torres) {
             if (torre.atacandoAlguem()) {
-                if (torre.target > 0 && enemys.get(torre.target).life>0) {
+                if (torre.target > 0 && enemys.get(torre.target).life > 0) {
                     if (counter % torre.tempoEntreAtaques == 0) {
-                        if (debugMode) System.out.println("Adicionou ataque");
-                        attacks.add(new Attack(torre, 150, torre.position, torre.target ));
+                        if (debugMode) {
+                            System.out.println("Adicionou ataque");
+                        }
+                        attacks.add(new Attack(torre, 150, torre.position, torre.target));
                     }
-                }else{
-                    if (debugMode) System.out.println("Parou de Atacar");    
+                } else {
+                    if (debugMode) {
+                        System.out.println("Parou de Atacar");
+                    }
                     torre.parouDeAtacar();
                 }
             } else {
@@ -418,8 +447,10 @@ public class HunterHunterGame extends ApplicationAdapter {
         Float distancia;
         for (Enemy enemy : enemys) {
             distancia = enemy.enviaPosicionamento().dst2(torre.position.coords);
-            if(distancia <= torre.actionZone + 20 && distancia < menorValor){
-                if (debugMode) System.out.println("Agora a torre está a Atacar");
+            if (distancia <= torre.actionZone + 20 && distancia < menorValor) {
+                if (debugMode) {
+                    System.out.println("Agora a torre está a Atacar");
+                }
                 torre.estáAtacando();
                 inimigoMaisProximo = enemys.lastIndexOf(enemy);
                 menorValor = distancia;
@@ -427,62 +458,62 @@ public class HunterHunterGame extends ApplicationAdapter {
         }
         return inimigoMaisProximo;
     }
-    
-    public void removendoOInimigo(Enemy enemy){
+
+    public void removendoOInimigo(Enemy enemy) {
         enemy.naoDesenhar();
         //enemys.remove(enemy);
         cont--;
     }
-    
-    public void adicionarPontos(){
+
+    public void adicionarPontos() {
         pontos++;
     }
-    
-    public void perdeVida(){
+
+    public void perdeVida() {
         numeroDeVidas--;
     }
-    
-    public void removendoUltimaTorre(){//Pego o Tamanho do ArrayList e remove a ultima torre posta
-        torres.remove(torres.size()-1);
+
+    public void removendoUltimaTorre() {//Pego o Tamanho do ArrayList e remove a ultima torre posta
+        torres.remove(torres.size() - 1);
         //para corrigir isso vou usar adicionar Pontos para compensar então na proxima Wave ele pode por mais torre.
         adicionarPontos();
     }
-    
+
     public void removerAtualizarInimigos(float delta) {
         for (Enemy enemy : enemys) {
             enemy.update(delta);
-            if (enemy.getLife() > 0 ) {
-                if(enemy.desenhe){
-                    if(!enemy.shouldMove && !enemy.terminouOPercurso){
+            if (enemy.getLife() > 0) {
+                if (enemy.desenhe) {
+                    if (!enemy.shouldMove && !enemy.terminouOPercurso) {
                         removendoUltimaTorre();
                         //Acho que tem q atualizar o Path após remover a torre.
                         atualizaGrafo();
-                    }if(!enemy.shouldMove && enemy.terminouOPercurso ){
+                    }
+                    if (!enemy.shouldMove && enemy.terminouOPercurso) {
                         //chegouNoFim
                         removendoOInimigo(enemy);
                         //cont--; //tem q tirar isso quando voltar com a de cima.
                         perdeVida();
                     }
                 }
-            } else{
+            } else {
                 //Tem q somar os pontos aqui
-                    adicionarPontos();
-                    //removendoOInimigo(enemy);
+                adicionarPontos();
+                //removendoOInimigo(enemy);
             }
         }
     }
 
     public void desenhoGeral() {
-       /* Gdx.gl.glClearColor(1, 1, 1, 1);
+        /* Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         camera.update();
         batch.setProjectionMatrix(camera.combined);*/
 
-        
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
-        
+
         if (debugMode) {
             batch.begin();
             graphRenderer.renderOffScreenedGraph();
@@ -494,60 +525,70 @@ public class HunterHunterGame extends ApplicationAdapter {
             }
             shapeRenderer.end();
         }
-        if(showingMetrics) {
-            metricsRenderer.render(numeroDeVidas,pontos, nivel);
+        if (showingMetrics) {
+            metricsRenderer.render(numeroDeVidas, pontos, nivel);
         }
 
     }
-    
-    public void controleDeFase(){
-        boolean faseAcabou=false;
 
-        if(quantidadeDeTorresDisponiveis == 0){
-            booleanSpawn=true;
+    public void controleDeFase() {
+        boolean faseAcabou = false;
+
+        if (quantidadeDeTorresDisponiveis == 0) {
+            booleanSpawn = true;
         }
-        if (debugMode) System.out.println("aass " + quantidadeDeInimigosDisponiveis+ " "+ cont+ " " + (quantidadeDeInimigosDisponiveis == 0 && cont==0) + " " + quantidadeDeTorresDisponiveis);
-        if( (quantidadeDeInimigosDisponiveis == 0 && cont==0) && quantidadeDeTorresDisponiveis == 0){
-            faseAcabou=true;
-            if(debugMode)System.out.println("Fim da Fase");
-            booleanSpawn=false;
+        if (debugMode) {
+            System.out.println("aass " + quantidadeDeInimigosDisponiveis + " " + cont + " " + (quantidadeDeInimigosDisponiveis == 0 && cont == 0) + " " + quantidadeDeTorresDisponiveis);
         }
-        if(faseAcabou){
-            if(debugMode)System.out.println("Nova Fase " + nivel);
+        if ((quantidadeDeInimigosDisponiveis == 0 && cont == 0) && quantidadeDeTorresDisponiveis == 0) {
+            faseAcabou = true;
+            if (debugMode) {
+                System.out.println("Fim da Fase");
+            }
+            booleanSpawn = false;
+        }
+        if (faseAcabou) {
+            if (debugMode) {
+                System.out.println("Nova Fase " + nivel);
+            }
             nivel++;
             enemys.removeAll(enemys);//deve tirar todos os enemys.
             attacks.removeAll(attacks);//deve tirar todos os ataques
             quantidadeDeTorresDisponiveis = pontos * nivel;// tem que colocar de acordo com o numero de Inimigos q matou.
-            quantidadeDeInimigosDisponiveis = 4 + (numeroDeVidasMaximo-numeroDeVidas) * nivel;
+            quantidadeDeInimigosDisponiveis = 4 + (numeroDeVidasMaximo - numeroDeVidas) * nivel;
             maximoDeInimigos = quantidadeDeInimigosDisponiveis;
-            
+
             somatorioDePontos += pontos;
-            pontos=0;
-            if(somatorioDePontos%valorParaGanharVidaExtra == 0){
-                if(numeroDeVidas<numeroDeVidasMaximo && numeroDeVidas>0)
+            pontos = 0;
+            if (somatorioDePontos % valorParaGanharVidaExtra == 0) {
+                if (numeroDeVidas < numeroDeVidasMaximo && numeroDeVidas > 0) {
                     numeroDeVidas++;
-                else{
-                    for(int i =0;i<valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo; i++)
+                } else {
+                    for (int i = 0; i < valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo; i++) {
                         adicionarPontos();
+                    }
+                }
             }
-        }
-            faseAcabou=false;
+            faseAcabou = false;
         }
     }
-    
-    @Override
-    public void render() {
+
+    public void desenhaHUD() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        
         batch.setProjectionMatrix(camera.combined);
-        
-        float delta = Gdx.graphics.getDeltaTime();
         batch.begin();
         hud.render(batch);
         batch.end();
         hud.button_render();
+    }
+
+    @Override
+    public void render() {
+        float delta = Gdx.graphics.getDeltaTime();
+
+        desenhaHUD();
         //hud.update();
         if(hud.getState()==0){
             hud.setState(1);
@@ -580,23 +621,20 @@ public class HunterHunterGame extends ApplicationAdapter {
                }
          }
     }
-    void play(float delta){
-       //Remove o inimigo e atualiza posição dele
-       //Atualiza Posição dos Ataques da Dano nos inimigos
-       atualizaAtaques(delta);
-       removerAtualizarInimigos(delta);
-       counter++;
-        
+
+    void play(float delta) {
+        //Remove o inimigo e atualiza posição dele
+        //Atualiza Posição dos Ataques da Dano nos inimigos
+        atualizaAtaques(delta);
+        removerAtualizarInimigos(delta);
+        counter++;
+
     }
-
-    
-
-
 
     private void atualizaAtaques(float delta) {
         for (Attack attack : attacks) {
             // atualiza lógica
-            attack.update(delta,enemys);
+            attack.update(delta, enemys);
             // contém os agentes dentro do mundo
             //revolveCoordenadas(agente);
         }
