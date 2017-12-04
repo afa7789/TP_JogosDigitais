@@ -544,43 +544,44 @@ public class HunterHunterGame extends ApplicationAdapter {
         batch.end();
         hud.button_render();
         //hud.update();
-        if(hud.getState()==1){
+       /* if(hud.getState()==1){
             play(delta);
-            System.out.println("ola");
-        }
+        }*/
        
         if(numeroDeVidas>0){
-         //   play(delta);
+        
+         
+           if(numeroDeVidas>=0 && !GameOver){
+
+               //Adiciona Inimigos
+               adicionaInimigos();
+               //Atualiza as Torres quem elas atacam e etc
+               emissorDeAtaques();
+               //controla as waves, pontos ,vidas etc
+               controleDeFase();
+               //desenho do Mapa e etc
+               desenhoGeral();
+               if(hud.state==1)
+                play(delta);
+           towerRenderer.renderAll(torres, shapeRenderer);
+           enemyRenderer.renderAll(enemys, shapeRenderer);
+           bulletRenderer.renderAll(attacks);
+           Gdx.graphics.setTitle(String.format(windowTitle, Gdx.graphics.getFramesPerSecond()));
+           
+
+           }else{
+               System.out.println("Game Over sua pontuação: "+ somatorioDePontos);
+               GameOver=true;
+               numeroDeVidas=-1;
+           }
          }
     }
     void play(float delta){
-         //Remove o inimigo e atualiza posição dele
-        removerAtualizarInimigos(delta);
-        //Atualiza Posição dos Ataques da Dano nos inimigos
-        atualizaAtaques(delta);
-        //controla as waves, pontos ,vidas etc
-        controleDeFase();
-        if(numeroDeVidas>0 && !GameOver){
-
-            //Adiciona Inimigos
-            adicionaInimigos();
-            //Atualiza as Torres quem elas atacam e etc
-            emissorDeAtaques();
-
-            //desenho do Mapa e etc
-            desenhoGeral();
-
-        towerRenderer.renderAll(torres, shapeRenderer);
-        enemyRenderer.renderAll(enemys, shapeRenderer);
-        bulletRenderer.renderAll(attacks);
-        Gdx.graphics.setTitle(String.format(windowTitle, Gdx.graphics.getFramesPerSecond()));
-        counter++;
-
-        }else{
-            System.out.println("Game Over sua pontuação: "+ somatorioDePontos);
-            GameOver=true;
-            numeroDeVidas=-1;
-        }
+       //Remove o inimigo e atualiza posição dele
+       //Atualiza Posição dos Ataques da Dano nos inimigos
+       atualizaAtaques(delta);
+       removerAtualizarInimigos(delta);
+       counter++;
         
     }
 

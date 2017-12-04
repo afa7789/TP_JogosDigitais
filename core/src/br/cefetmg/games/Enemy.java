@@ -251,13 +251,14 @@ public class Enemy {
         Vector2 size = new Vector2(worldDimensions.cpy().scl(reajuste));
         renderer.polygon(new float[] {      
                     position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().sub(size).y,               // Vertex 0         3  
-                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().sub(size).y,               // Vertex 1      /     \        
-                    position.coords.cpy().x, position.coords.cpy().add(size).scl(1.03f).y,                         // Vertex 3      \     /
-                    position.coords.cpy().scl(1.01f).sub(size).x, position.coords.cpy().scl(0.98f).add(size).y,     // Vertex 4       0---1 
-                    position.coords.cpy().scl(0.99f).add(size).x, position.coords.cpy().scl(0.98f).add(size).y    // Vertex 2     4       2   
+                    position.coords.cpy().scl(0.97f).add(size).x, position.coords.cpy().sub(size).y,               // Vertex 1      /     \        
+                    position.coords.cpy().x, position.coords.cpy().add(size).y,                         // Vertex 3      \     /
+                    position.coords.cpy().scl(1.01f).sub(size).x, position.coords.cpy().scl(0.96f).add(size).y,     // Vertex 4       0---1 
+                    position.coords.cpy().scl(0.99f).add(size).x, position.coords.cpy().scl(0.94f).add(size).y    // Vertex 2     4       2   
                     
                 });
         return renderer;
     }
+    
     
 }
