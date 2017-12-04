@@ -53,7 +53,7 @@ public class HUD {
     int state;
     
     HUD(){
-        state=-1;
+        state=1;
         space=new Texture(Gdx.files.local("hud/life-bar.png"));
         word=new Texture("hud/word.png");
         life_bar=new Texture("hud/life.png");
@@ -113,7 +113,8 @@ public class HUD {
     }
     void listeningbutton(int button, Vector2 clique) {
         if (button == Input.Buttons.LEFT) {
-                   if((int) clique.y>650&&(int) clique.y<700 &&(int) clique.x>10 &&(int) clique.x<130 ){                    
+                   if((int) clique.y>650&&(int) clique.y<700 &&(int) clique.x>10 &&(int) clique.x<130 ){ 
+                       
                         state=0;
                    }
                    if((int) clique.y>650&&(int) clique.y<700 &&(int) clique.x>894 &&(int) clique.x<1014 ){
