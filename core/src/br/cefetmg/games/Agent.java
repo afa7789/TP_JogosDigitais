@@ -95,7 +95,7 @@ public class Agent {
      * @param x coordenada x do ponteiro do mouse.
      * @param y coordenada y do ponteiro do mouse.
      */  
-    public void setGoal(int x, int y) {
+    public void setGoal(int x, int y, boolean debugMode) {
         TileNode startNode = LevelManager.graph
                 .getNodeAtCoordinates(
                         (int) this.position.coords.x,
@@ -136,7 +136,7 @@ public class Agent {
         }, path);
         
         pathIterator = path.iterator();
-        System.out.println(path.nodes.size);
+        if (debugMode) System.out.println(path.nodes.size);
     }
 
     /**
