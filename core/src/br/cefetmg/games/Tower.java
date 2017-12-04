@@ -209,72 +209,61 @@ public class Tower {
         return position;
     }
     
-    public void drawTower(ShapeRenderer renderer) {
-        switch (type) {
-            case LINE:
-                
-                break;
-            case DOUBLE_LINE:
-                break;
-            case TRIANGLE:
-                break;
-            case SQUARE:
-                break;
-            case PENTAGON:
-                break;
-            case HEXAGON:
-                break;
-            case HEPTAGON:
-                break;
-            case OCTAGON:
-                break;
-            case STAR:
-                break;
-            case JEW_STAR:
-                break;
-            case HOURGLASS:
-                break;
-            case CIRCLE:
-                break;
-            case OVAL:
-                break;
-            case INFINITE:
-                break;
-        }
-    }
+    
 
-    public Texture getTexture() {
+    public ShapeRenderer getForm(ShapeRenderer renderer) {
+        Vector2 size;
         switch (type) {
             case LINE:
-                return texture_teste;
+                size = new Vector2(0, worldDimensions.cpy().scl(reajuste).y);
+                renderer.line(position.coords.cpy().sub(size), position.coords.cpy().add(size));
+                break;
             case DOUBLE_LINE:
-                return texture_teste;
+                renderer.x(position.coords, 10);
+                break;
             case TRIANGLE:
-                return texture_teste;
+                // O 1.02f é um reajuste para ficar mais agradável o triangulo
+                size = new Vector2(worldDimensions.cpy().scl(reajuste));
+                renderer.triangle(position.coords.cpy().sub(size).x, position.coords.cpy().sub(size).y,
+                        position.coords.cpy().add(size).x, position.coords.cpy().sub(size).y,
+                        position.coords.cpy().x, position.coords.cpy().add(size).scl(1.02f).y);
+                break;
             case SQUARE:
-                return texture_teste;
+                // 1.02f , 1.1f , 2 reajustes para ficar mais agradevel a tela
+                // 0f variáveis de controle do eixo z
+                size = new Vector2(worldDimensions.cpy().scl(reajuste));
+                renderer.box(position.coords.cpy().sub(size).scl(1.02f).x, position.coords.cpy().sub(size).y, 0f, 1.1f * size.x, 2*size.y, 0f);
+                break;
             case PENTAGON:
-                return texture_teste;
+                size = new Vector2(worldDimensions.cpy().scl(reajuste));
+                renderer.polygon(new float[] {      
+                    position.coords.cpy().scl(1.02f).sub(size).x, position.coords.cpy().sub(size).y,               // Vertex 0         /3 \
+                    position.coords.cpy().scl(0.98f).add(size).x, position.coords.cpy().sub(size).y,               // Vertex 1         4--2
+                    position.coords.cpy().scl(0.99f).add(size).x, position.coords.cpy().scl(0.98f).add(size).y,               // Vertex 2         |/ |
+                    position.coords.cpy().x, position.coords.cpy().add(size).scl(1.03f).y,
+                    position.coords.cpy().scl(1.01f).sub(size).x, position.coords.cpy().scl(0.98f).add(size).y                // Vertex 3         0--1
+                });
+                break;
             case HEXAGON:
-                return texture_teste;
+                break;
             case HEPTAGON:
-                return texture_teste;
+                break;
             case OCTAGON:
-                return texture_teste;
+                break;
             case STAR:
-                return texture_teste;
+                break;
             case JEW_STAR:
-                return texture_teste;
+                break;
             case HOURGLASS:
-                return texture_teste;
+                break;
             case CIRCLE:
-                return texture_teste;
+                break;
             case OVAL:
-                return texture_teste;
+                break;
             case INFINITE:
-                return texture_teste;
+                break;
         }
-        return texture_teste;
+        return renderer;
     }
     
     public void render (ShapeRenderer renderer) {
