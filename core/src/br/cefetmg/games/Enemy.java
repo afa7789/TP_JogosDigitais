@@ -39,6 +39,7 @@ public class Enemy {
     public boolean terminouOPercurso;
     public double life;
     public boolean desenhe =true;
+    public boolean jaDeuPontos=false;
 
     public Enemy(Vector2 position, Color color) {
         this.position = new Position(position);

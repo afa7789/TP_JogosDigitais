@@ -69,14 +69,14 @@ public class HunterHunterGame extends ApplicationAdapter {
     
     private int quantidadeDeInimigosDisponiveis=3;
     
-    private int quantidadeDeTorresDisponiveis=10;
+    private int quantidadeDeTorresDisponiveis=1;
     public int valorParaGanharVidaExtra=100;
     
     int counter = 0;
     int nivel = 0;
     int numeroDeVidasMaximo = 10;
     int numeroDeVidas = 10;
-    int pontos=0;
+    int pontos=1;
     int somatorioDePontos=0;
     int valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo=10;
     int posicaoy;
@@ -111,13 +111,13 @@ public class HunterHunterGame extends ApplicationAdapter {
 
         
         booleanSpawn = false;
-        quantidadeDeTorresDisponiveis = 30;
+        quantidadeDeTorresDisponiveis = 5;
         quantidadeDeInimigosDisponiveis = 5;
         
 
         //init time 
         start = TimeUtils.millis();
-        cont = 1;
+        cont = 0;
         deadEnemy = 0;
         posicaoy=0;
         
@@ -407,18 +407,20 @@ public class HunterHunterGame extends ApplicationAdapter {
     public void removerAtualizarInimigos(float delta) {
         for (Enemy enemy : enemys) {
             enemy.update(delta);
-            if (enemy.getLife() > 0) {
-                if(!enemy.shouldMove && !enemy.terminouOPercurso){
-                    removendoUltimaTorre();
-                    //Acho que tem q atualizar o Path após remover a torre.
-                    atualizaGrafo();
-                }if(!enemy.shouldMove && enemy.terminouOPercurso ){
-                    //chegouNoFim
-                    removendoOInimigo(enemy);
-                    cont--; //tem q tirar isso quando voltar com a de cima.
-                    perdeVida();
+            if (enemy.getLife() > 0 ) {
+                if(enemy.desenhe){
+                    if(!enemy.shouldMove && !enemy.terminouOPercurso){
+                        removendoUltimaTorre();
+                        //Acho que tem q atualizar o Path após remover a torre.
+                        atualizaGrafo();
+                    }if(!enemy.shouldMove && enemy.terminouOPercurso ){
+                        //chegouNoFim
+                        removendoOInimigo(enemy);
+                        //cont--; //tem q tirar isso quando voltar com a de cima.
+                        perdeVida();
+                    }
                 }
-            } else {
+            } else{
                 //Tem q somar os pontos aqui
                     adicionarPontos();
                     //removendoOInimigo(enemy);
@@ -467,9 +469,11 @@ public void controleDeFase(){
         if(quantidadeDeTorresDisponiveis == 0){
             booleanSpawn=true;
         }
+        System.out.println("aass " + quantidadeDeInimigosDisponiveis+ " "+ cont+ " " + (quantidadeDeInimigosDisponiveis == 0 && cont==0) + " " + quantidadeDeTorresDisponiveis);
         if( (quantidadeDeInimigosDisponiveis == 0 && cont==0) && quantidadeDeTorresDisponiveis == 0){
             faseAcabou=true;
             if(debugMode)System.out.println("Fim da Fase");
+            booleanSpawn=false;
         }
         if(faseAcabou){
             if(debugMode)System.out.println("Nova Fase " + nivel);
