@@ -124,7 +124,7 @@ public class Enemy {
         }, path);
         
         pathIterator = path.iterator();
-        System.out.println(path.nodes.size);
+       // System.out.println(path.nodes.size);
     }
 
     /**

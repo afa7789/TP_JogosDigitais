@@ -67,12 +67,14 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     public boolean booleanSpawn;
     
-    private int quantidadeDeInimigosDisponiveis;
+    private int quantidadeDeInimigosDisponiveis=3;
     
-    private int quantidadeDeTorresDisponiveis;
+    private int quantidadeDeTorresDisponiveis=10;
 
     int counter = 0;
-
+    int nivel =0 ;
+    
+    
     private Array<Bullet> bullets;
     private ArrayList<Attack> attacks;
     public Attack teste;
@@ -104,7 +106,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         booleanSpawn = false;
         
         quantidadeDeTorresDisponiveis = 10;
-        quantidadeDeInimigosDisponiveis =3;
+        quantidadeDeInimigosDisponiveis = 3;
         
         teste2 = new Tower();
 
@@ -154,14 +156,18 @@ public class HunterHunterGame extends ApplicationAdapter {
 
         attacks = new ArrayList<Attack>();
         
-        //teste2.setTorre(300, 300);
+        
         
         //bullets = new Array<>();
         //  for(int i=0;i<enemys.size();i++){
-        enemys.get(0).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
+        //enemys.get(0).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
         // }
+        
         //agent.setGoal(LevelManager.totalPixelWidth-1, LevelManager.totalPixelHeight/2);
-        teste = new Attack(teste2, 40, new Position(new Vector2(500, 500)), enemys.get(0));
+        
+        //teste2.setTorre(300, 300);
+        //teste = new Attack(teste2, 40, new Position(new Vector2(500, 500)), enemys.get(0));
+        
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyUp(int keycode) {
@@ -216,7 +222,6 @@ public class HunterHunterGame extends ApplicationAdapter {
                     } else {
                         //seila tocar um som para mostrar que não pode construir.
                     }
-
                 }
                 if (button == Input.Buttons.RIGHT) {
                     for (Tower t : torres) {
@@ -253,9 +258,11 @@ public class HunterHunterGame extends ApplicationAdapter {
             //Random r = new Random();
             //int en = r.nextInt(enemys.size());
             //Aux.setComportamento(new Vector2(enemys.get(en).position.coords.x,enemys.get(e
+            //System.out.println("vai por a torre");
             atualizaGrafo();
             Tower Aux = new Tower();
             Aux.setTorre((int) x, (int) y);
+            torres.add(Aux);
         }
     }
 
@@ -275,7 +282,7 @@ public class HunterHunterGame extends ApplicationAdapter {
     }
 
     public boolean InimigosPodemSpawnar() {
-        if (booleanSpawn) {
+        if ( booleanSpawn && quantidadeDeInimigosDisponiveis > 0) {
             return true;
         } else {
             return false;
@@ -284,12 +291,14 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     public void adicionaInimigos() {
         if (InimigosPodemSpawnar()) {
-            if ((TimeUtils.timeSinceMillis(start) / 2000) + 1 > cont) {
+            if( TimeUtils.timeSinceMillis(start)%500 == 0){
+                System.out.println("spawno");
                 enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2),Color.FIREBRICK));
                 enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
                 enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2);
                 enemys.get(enemys.size() - 1).update(Gdx.graphics.getDeltaTime());
                 cont++;
+                quantidadeDeInimigosDisponiveis--;
             }
         }
     }
@@ -336,6 +345,7 @@ public class HunterHunterGame extends ApplicationAdapter {
             } else {
                 //Tem q somar os pontos aqui
                 enemys.remove(enemy);
+                cont--;
             }
         }
     }
@@ -360,10 +370,29 @@ public class HunterHunterGame extends ApplicationAdapter {
         tiledMapRenderer.render();
 
     }
-
+    
+    public void controleDeFase(){
+            boolean faseAcabou=false;
+        if(quantidadeDeTorresDisponiveis == 0){
+            booleanSpawn=true;
+        }
+        if( (quantidadeDeInimigosDisponiveis == 0 && cont==0) && quantidadeDeTorresDisponiveis == 0){
+            faseAcabou=true;
+            System.out.println("Fim da Fase");
+        }
+        if(faseAcabou){
+            System.out.println("Nova Fase");
+            nivel++;
+            quantidadeDeTorresDisponiveis = 5;// tem que colocar de acordo com o numero de Inimigos q matou.
+            quantidadeDeInimigosDisponiveis = 3 * nivel;
+            faseAcabou=false;
+        }
+    }
+    
     @Override
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
+        controleDeFase();
         //Adiciona Inimigos
         adicionaInimigos();
         //Remove o inimigo
@@ -375,8 +404,8 @@ public class HunterHunterGame extends ApplicationAdapter {
         //desenho do Mapa e etc
         desenhoGeral();
         batch.setProjectionMatrix(camera.combined);
-        bulletRenderer.desenha(teste);
-        towerRenderer.render(teste2);
+//        bulletRenderer.desenha(teste);
+//        towerRenderer.render(teste2);
         enemyRenderer.renderAll(enemys);
         towerRenderer.renderAll(torres);
         bulletRenderer.renderAll(attacks);
