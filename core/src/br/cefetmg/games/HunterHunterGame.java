@@ -220,7 +220,7 @@ public class HunterHunterGame extends ApplicationAdapter {
                     System.out.println( booleanSpawn + "  " +quantidadeDeInimigosDisponiveis + "  "+ (booleanSpawn && quantidadeDeInimigosDisponiveis > 0) );
                 }
                 if (keycode == Input.Keys.E) {
-                    System.out.println(quantidadeDeTorresDisponiveis);
+                    System.out.println(quantidadeDeTorresDisponiveis+1);
                     quantidadeDeTorresDisponiveis++;
                 }
                 return false;
@@ -348,10 +348,10 @@ public class HunterHunterGame extends ApplicationAdapter {
     public void emissorDeAtaques() {
         for(Tower torre : torres) {
             if (torre.atacandoAlguem()) {
-                if (torre.target.getLife() > 0) {
+                if (torre.target > 0 && enemys.get(torre.target).life>0) {
                     if (counter % torre.tempoEntreAtaques == 0) {
                         if (debugMode) System.out.println("Adicionou ataque");
-                        attacks.add(new Attack(torre, 100, torre.position, torre.target));
+                        attacks.add(new Attack(torre, 100, torre.position, torre.target ));
                     }
                 }else{
                     if (debugMode) System.out.println("Parou de Atacar");    
@@ -363,16 +363,16 @@ public class HunterHunterGame extends ApplicationAdapter {
         }
     }
 
-    public Enemy pegaInimigoMaisProximoDoAlcanceDaTorre(Tower torre) {
+    public int pegaInimigoMaisProximoDoAlcanceDaTorre(Tower torre) {
         Float menorValor = torre.actionZone;
-        Enemy inimigoMaisProximo = null;
+        int inimigoMaisProximo = -1;
         Float distancia;
         for (Enemy enemy : enemys) {
             distancia = enemy.enviaPosicionamento().dst2(torre.position.coords);
             if(distancia<=torre.actionZone && distancia < menorValor){
                 if (debugMode) System.out.println("Agora a torre está a Atacar");
                 torre.estáAtacando();
-                inimigoMaisProximo = enemy;
+                inimigoMaisProximo = enemys.lastIndexOf(enemy);
                 menorValor = distancia;
             }
         }
@@ -380,7 +380,8 @@ public class HunterHunterGame extends ApplicationAdapter {
     }
     
     public void removendoOInimigo(Enemy enemy){
-        enemys.remove(enemy);
+        enemy.naoDesenhar();
+        //enemys.remove(enemy);
         cont--;
     }
     
@@ -464,6 +465,7 @@ public void controleDeFase(){
         if(faseAcabou){
             if(debugMode)System.out.println("Nova Fase " + nivel);
             nivel++;
+            enemys.removeAll(enemys);//deve tirar todos os enemys.
             quantidadeDeTorresDisponiveis = pontos * nivel;// tem que colocar de acordo com o numero de Inimigos q matou.
             quantidadeDeInimigosDisponiveis = 4 + (numeroDeVidasMaximo-numeroDeVidas) * nivel;
             somatorioDePontos += pontos;
@@ -502,7 +504,7 @@ public void controleDeFase(){
     private void atualizaAtaques(float delta) {
         for (Attack attack : attacks) {
             // atualiza lógica
-            attack.update(delta);
+            attack.update(delta,enemys);
             // contém os agentes dentro do mundo
             //revolveCoordenadas(agente);
         }

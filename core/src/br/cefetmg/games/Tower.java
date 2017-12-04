@@ -36,7 +36,7 @@ public class Tower {
     public final float actionZone;
     public int tempoEntreAtaques;
     public boolean isAttacking=false;
-    public Enemy target;
+    public int target;
     public static Vector2 worldDimensions;
     public static final float reajuste = 0.02f;
 

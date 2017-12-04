@@ -47,7 +47,8 @@ public class EnemyRenderer {
     
     public void renderAll(ArrayList<Enemy> enemys){
         for (Enemy enemy : enemys) {
-            render(enemy);
+            if(enemy.desenhe)
+                render(enemy);
         }
     }
     

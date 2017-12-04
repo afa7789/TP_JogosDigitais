@@ -38,6 +38,7 @@ public class Enemy {
     public boolean shouldMove;
     public boolean terminouOPercurso;
     public double life;
+    public boolean desenhe =true;
 
     public Enemy(Vector2 position, Color color) {
         this.position = new Position(position);
@@ -52,6 +53,11 @@ public class Enemy {
         this.shouldMove = false;
         this.terminouOPercurso = false;
         this.life=100;
+        this.desenhe = true;
+    }
+    
+    public void naoDesenhar(){
+        desenhe = false;
     }
     
     public void updatePathFinder (IndexedGraph g) {

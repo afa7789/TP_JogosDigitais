@@ -15,6 +15,7 @@ import br.cefetmg.games.movement.behavior.Seek;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import java.util.ArrayList;
 
 /**
  *
@@ -33,9 +34,9 @@ public class Attack {
     public MovementAlgorithm teste;
     private final Algorithm seek;
     private static final float MIN_DISTANCE_CONSIDERED_ZERO_SQUARED = (float) Math.pow(2.0f, 2);
-    public Enemy enemy;
+    public int enemy;
     
-    public Attack(Tower a, int speed, Position position,Enemy enemy) {
+    public Attack(Tower a, int speed, Position position,int enemy) {
         this.towerType = a.type;
         this.strengh = a.towerLevel;
         this.position = position;
@@ -133,15 +134,17 @@ public class Attack {
         return Damage;
     } 
     
-    public void update(float delta){
-        this.seek.target.coords = this.enemy.getPosition();
+    public void update(float delta,ArrayList<Enemy> Enemys){
+        //Ta crashando quando vai pegar a posição dele.
+        this.seek.target.coords = Enemys.get(enemy).getPosition(); //isso aqui ta fudendo o bagulho.
         
         Vector2 novaPosição = new Vector2(this.position.coords);
         Direction direcionamento = teste.guiar(this.posicao);
         //Missil vai perseguir até acertar o inimigo.
         if( novaPosição.dst2(this.seek.target.coords) < MIN_DISTANCE_CONSIDERED_ZERO_SQUARED){
             if(!acertou){
-                enemy.looseLife(this.damage);
+                Enemys.get(enemy).looseLife(this.damage);
+                //Enemys.get(enemy).applyEffect(effect);
                 acertou = true;
             }    
         }else{
