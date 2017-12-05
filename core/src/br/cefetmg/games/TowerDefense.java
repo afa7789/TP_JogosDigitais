@@ -103,7 +103,7 @@ public class TowerDefense extends ApplicationAdapter {
     
 
     public TowerDefense() {
-        this.windowTitle = "Hunter x Hunter (%d)";
+        this.windowTitle = "Geometry Tower Defense";
         showingMetrics = true;
     }
 
