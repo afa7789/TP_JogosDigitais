@@ -26,10 +26,10 @@ public class Enemy {
 
     public Position position;
     private final Algorithm seek;
-    private static IndexedAStarPathFinder pathFinder;
-    private final DefaultGraphPath<TileConnection> path;
+    private IndexedAStarPathFinder pathFinder;
+    private DefaultGraphPath<TileConnection> path;
     private Iterator<TileConnection> pathIterator;
-    private final Target steeringTarget;
+    private Target steeringTarget;
     private final float fullSpeed = 75;
     private static final float MIN_DISTANCE_CONSIDERED_ZERO_SQUARED = (float) Math.pow(2.0f, 2);
     private Facing facing;
@@ -85,6 +85,10 @@ public class Enemy {
     
     public void updatePathFinder (IndexedGraph g) {
         this.pathFinder = new IndexedAStarPathFinder(g, true);
+        this.path = new DefaultGraphPath<>();
+        this.pathIterator = this.path.iterator();
+        this.shouldMove = false;
+        this.terminouOPercurso = false;
     }
     /**
      * Atualiza a posição do agente de acordo com seu objetivo de alto nível
