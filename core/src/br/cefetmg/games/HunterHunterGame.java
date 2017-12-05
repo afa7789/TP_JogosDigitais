@@ -192,7 +192,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         //teste2.setTorre(300,300, debugMode);
         //bullets = new Array<>();
         //  for(int i=0;i<enemys.size();i++){
-        enemys.get(0).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
+        //enemys.get(0).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
         // }
         //agent.setGoal(LevelManager.totalPixelWidth-1, LevelManager.totalPixelHeight/2);
         //teste = new Attack(teste2,40,new Position(new Vector2(500,500)),enemys.get(0));
@@ -254,8 +254,41 @@ public class HunterHunterGame extends ApplicationAdapter {
                 if (clique.y < 640) {
                     posicaoy = (int) clique.y;
                 }
-                // Botão ESQUERDO: posiciona objetivo
                 if (button == Input.Buttons.LEFT) {
+                    if (quantidadeDeTorresDisponiveis > 0) {
+                        if (!constructionMode) {
+                            construtorDeTorre(clique.x, posicaoy);
+                        } else {
+                            //seila tocar um som para mostrar que não pode construir.
+                        }
+                        if (constructionMode) {
+                            rebuildTower(clique.x, posicaoy);
+                            constructionMode = !constructionMode;
+                        }
+                    }
+                }
+                if (button == Input.Buttons.RIGHT) {
+                    if (quantidadeDeTorresDisponiveis > 0) {
+                        for (Tower t : torres) {
+                            //System.out.println(t.getPosition().coords.x +" " + (int) clique.x);
+                            if (Math.abs(t.getPosition().coords.x - (int) clique.x) < 16 && Math.abs(t.getPosition().coords.y - posicaoy) < 16) {
+                                t.upgradeTower();
+                                if (t.isMaxPower) {
+                                    if (debugMode) {
+                                        System.out.println("já está com poder no maximo não da para aumentar");
+                                    }
+                                } else {
+                                    quantidadeDeTorresDisponiveis--;
+                                }
+                                if (debugMode) {
+                                    System.out.println("OK");
+                                }
+                            }
+                        }
+                    }
+                }
+                // Botão ESQUERDO: posiciona objetivo
+                /*if (button == Input.Buttons.LEFT) {
                     if (constructionMode) {
                         TileNode towerNode = LevelManager.graph.getNodeAtCoordinates((int) clique.x, (int) clique.y);
                         boolean emptyPlace = true;
@@ -301,7 +334,7 @@ public class HunterHunterGame extends ApplicationAdapter {
                             }
                         }
                     }
-                }
+                }*/
                 return true;
             }
         });
@@ -343,6 +376,7 @@ public class HunterHunterGame extends ApplicationAdapter {
             torres.add(Aux);
             quantidadeDeTorresDisponiveis--;
             atualizaGrafo();
+            
         }
 
     }
@@ -559,9 +593,7 @@ public class HunterHunterGame extends ApplicationAdapter {
             shapeRenderer.end();
         }
         if (showingMetrics) {
-
-                metricsRenderer.render(numeroDeVidas, pontos, nivel,quantidadeDeTorresDisponiveis);
-
+            metricsRenderer.render(numeroDeVidas, pontos, nivel,quantidadeDeTorresDisponiveis);
         }
 
     }
