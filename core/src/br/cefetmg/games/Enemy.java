@@ -175,7 +175,7 @@ public class Enemy {
     }
     
     public boolean chegouNoFinal(){
-        if( this.position.coords.dst2(Goal) > 0.5f)
+        if( this.position.coords.dst2(Goal) < 0.5f)
             return true;
         return false;
     }
