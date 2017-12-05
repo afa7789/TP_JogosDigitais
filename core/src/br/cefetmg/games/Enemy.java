@@ -90,8 +90,8 @@ public class Enemy {
         desenhe = false;
     }
     
-    public void updatePathFinder (IndexedGraph g) {
-        this.pathFinder = new IndexedAStarPathFinder(g, true);
+    public void updatePathFinder () {
+        this.pathFinder = new IndexedAStarPathFinder(LevelManager.graph);
         this.path = new DefaultGraphPath<>();
         this.pathIterator = this.path.iterator();
         this.shouldMove = false;

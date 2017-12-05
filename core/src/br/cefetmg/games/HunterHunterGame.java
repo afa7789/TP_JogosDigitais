@@ -397,8 +397,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         graphRenderer.renderGraphToTexture(LevelManager.graph);
         metricsRenderer = new MetricsRenderer(batch, shapeRenderer, new BitmapFont());
         for (Enemy enemy : enemys) {
-            enemy.updatePathFinder(LevelManager.graph);
-            enemy.setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
+            enemy.updatePathFinder();
         }
     }
 
@@ -546,8 +545,8 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     public void removerAtualizarInimigos(float delta) {
         for (Enemy enemy : enemys) {
-            enemy.update(delta);
             if (enemy.getLife() > 0) {
+                enemy.update(delta);
                 if (enemy.desenhe) {
                     if (!enemy.shouldMove && !enemy.terminouOPercurso) {
                         removendoUltimaTorre();
@@ -562,13 +561,11 @@ public class HunterHunterGame extends ApplicationAdapter {
                         //cont--; //tem q tirar isso quando voltar com a de cima.
                         perdeVida();
                     }
-                    
-                    
                 }
             } else {
                 //Tem q somar os pontos aqui
                 adicionarPontos();
-                //removendoOInimigo(enemy);
+                removendoOInimigo(enemy);
             }
         }
     }
@@ -605,7 +602,7 @@ public class HunterHunterGame extends ApplicationAdapter {
 
         booleanSpawn = quantidadeDeTorresDisponiveis == 0;
         if (debugMode) {
-            System.out.println("aass " + quantidadeDeInimigosDisponiveis + " " + cont + " " + (quantidadeDeInimigosDisponiveis == 0 && cont == 0) + " " + quantidadeDeTorresDisponiveis);
+            // System.out.println("aass " + quantidadeDeInimigosDisponiveis + " " + cont + " " + (quantidadeDeInimigosDisponiveis == 0 && cont == 0) + " " + quantidadeDeTorresDisponiveis);
         }
         if ((quantidadeDeInimigosDisponiveis == 0 && cont == 0) && quantidadeDeTorresDisponiveis == 0) {
             faseAcabou = true;
