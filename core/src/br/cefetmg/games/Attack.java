@@ -38,7 +38,7 @@ public class Attack {
     public int damage;
     //public TowerType towerType;
     public boolean acertou;
-    private static final float MIN_DISTANCE_CONSIDERED_ZERO_SQUARED = (float) Math.pow(2.0f, 2);
+    private static final float MIN_DISTANCE_CONSIDERED_ZERO_SQUARED = (float) 0.5f;
  
     
     public Attack(Tower tower, Vector3 posicao, Color cor, MovementAlgorithm comportamento, Enemy enemy) {
@@ -67,10 +67,10 @@ public class Attack {
             
             Vector2 novaPosição = new Vector2(alvo.x, alvo.y);
             if( novaPosição.dst(new Vector2(this.comportamento.alvo.getObjetivo().x, this.comportamento.alvo.getObjetivo().y)) < MIN_DISTANCE_CONSIDERED_ZERO_SQUARED){
-            if(!acertou){
-                
-                enemy.looseLife(this.damage);
-                acertou = true;
+                if(!acertou){
+
+                    enemy.looseLife(this.damage);
+                    acertou = true;
             }   
         }else{
             pose.atualiza(direcionamento, delta);
