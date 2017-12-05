@@ -559,6 +559,7 @@ public class HunterHunterGame extends ApplicationAdapter {
             shapeRenderer.end();
         }
         if (showingMetrics) {
+
                 metricsRenderer.render(numeroDeVidas, pontos, nivel,quantidadeDeTorresDisponiveis);
 
         }
