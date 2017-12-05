@@ -36,19 +36,23 @@ public class Tower {
     public final float actionZone;
     public int tempoEntreAtaques;
     public boolean isAttacking=false;
-    public int target;
+    public Enemy target;
     public static Vector2 worldDimensions;
     public static final float reajuste = 0.02f;
 
-    // public final TextureRegion texture;
-    // public static Texture texture_teste = new Texture("torre_temporaria.png");
-    public ArrayList<Bullet> bullets;
+    //public final TextureRegion texture;
+    //public static Texture texture_teste = new Texture("torre_temporaria.png");
+    public ArrayList<Attack> attacks;
     public MovementAlgorithm comportamento;
 
     public Tower(float worldWidth, float worldHeight) {
         actionZone = 48f;
-        bullets = new ArrayList<Bullet>();
+        attacks = new ArrayList<Attack>();
         worldDimensions = new Vector2(worldWidth, worldHeight);
+    }
+    
+    public void setAlvo(Enemy enemy){
+        comportamento.alvo.setObjetivo(new Vector3(enemy.position.coords.x, enemy.position.coords.y, 0));
     }
     
     public void setComportamento(Vector2 target){
@@ -58,28 +62,31 @@ public class Tower {
         comportamento = buscar;
         comportamento.alvo.setObjetivo(new Vector3(target.x, target.y, 0));
     }
-    public void newBullet(Vector3 position){
-        Bullet agente = new Bullet(position,
-				new Color(0, 0, 1, 1), comportamento);
+    
+    public void newAttack(Vector3 position, Enemy enemy){
+        Attack agente = new Attack(this,position,
+				new Color(0, 0, 1, 1), comportamento, enemy);
         agente.pose.orientacao = (float) (Math.random() * Math.PI * 2);
         agente.defineComportamento(comportamento);
-        bullets.add(agente);
+        attacks.add(agente);
         
     }
     public void setTorre(int x, int y, boolean debugMode) {
         this.towerLevel = Strength.VERMELHO;
         this.type = TowerType.LINE;
         TileNode towerNode = LevelManager.graph.getNodeAtCoordinates(x, y);
-        //System.out.println(" "+towerNode.getPosition().x +" "+towerNode.getPosition().y);
         if (debugMode) System.out.println(" "+towerNode.getPosition().x +" "+towerNode.getPosition().y);
         this.position = new Position(towerNode.getPosition());
         towerNode.setIsObstacle(true);
         this.tempoEntreAtaques=100;
     }
     
-//    public Texture getTexture (){
-//        return texture_teste;
-//    }
+    public void setTarget(Enemy enemy){
+        this.target = enemy;
+    }
+    /*public Texture getTexture (){
+        return texture_teste;
+    }*/
     public boolean atacandoAlguem(){
         return isAttacking;
     }
@@ -110,11 +117,8 @@ public class Tower {
                  towerLevel = Strength.AZUL;
                  break;
              case AZUL:
-                towerLevel = Strength.VIOLETA;
-                break;
-             case VIOLETA:
-                 
-                break;
+                 towerLevel = Strength.VIOLETA;
+                 break;
              default:
                  break;
          }
@@ -171,11 +175,9 @@ public class Tower {
      
      
     public void changeTowerType() {//era para ir para o próximo tipo do Enum.
-        //tem q seta o Type IS Final para true se tentar no final.
         switch (type) {
             case LINE:
                 type = TowerType.DOUBLE_LINE;
-
                 break;
             case DOUBLE_LINE:
                 type = TowerType.TRIANGLE;
