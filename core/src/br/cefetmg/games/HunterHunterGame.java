@@ -411,60 +411,62 @@ public class HunterHunterGame extends ApplicationAdapter {
         }
     }
 
-    public void criaInimigo() {
+    public Enemy criaInimigo() {
+        Enemy enemy;
         if (nivel < 3) {
-            enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERMELHO, viewport.getWorldWidth(), viewport.getWorldHeight()));
+            enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERMELHO, viewport.getWorldWidth(), viewport.getWorldHeight());
         } else if (nivel < 5) {
             if (quantidadeDeInimigosDisponiveis >= maximoDeInimigos / 2) {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERMELHO, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERMELHO, viewport.getWorldWidth(), viewport.getWorldHeight());
             } else {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.LARANJA, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.LARANJA, viewport.getWorldWidth(), viewport.getWorldHeight());
             }
         } else if (nivel < 7) {
             if (quantidadeDeInimigosDisponiveis >= 3 * maximoDeInimigos / 4) {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERMELHO, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERMELHO, viewport.getWorldWidth(), viewport.getWorldHeight());
             } else if (quantidadeDeInimigosDisponiveis >= 1 * maximoDeInimigos / 4) {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.LARANJA, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.LARANJA, viewport.getWorldWidth(), viewport.getWorldHeight());
             } else {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AMARELO, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AMARELO, viewport.getWorldWidth(), viewport.getWorldHeight());
             }
         } else if (nivel < 10) {
             if (quantidadeDeInimigosDisponiveis >= 3 * maximoDeInimigos / 4) {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.LARANJA, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.LARANJA, viewport.getWorldWidth(), viewport.getWorldHeight());
             } else if (quantidadeDeInimigosDisponiveis >= 1 * maximoDeInimigos / 4) {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AMARELO, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AMARELO, viewport.getWorldWidth(), viewport.getWorldHeight());
             } else {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERDE, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERDE, viewport.getWorldWidth(), viewport.getWorldHeight());
             }
         } else if (nivel < 11) {
             if (quantidadeDeInimigosDisponiveis >= 3 * maximoDeInimigos / 4) {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AMARELO, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AMARELO, viewport.getWorldWidth(), viewport.getWorldHeight());
             } else if (quantidadeDeInimigosDisponiveis >= 1 * maximoDeInimigos / 4) {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERDE, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERDE, viewport.getWorldWidth(), viewport.getWorldHeight());
             } else {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight());
             }
         } else if (nivel < 12) {
             if (quantidadeDeInimigosDisponiveis >= 3 * maximoDeInimigos / 4) {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERDE, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VERDE, viewport.getWorldWidth(), viewport.getWorldHeight());
             } else if (quantidadeDeInimigosDisponiveis >= 2 * maximoDeInimigos / 4) {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight());
             } else if (quantidadeDeInimigosDisponiveis >= maximoDeInimigos / 4) {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AZUL, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AZUL, viewport.getWorldWidth(), viewport.getWorldHeight());
             } else {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VIOLETA, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VIOLETA, viewport.getWorldWidth(), viewport.getWorldHeight());
             }
         } else {
             if (quantidadeDeInimigosDisponiveis >= 3 * maximoDeInimigos / 4) {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.CIANO, viewport.getWorldWidth(), viewport.getWorldHeight());
             } else if (quantidadeDeInimigosDisponiveis >= 2 * maximoDeInimigos / 4) {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AZUL, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.AZUL, viewport.getWorldWidth(), viewport.getWorldHeight());
             } else {
-                enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VIOLETA, viewport.getWorldWidth(), viewport.getWorldHeight()));
+                enemy = new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VIOLETA, viewport.getWorldWidth(), viewport.getWorldHeight());
             }
         }
-        enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
-        enemys.get(enemys.size() - 1).update(Gdx.graphics.getDeltaTime());
+        enemy.setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
+        enemy.update(Gdx.graphics.getDeltaTime());
+        return enemy;
     }
     
     
@@ -476,7 +478,7 @@ public class HunterHunterGame extends ApplicationAdapter {
                 if (debugMode) {
                     System.out.println("spawno");
                 }
-                criaInimigo();
+                enemys.add(criaInimigo());
                 cont++;
                 quantidadeDeInimigosDisponiveis--;
             }
