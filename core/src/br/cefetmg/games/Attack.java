@@ -37,9 +37,9 @@ public class Attack {
     public Pose posicao;
     public int damage;
     //public TowerType towerType;
-    public boolean acertou;
-    private static final float MIN_DISTANCE_CONSIDERED_ZERO_SQUARED = (float) 0.5f;
- 
+    boolean acertou;
+    private static final float MIN_DISTANCE_CONSIDERED_ZERO_SQUARED = (float) Math.pow(2.0f, 2);
+    boolean draw;
     
     public Attack(Tower tower, Vector3 posicao, Color cor, MovementAlgorithm comportamento, Enemy enemy) {
         this.tower = tower;
@@ -51,6 +51,8 @@ public class Attack {
         this.pose = new Pose(posicao, 0);
         this.comportamento = comportamento;
         this.enemy = enemy;
+        this.acertou=false;
+        this.draw=true;
     }
     
     
@@ -66,17 +68,19 @@ public class Attack {
             pose.atualiza(direcionamento, delta);
             
             Vector2 novaPosição = new Vector2(alvo.x, alvo.y);
-            if( novaPosição.dst(new Vector2(this.comportamento.alvo.getObjetivo().x, this.comportamento.alvo.getObjetivo().y)) < MIN_DISTANCE_CONSIDERED_ZERO_SQUARED){
+            //System.out.println("x1 = " + alvo.x + ", x2 = " + this.comportamento.alvo.getObjetivo().x);
+            /*if( novaPosição.dst2(new Vector2(this.comportamento.alvo.getObjetivo().x, this.comportamento.alvo.getObjetivo().y)) < MIN_DISTANCE_CONSIDERED_ZERO_SQUARED){
+            
                 if(!acertou){
-
                     enemy.looseLife(this.damage);
+                    //this.draw = false;
                     acertou = true;
-            }   
-        }else{
+                }   
+        }else{*/
             pose.atualiza(direcionamento, delta);
             //pose.integrate(this.seek.steer(this.pose.posicao),delta);
-        }
-            
+        //}
+                        
         }
     }
 
