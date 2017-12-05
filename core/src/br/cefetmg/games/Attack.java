@@ -5,17 +5,18 @@
  */
 package br.cefetmg.games;
 
+import br.cefetmg.games.movement.BulletTarget;
 import br.cefetmg.games.movement.Direction;
 import br.cefetmg.games.movement.MovementAlgorithm;
 import br.cefetmg.games.movement.Pose;
 import br.cefetmg.games.movement.Position;
+import br.cefetmg.games.movement.Target;
 import br.cefetmg.games.movement.behavior.Algorithm;
 import br.cefetmg.games.movement.behavior.Follow;
 import br.cefetmg.games.movement.behavior.Seek;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import java.util.ArrayList;
 
 /**
  *
@@ -23,30 +24,83 @@ import java.util.ArrayList;
  */
 public class Attack {
     
-    public int damage;
-    public TowerType towerType;
-    boolean acertou;
-    
+    public Vector3 initialPosition;
+    public Pose pose;
+    private MovementAlgorithm comportamento;
     public Color cor;
-    Strength strengh;
-    public Pose posicao;
-    public Position position;
-    public MovementAlgorithm teste;
-    private final Algorithm seek;
-    private static final float MIN_DISTANCE_CONSIDERED_ZERO_SQUARED = (float) Math.pow(2.0f, 2);
-    public int enemy;
     
-    public Attack(Tower a, int speed, Position position,int enemy) {
-        this.towerType = a.type;
-        this.strengh = a.towerLevel;
-        this.position = position;
-        this.posicao = new Pose(new Vector3(this.position.coords.x,this.position.coords.y,0),0);
-        this.seek = new Seek(speed);
-        this.damage = defineDamage(a.getPower());
-        this.enemy =enemy;
-        this.acertou=false;
-        this.teste=new Follow(speed);
-        this.cor = defineColor();
+    Tower tower;
+    Strength strengh;
+    public TowerType towerType;
+    public Enemy enemy;
+    private final Algorithm seek = new Seek(100);;
+    public Pose posicao;
+    public int damage;
+    //public TowerType towerType;
+    boolean acertou;
+    private static final float MIN_DISTANCE_CONSIDERED_ZERO_SQUARED = (float) Math.pow(2.0f, 2);
+ 
+    
+    public Attack(Tower tower, Vector3 posicao, Color cor, MovementAlgorithm comportamento, Enemy enemy) {
+        this.tower = tower;
+        this.towerType = tower.type;
+        this.strengh = tower.towerLevel;
+        this.damage = defineDamage(tower.getPower());
+        this.cor = tower.getColor();
+        this.initialPosition=posicao;
+        this.pose = new Pose(posicao, 0);
+        this.comportamento = comportamento;
+        this.enemy = enemy;
+    }
+    
+    
+    public void atualiza(float delta, Vector3 alvo) {
+        if (comportamento != null) {
+            // pergunta ao algoritmo de movimento (comportamento) 
+            // para onde devemos ir
+            comportamento.alvo.setObjetivo(new Vector3(enemy.position.coords.x,
+                                                        enemy.position.coords.y, 0));
+            Direction direcionamento = comportamento.guiar(this.pose);
+
+            // faz a simulação física usando novo estado da entidade cinemática
+            pose.atualiza(direcionamento, delta);
+            
+            Vector2 novaPosição = new Vector2(alvo.x, alvo.y);
+            if( novaPosição.dst(new Vector2(this.comportamento.alvo.getObjetivo().x, this.comportamento.alvo.getObjetivo().y)) < MIN_DISTANCE_CONSIDERED_ZERO_SQUARED){
+            if(!acertou){
+                
+                enemy.looseLife(this.damage);
+                acertou = true;
+            }   
+        }else{
+            pose.atualiza(direcionamento, delta);
+            //pose.integrate(this.seek.steer(this.pose.posicao),delta);
+        }
+            
+        }
+    }
+
+    /**
+     * @param comportamento o novo comportamento de movimentação
+     */
+    public void defineComportamento(MovementAlgorithm comportamento) {
+        this.comportamento = comportamento;
+    }
+    public char getNomeComportamento() {
+        return comportamento != null ? comportamento.getNome() : '-';
+    }
+    
+    public Vector3 getInitialPosition() {
+        return this.initialPosition;
+    }
+    
+    
+    
+    public void setComportamento(Vector2 target){
+        Follow buscar = new Follow(100);
+        buscar.alvo = new BulletTarget(new Vector3(target.x, target.y, 0));
+        this.comportamento = buscar;
+        this.comportamento.alvo.setObjetivo(new Vector3(target.x, target.y, 0));
     }
     
     private Color defineColor(){
@@ -134,24 +188,29 @@ public class Attack {
         return Damage;
     } 
     
-    public void update(float delta,ArrayList<Enemy> Enemys){
-        //Ta crashando quando vai pegar a posição dele.
-        this.seek.target.coords = new Vector2( Enemys.get(enemy).getPosition() ); //isso aqui ta fudendo o bagulho.
-        
-        Vector2 novaPosição = new Vector2(this.position.coords);
-        Direction direcionamento = teste.guiar(this.posicao);
-        //Missil vai perseguir até acertar o inimigo.
-        if( novaPosição.dst2(this.seek.target.coords) < MIN_DISTANCE_CONSIDERED_ZERO_SQUARED){
-            if(!acertou){
-                Enemys.get(enemy).looseLife(this.damage);
-                //Enemys.get(enemy).applyEffect(effect);
-                acertou = true;
-            }    
-        }else{
-            this.posicao.atualiza(direcionamento, delta);
-            this.position.integrate(this.seek.steer(this.position),delta);
-        }
-    }
+//    public void update(float delta){
+//        //this.seek.target.coords = this.enemy.position.coords;
+//        this.seek.target.coords.x = this.enemy.position.coords.x;
+//        this.seek.target.coords.y = this.enemy.position.coords.y;
+//        
+//        /*Vector2 novaPosição = new Vector2(this.enemy.position.coords);
+//        System.out.println("x: " + this.enemy.position.coords.x + ", y: " + this.position.coords.y);*/
+//        this.comportamento.alvo = new BulletTarget(new Vector3(this.seek.target.coords.x, this.seek.target.coords.y,0));
+//        
+//        Direction direcionamento = comportamento.guiar(this.posicao);
+//       posicao.atualiza(direcionamento, delta);
+//        //Missil vai perseguir até acertar o inimigo.
+//        /*if( novaPosição.dst2(this.seek.target.coords) < MIN_DISTANCE_CONSIDERED_ZERO_SQUARED){
+//            if(!acertou){
+//                enemy.looseLife(this.damage);
+//                acertou = true;
+//            }   
+//            this.posicao.atualiza(direcionamento, delta);
+//        }else{
+//            this.posicao.atualiza(direcionamento, delta);
+//            this.position.integrate(this.seek.steer(this.position),delta);
+//        }*/
+//    }
     
     
 }

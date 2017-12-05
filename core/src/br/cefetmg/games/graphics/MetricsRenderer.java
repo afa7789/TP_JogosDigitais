@@ -27,6 +27,7 @@ public class MetricsRenderer {
     }
 
     public void render(int vidas, int vidasMaximo, int nivel,int quantidadeDeTorresDisponiveis) {
+        
         float verticalSpacing = 5;
         float fontHeight = font.getLineHeight() + verticalSpacing;
         float initialY = fontHeight + verticalSpacing;
@@ -55,4 +56,6 @@ public class MetricsRenderer {
                 initialY + 2*fontHeight);
         batch.end();
     }
+
+ 
 }

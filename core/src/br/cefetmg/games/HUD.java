@@ -33,8 +33,8 @@ public class HUD {
  //   private Sprite jogador;
     private float posX,posY;
     Texture space;
-    Texture word;
     Texture life_bar;
+    Texture word;
     Texture button_newgame;
     Texture button_play;
     Texture button_pause;
@@ -55,8 +55,8 @@ public class HUD {
     HUD(){
         state=1;
         space=new Texture(Gdx.files.local("hud/life-bar.png"));
-        word=new Texture("hud/word.png");
         life_bar=new Texture("hud/life.png");
+        word=new Texture("hud/word.png");
         button_newgame=new Texture("hud/btn_new.png");
         button_play=new Texture("hud/btn_play.png");
         button_pause=new Texture("hud/btn_pause.png");

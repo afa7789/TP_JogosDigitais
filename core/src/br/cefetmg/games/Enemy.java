@@ -8,12 +8,14 @@ import br.cefetmg.games.movement.behavior.Algorithm;
 import br.cefetmg.games.movement.behavior.Seek;
 import br.cefetmg.games.pathfinding.TileConnection;
 import br.cefetmg.games.pathfinding.TileNode;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder.Metrics;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import java.util.Iterator;
@@ -43,7 +45,9 @@ public class Enemy {
     public boolean jaDeuPontos=false;
     public static Vector2 worldDimensions;
     public static final float reajuste = 0.02f;
-
+    Texture space;
+    Texture life_bar;
+    
     public Enemy(Vector2 position, Strength color,float worldWidth, float worldHeight) {
         this.position = new Position(position);
         this.color = color;
@@ -59,6 +63,9 @@ public class Enemy {
         this.life = 14 * getSustain();
         this.desenhe = true;
         this.worldDimensions = new Vector2(worldWidth, worldHeight);
+        
+        space=new Texture(Gdx.files.local("hud/life-bar.png"));
+        life_bar=new Texture("hud/life.png");
 
     }
     private int getSustain() {
