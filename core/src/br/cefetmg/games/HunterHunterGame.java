@@ -124,6 +124,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         quantidadeDeInimigosDisponiveis = 5;
         maximoDeInimigos = quantidadeDeInimigosDisponiveis;
         
+        tiledMap = LevelManager.LoadLevel("map.tmx");
         start = TimeUtils.millis();
         cont = 0;
         deadEnemy = 0;
@@ -540,7 +541,8 @@ public class HunterHunterGame extends ApplicationAdapter {
 
     public void removendoUltimaTorre() {//Pego o Tamanho do ArrayList e remove a ultima torre posta
         torres.remove(torres.get(torres.size() - 1));
-        
+        //para corrigir isso vou usar adicionar Pontos para compensar então na proxima Wave ele pode por mais torre.
+        adicionarPontos();
     }
 
     public void removerAtualizarInimigos(float delta) {
@@ -550,10 +552,10 @@ public class HunterHunterGame extends ApplicationAdapter {
                 if (enemy.desenhe) {
                     if (!enemy.shouldMove && !enemy.terminouOPercurso) {
                         removendoUltimaTorre();
-                        //quantidadeDeTorresDisponiveis++;
+                        quantidadeDeTorresDisponiveis++;
+                        enemy.terminouOPercurso = !enemy.terminouOPercurso;
                         //Acho que tem q atualizar o Path após remover a torre.
-                        atualizaGrafo();                        
-                        
+                        atualizaGrafo();
                     }
                     if (!enemy.shouldMove && enemy.terminouOPercurso) {
                         //chegouNoFim
@@ -566,6 +568,7 @@ public class HunterHunterGame extends ApplicationAdapter {
                 //Tem q somar os pontos aqui
                 adicionarPontos();
                 removendoOInimigo(enemy);
+
             }
         }
     }
@@ -600,7 +603,9 @@ public class HunterHunterGame extends ApplicationAdapter {
     public void controleDeFase() {
         boolean faseAcabou = false;
 
-        booleanSpawn = quantidadeDeTorresDisponiveis == 0;
+        if (quantidadeDeTorresDisponiveis == 0) {
+            booleanSpawn = true;
+        }
         if (debugMode) {
             // System.out.println("aass " + quantidadeDeInimigosDisponiveis + " " + cont + " " + (quantidadeDeInimigosDisponiveis == 0 && cont == 0) + " " + quantidadeDeTorresDisponiveis);
         }

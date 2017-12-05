@@ -37,7 +37,7 @@ public class Attack {
     public Pose posicao;
     public int damage;
     //public TowerType towerType;
-    boolean acertou;
+    public boolean acertou;
     private static final float MIN_DISTANCE_CONSIDERED_ZERO_SQUARED = (float) Math.pow(2.0f, 2);
  
     

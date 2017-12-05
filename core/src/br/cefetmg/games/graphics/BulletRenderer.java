@@ -43,7 +43,7 @@ public class BulletRenderer {
     
     public void renderAll(ArrayList<Attack> attacks  ){
         for (Attack attack : attacks) {
-            desenha(attack);
+            if(!attack.acertou)desenha(attack);
         }
     }
     
