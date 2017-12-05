@@ -8,16 +8,12 @@ import br.cefetmg.games.movement.behavior.Algorithm;
 import br.cefetmg.games.movement.behavior.Seek;
 import br.cefetmg.games.pathfinding.TileConnection;
 import br.cefetmg.games.pathfinding.TileNode;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder.Metrics;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import java.util.Iterator;
@@ -30,10 +26,10 @@ public class Enemy {
 
     public Position position;
     private final Algorithm seek;
-    private IndexedAStarPathFinder pathFinder;
-    private DefaultGraphPath<TileConnection> path;
+    private static IndexedAStarPathFinder pathFinder;
+    private final DefaultGraphPath<TileConnection> path;
     private Iterator<TileConnection> pathIterator;
-    private Target steeringTarget;
+    private final Target steeringTarget;
     private final float fullSpeed = 75;
     private static final float MIN_DISTANCE_CONSIDERED_ZERO_SQUARED = (float) Math.pow(2.0f, 2);
     private Facing facing;
@@ -47,6 +43,7 @@ public class Enemy {
     public boolean jaDeuPontos=false;
     public static Vector2 worldDimensions;
     public static final float reajuste = 0.02f;
+    public boolean draw;
 
     public Enemy(Vector2 position, Strength color,float worldWidth, float worldHeight) {
         this.position = new Position(position);
@@ -63,11 +60,9 @@ public class Enemy {
         this.life = 14 * getSustain();
         this.desenhe = true;
         this.worldDimensions = new Vector2(worldWidth, worldHeight);
-        
-      
-        
+        this.draw=true;
+
     }
-   
     private int getSustain() {
          switch (color){
              case VIOLETA:
@@ -90,8 +85,8 @@ public class Enemy {
         desenhe = false;
     }
     
-    public void updatePathFinder () {
-        this.pathFinder = new IndexedAStarPathFinder(LevelManager.graph,true);
+    public void updatePathFinder (IndexedGraph g) {
+        this.pathFinder = new IndexedAStarPathFinder(g, true);
     }
     /**
      * Atualiza a posição do agente de acordo com seu objetivo de alto nível
@@ -266,7 +261,6 @@ public class Enemy {
                 });
         return renderer;
     }
-    
     
     
 }
