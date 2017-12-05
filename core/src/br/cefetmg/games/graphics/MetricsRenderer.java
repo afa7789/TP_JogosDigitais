@@ -26,7 +26,7 @@ public class MetricsRenderer {
         font.setColor(Color.WHITE);
     }
 
-    public void render(int vidas, int vidasMaximo, int nivel) {
+    public void render(int vidas, int vidasMaximo, int nivel,int quantidadeDeTorresDisponiveis) {
         float verticalSpacing = 5;
         float fontHeight = font.getLineHeight() + verticalSpacing;
         float initialY = fontHeight + verticalSpacing;
@@ -51,6 +51,8 @@ public class MetricsRenderer {
         font.draw(batch, String.format("Nivel: %d",
                 nivel),
                 initialX, initialY);
+        font.draw(batch, String.format("Torres Disponiveis: %d", quantidadeDeTorresDisponiveis),initialX+100,
+                initialY + 2*fontHeight);
         batch.end();
     }
 }
