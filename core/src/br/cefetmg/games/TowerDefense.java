@@ -398,7 +398,7 @@ public class TowerDefense extends ApplicationAdapter {
         graphRenderer.renderGraphToTexture(LevelManager.graph);
         metricsRenderer = new MetricsRenderer(batch, shapeRenderer, new BitmapFont());
         for (Enemy enemy : enemys) {
-            enemy.updatePathFinder();
+            enemy.updatePathFinder(LevelManager.graph);
         }
     }
 
@@ -485,18 +485,25 @@ public class TowerDefense extends ApplicationAdapter {
         }
     }
     
-    public void emissorDeAtaques() {
+   public void emissorDeAtaques() {
         for (Tower torre : torres) {
             if (torre.atacandoAlguem()) {
-                if(torre.target.getLife()>0){
-                    if (counter % torre.tempoEntreAtaques == 0) {
-                        if (debugMode) System.out.println("Adicionou ataque");
-                        torre.newAttack(new Vector3(torre.position.coords.x, torre.position.coords.y,0),torre.target);
+                if(new Vector2(torre.comportamento.alvo.getObjetivo().x, torre.comportamento.alvo.getObjetivo().y).dst(torre.position.coords)<= torre.actionZone){
+                    if(torre.target.getLife()>0){
+                        if (counter % torre.tempoEntreAtaques == 0) {
+                            if (debugMode) System.out.println("Adicionou ataque");
+                            torre.newAttack(new Vector3(torre.position.coords.x, torre.position.coords.y,0),torre.target);
+                        }
+                    }else{
+                        if (debugMode) System.out.println("Parou de Atacar");    
+                        torre.parouDeAtacar();
+                        torre.target.draw=false;
                     }
-                }else{
-                    if (debugMode) System.out.println("Parou de Atacar");    
-                    torre.parouDeAtacar();
                 }
+                else{
+                    torre.target = pegaInimigoMaisProximoDoAlcanceDaTorre(torre);
+                }
+                
             }else{
                 torre.target = pegaInimigoMaisProximoDoAlcanceDaTorre(torre);
             }
@@ -552,7 +559,7 @@ public class TowerDefense extends ApplicationAdapter {
                     if (!enemy.shouldMove && !enemy.terminouOPercurso) {
                         removendoUltimaTorre();
                         quantidadeDeTorresDisponiveis++;
-                        enemy = 
+                        enemy.terminouOPercurso = !enemy.terminouOPercurso;
                         //Acho que tem q atualizar o Path após remover a torre.
                         atualizaGrafo();
                     } if (!enemy.shouldMove && enemy.terminouOPercurso) {
@@ -678,16 +685,28 @@ public class TowerDefense extends ApplicationAdapter {
                    if(hud.state==1)
                     play(delta);
                    towerRenderer.renderAll(torres, shapeRenderer);
-                    enemyRenderer.renderAll(enemys, shapeRenderer);
-                    bulletRenderer.renderAll(attacks);
+                    //enemyRenderer.renderAll(enemys, shapeRenderer);
+                    //bulletRenderer.renderAll(attacks);
+                    
+                    for(int i=0;i<enemys.size();i++){
+                        if(enemys.get(i).draw){
+                            enemyRenderer.render(enemys.get(i), shapeRenderer);
+                        }
+                    }
+                    
+                    
                     atualizaAtaques(delta);
+                    
                     for (int i=0; i<torres.size();i++) {
                         for(int j=0; j<torres.get(i).attacks.size();j++){
-                            bulletRenderer.desenha(torres.get(i).attacks.get(j));
+                            if(torres.get(i).attacks.get(j).draw)
+                                bulletRenderer.desenha(torres.get(i).attacks.get(j));
+                            else
+                                torres.get(i).attacks.remove(j);
                         }
-			
                         //System.out.println("target: " + bullets.get(i).bt.getObjetivo().x + ", " + bullets.get(i).bt.getObjetivo().y);
                     }
+                    
                     Gdx.graphics.setTitle(String.format(windowTitle, Gdx.graphics.getFramesPerSecond()));
 
 
@@ -697,7 +716,36 @@ public class TowerDefense extends ApplicationAdapter {
                    numeroDeVidas=-1;
                }
          }
+        
+         boolean definiuObjetivo = false;
+        
+        
+        for(int i=0;i<torres.size();i++){
+            for(int j=0;j<torres.get(i).attacks.size();j++){
+                for(int n=0;n<enemys.size();n++){
+                    Attack atual = torres.get(i).attacks.get(j);
+                    definiuObjetivo = colideCom(
+                                    new Circle(
+                                            new Vector2(
+                                                    atual.pose.posicao.x,
+                                                    atual.pose.posicao.y),
+                                            BulletRenderer.RAIO),
+                                    new Vector3(enemys.get(n).position.coords.x, enemys.get(n).position.coords.y,0));
+                            if(definiuObjetivo==true){
+                                torres.get(i).attacks.get(j).enemy.looseLife(delta);
+                                torres.get(i).attacks.get(j).draw=false;
+                                //torres.get(i).attacks.remove(atual);
+                            }
+                    }
+                
+            }
+        }
     }
+    
+    public static final boolean colideCom(Circle circulo, Vector3 ponto) {
+        return circulo.contains(new Vector2(ponto.x, ponto.y));
+    }
+     
     void play(float delta) {
         //Remove o inimigo e atualiza posição dele
         //Atualiza Posição dos Ataques da Dano nos inimigos
@@ -730,9 +778,5 @@ public class TowerDefense extends ApplicationAdapter {
             //revolveCoordenadas(agente);
         }
     }*/
-
-    public static final boolean colideCom(Circle circulo, Vector3 ponto) {
-        return circulo.contains(new Vector2(ponto.x, ponto.y));
-    }
 
 }
