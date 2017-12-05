@@ -26,7 +26,7 @@ public class Attack {
     
     public Vector3 initialPosition;
     public Pose pose;
-    private MovementAlgorithm comportamento;
+    public MovementAlgorithm comportamento;
     public Color cor;
     
     Tower tower;
