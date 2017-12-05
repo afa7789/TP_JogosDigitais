@@ -48,12 +48,18 @@ public class HUD {
     private TextureRegion PTextureRegion;
     private TextureRegionDrawable PTexRegionDrawable;
     private ImageButton Pbutton;
-    private Stage stage;
     
+    private TextureRegion PlTextureRegion;
+    private TextureRegionDrawable PlTexRegionDrawable;
+    private ImageButton Plbutton;
+    
+    private Stage stage;
+    private Stage Pstage;
+    private Stage Plstage;
     int state;
     
     HUD(){
-        state=1;
+        state=-1;
         space=new Texture(Gdx.files.local("hud/life-bar.png"));
         life_bar=new Texture("hud/life.png");
         word=new Texture("hud/word.png");
@@ -75,11 +81,21 @@ public class HUD {
         Pbutton = new ImageButton(PTexRegionDrawable); 
         Pbutton.setPosition(894,640);
         
+        PlTextureRegion = new TextureRegion(button_play);
+        PlTexRegionDrawable = new TextureRegionDrawable(PlTextureRegion);
+        Plbutton = new ImageButton(PlTexRegionDrawable); 
+        Plbutton.setPosition(894,640);
+        
         stage = new Stage(new ScreenViewport()); 
+        Pstage= new Stage(new ScreenViewport());
+        Plstage= new Stage(new ScreenViewport());
         stage.addActor(NGbutton); 
-        stage.addActor(Pbutton); 
-
+        Pstage.addActor(Pbutton); 
+        Plstage.addActor(Plbutton); 
         Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(Pstage);
+        Gdx.input.setInputProcessor(Plstage);
+   
     }
     void update(){
           
@@ -94,16 +110,21 @@ public class HUD {
     }
     void render(SpriteBatch batch){
        
-     
-       batch.draw(word, 362, 680);
-       batch.draw(space, 362, 640);
-       batch.draw(lifebarsprite, 362, 640,300*life/fulllife,40);
-
+       if(state!=-1){
+        batch.draw(word, 362, 680);
+        batch.draw(space, 362, 640);
+        batch.draw(lifebarsprite, 362, 640,300*life/fulllife,40);
+       }
     }
     void button_render(){
        stage.act(Gdx.graphics.getDeltaTime());
        stage.draw(); //Draw the ui
-        
+       if(state!=-1){
+           if(state==2)
+              Plstage.draw(); //Draw the ui
+           else if(state==1)
+              Pstage.draw(); //Draw the ui 
+       }
     }
     int getState(){
         return state;
@@ -114,12 +135,14 @@ public class HUD {
     void listeningbutton(int button, Vector2 clique) {
         if (button == Input.Buttons.LEFT) {
                    if((int) clique.y>650&&(int) clique.y<700 &&(int) clique.x>10 &&(int) clique.x<130 ){ 
+                       
                         state=0;
-                        System.out.println("Assim");
                    }
                    if((int) clique.y>650&&(int) clique.y<700 &&(int) clique.x>894 &&(int) clique.x<1014 ){
-                       if(state==2)
+                       if(state==2){
                            state=1;
+                           
+                       }
                        else  if(state==1)
                            state=2;
                    }

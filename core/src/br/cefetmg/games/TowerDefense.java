@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-public class HunterHunterGame extends ApplicationAdapter {
+public class TowerDefense extends ApplicationAdapter {
 
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
@@ -101,7 +101,7 @@ public class HunterHunterGame extends ApplicationAdapter {
     int cont; //Conta quantos inimigos a no mapa
     int deadEnemy;
 
-    public HunterHunterGame() {
+    public TowerDefense() {
         this.windowTitle = "Hunter x Hunter (%d)";
         showingMetrics = true;
     }

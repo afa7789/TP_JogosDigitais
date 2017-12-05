@@ -70,6 +70,7 @@ public class EnemyRenderer {
         renderer.setColor(agent.getColor());
         agent.getForm(renderer);
         renderer.end();
+        agent.drawbarlife(batch);
             
         }
     }
