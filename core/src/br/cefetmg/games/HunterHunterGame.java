@@ -120,7 +120,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         valorDePontosQueGanhaSeForGanharVidaEVidaJaTiverNoMaximo = 10;
         booleanSpawn = false;
         constructionMode=false;
-        quantidadeDeTorresDisponiveis = 5;
+        quantidadeDeTorresDisponiveis = 20;
         quantidadeDeInimigosDisponiveis = 5;
         maximoDeInimigos = quantidadeDeInimigosDisponiveis;
         
@@ -463,7 +463,8 @@ public class HunterHunterGame extends ApplicationAdapter {
                 enemys.add(new Enemy(new Vector2(LevelManager.tileWidth / 2, LevelManager.totalPixelHeight / 2), Strength.VIOLETA, viewport.getWorldWidth(), viewport.getWorldHeight()));
             }
         }
-
+        enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
+        enemys.get(enemys.size() - 1).update(Gdx.graphics.getDeltaTime());
     }
     
     
@@ -476,9 +477,6 @@ public class HunterHunterGame extends ApplicationAdapter {
                     System.out.println("spawno");
                 }
                 criaInimigo();
-                enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
-                //enemys.get(enemys.size() - 1).setGoal(LevelManager.totalPixelWidth - 1, LevelManager.totalPixelHeight / 2, debugMode);
-                enemys.get(enemys.size() - 1).update(Gdx.graphics.getDeltaTime());
                 cont++;
                 quantidadeDeInimigosDisponiveis--;
             }
@@ -540,9 +538,8 @@ public class HunterHunterGame extends ApplicationAdapter {
     }
 
     public void removendoUltimaTorre() {//Pego o Tamanho do ArrayList e remove a ultima torre posta
-        torres.remove(torres.get(torres.size() - 1));
+        if (!torres.isEmpty()) torres.remove(torres.get(torres.size() - 1));
         //para corrigir isso vou usar adicionar Pontos para compensar então na proxima Wave ele pode por mais torre.
-        adicionarPontos();
     }
 
     public void removerAtualizarInimigos(float delta) {
@@ -553,13 +550,13 @@ public class HunterHunterGame extends ApplicationAdapter {
                     if (!enemy.shouldMove && !enemy.terminouOPercurso) {
                         removendoUltimaTorre();
                         quantidadeDeTorresDisponiveis++;
-                        enemy.terminouOPercurso = !enemy.terminouOPercurso;
+                        enemy = 
                         //Acho que tem q atualizar o Path após remover a torre.
                         atualizaGrafo();
-                    }
-                    if (!enemy.shouldMove && enemy.terminouOPercurso) {
+                    } if (!enemy.shouldMove && enemy.terminouOPercurso) {
                         //chegouNoFim
                         removendoOInimigo(enemy);
+                        if (enemys.isEmpty()) break;
                         //cont--; //tem q tirar isso quando voltar com a de cima.
                         perdeVida();
                     }
@@ -568,9 +565,11 @@ public class HunterHunterGame extends ApplicationAdapter {
                 //Tem q somar os pontos aqui
                 adicionarPontos();
                 removendoOInimigo(enemy);
+                if (enemys.isEmpty()) break;
 
             }
         }
+        
     }
 
     public void desenhoGeral() {
@@ -605,11 +604,11 @@ public class HunterHunterGame extends ApplicationAdapter {
 
         if (quantidadeDeTorresDisponiveis == 0) {
             booleanSpawn = true;
-        }
+        } else booleanSpawn = false;
         if (debugMode) {
             // System.out.println("aass " + quantidadeDeInimigosDisponiveis + " " + cont + " " + (quantidadeDeInimigosDisponiveis == 0 && cont == 0) + " " + quantidadeDeTorresDisponiveis);
         }
-        if ((quantidadeDeInimigosDisponiveis == 0 && cont == 0) && quantidadeDeTorresDisponiveis == 0) {
+        if ((quantidadeDeInimigosDisponiveis == 0 && enemys.isEmpty()) && quantidadeDeTorresDisponiveis == 0) {
             faseAcabou = true;
             if (debugMode) {
                 System.out.println("Fim da Fase");
@@ -621,7 +620,6 @@ public class HunterHunterGame extends ApplicationAdapter {
                 System.out.println("Nova Fase " + nivel);
             }
             nivel++;
-            enemys.removeAll(enemys);//deve tirar todos os enemys.
             attacks.removeAll(attacks);//deve tirar todos os ataques
             quantidadeDeTorresDisponiveis = pontos * nivel;// tem que colocar de acordo com o numero de Inimigos q matou.
             quantidadeDeInimigosDisponiveis = 4 + (numeroDeVidasMaximo - numeroDeVidas) * nivel;

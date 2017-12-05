@@ -91,11 +91,7 @@ public class Enemy {
     }
     
     public void updatePathFinder () {
-        this.pathFinder = new IndexedAStarPathFinder(LevelManager.graph);
-        this.path = new DefaultGraphPath<>();
-        this.pathIterator = this.path.iterator();
-        this.shouldMove = false;
-        this.terminouOPercurso = false;
+        this.pathFinder = new IndexedAStarPathFinder(LevelManager.graph,true);
     }
     /**
      * Atualiza a posição do agente de acordo com seu objetivo de alto nível
