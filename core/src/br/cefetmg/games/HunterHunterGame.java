@@ -124,6 +124,7 @@ public class HunterHunterGame extends ApplicationAdapter {
         quantidadeDeInimigosDisponiveis = 5;
         maximoDeInimigos = quantidadeDeInimigosDisponiveis;
         
+        tiledMap = LevelManager.LoadLevel("map.tmx");
         start = TimeUtils.millis();
         cont = 0;
         deadEnemy = 0;
