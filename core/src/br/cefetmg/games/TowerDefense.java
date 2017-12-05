@@ -100,6 +100,7 @@ public class TowerDefense extends ApplicationAdapter {
     long start;
     int cont; //Conta quantos inimigos a no mapa
     int deadEnemy;
+    
 
     public TowerDefense() {
         this.windowTitle = "Hunter x Hunter (%d)";
@@ -553,8 +554,8 @@ public class TowerDefense extends ApplicationAdapter {
 
     public void removerAtualizarInimigos(float delta) {
         for (Enemy enemy : enemys) {
+            enemy.update(delta);
             if (enemy.getLife() > 0) {
-                enemy.update(delta);
                 if (enemy.desenhe) {
                     if (!enemy.shouldMove && !enemy.terminouOPercurso) {
                         removendoUltimaTorre();
@@ -562,10 +563,10 @@ public class TowerDefense extends ApplicationAdapter {
                         enemy.terminouOPercurso = !enemy.terminouOPercurso;
                         //Acho que tem q atualizar o Path após remover a torre.
                         atualizaGrafo();
-                    } if (!enemy.shouldMove && enemy.terminouOPercurso) {
+                    }
+                    if (!enemy.shouldMove && enemy.terminouOPercurso) {
                         //chegouNoFim
                         removendoOInimigo(enemy);
-                        if (enemys.isEmpty()) break;
                         //cont--; //tem q tirar isso quando voltar com a de cima.
                         perdeVida();
                     }
@@ -573,12 +574,11 @@ public class TowerDefense extends ApplicationAdapter {
             } else {
                 //Tem q somar os pontos aqui
                 adicionarPontos();
-                removendoOInimigo(enemy);
-                if (enemys.isEmpty()) break;
-
+                enemy.draw=false;
+                //removendoOInimigo(enemy);
+                //enemys.remove(enemy);
             }
         }
-        
     }
 
     public void desenhoGeral() {
@@ -692,6 +692,9 @@ public class TowerDefense extends ApplicationAdapter {
                         if(enemys.get(i).draw){
                             enemyRenderer.render(enemys.get(i), shapeRenderer);
                         }
+                        else{
+                            enemys.remove(i);
+                        }
                     }
                     
                     
@@ -736,7 +739,13 @@ public class TowerDefense extends ApplicationAdapter {
                                 torres.get(i).attacks.get(j).draw=false;
                                 //torres.get(i).attacks.remove(atual);
                             }
-                    }
+                            if(torres.get(i).attacks.get(j).pose.posicao.dst(torres.get(i).attacks.get(j).getInitialPosition())>=torres.get(i).actionZone-2){
+                                torres.get(i).attacks.get(j).draw=false;
+                            }
+                            if(torres.get(i).attacks.get(j).comportamento.alvo.getObjetivo() == torres.get(i).attacks.get(j).pose.posicao){
+                                torres.get(i).attacks.get(j).draw=false;
+                            }
+                }     
                 
             }
         }
