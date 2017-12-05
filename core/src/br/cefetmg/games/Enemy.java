@@ -177,7 +177,8 @@ public class Enemy {
     }
     
     public boolean chegouNoFinal(){
-        if( this.position.coords.dst2(Goal) < 0.5f)
+        // Crrgindo isso ele passa a  perder vida
+        if( this.position.coords.dst2(Goal) > 0.5f)
             return true;
         return false;
     }
