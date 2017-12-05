@@ -47,9 +47,7 @@ public class Enemy {
     public boolean jaDeuPontos=false;
     public static Vector2 worldDimensions;
     public static final float reajuste = 0.02f;
-    Texture space;
-    Texture life_bar;
-    Sprite lifebarsprite;
+
     public Enemy(Vector2 position, Strength color,float worldWidth, float worldHeight) {
         this.position = new Position(position);
         this.color = color;
@@ -66,18 +64,10 @@ public class Enemy {
         this.desenhe = true;
         this.worldDimensions = new Vector2(worldWidth, worldHeight);
         
-        space=new Texture(Gdx.files.local("hud/life-bar.png"));
-        life_bar=new Texture("hud/life.png");
-        lifebarsprite=new Sprite(life_bar);
+      
         
     }
-    public void drawbarlife(SpriteBatch batch){
-    //    batch.begin();
-    //    batch.draw(space, 0, 0);
-   //     batch.draw(lifebarsprite, 362, 640,300*(int)life,40);
-
-    //    batch.end();
-    }
+   
     private int getSustain() {
          switch (color){
              case VIOLETA:
